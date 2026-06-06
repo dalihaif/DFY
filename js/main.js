@@ -30,6 +30,31 @@
   // expose
   window.toggleTheme = toggleTheme;
 
+  // -------- Hospital age auto-calc --------
+  // Read founding year from admin settings if available, else default 1991
+  var hmSettings = {};
+  try { hmSettings = JSON.parse(localStorage.getItem('hm_settings') || '{}'); } catch(e) {}
+  var FOUNDED_YEAR = hmSettings.foundedYear || 1991;
+  var nowYear = new Date().getFullYear();
+  var hospitalAge = nowYear - FOUNDED_YEAR;
+
+  // Fill all .hospital-age spans
+  document.querySelectorAll('.hospital-age').forEach(function (el) {
+    el.textContent = '' + hospitalAge;
+  });
+
+  // Fill all .hospital-year-now spans
+  document.querySelectorAll('.hospital-year-now').forEach(function (el) {
+    el.textContent = '' + nowYear;
+  });
+
+  // Also update meta description
+  var metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc && hospitalAge) {
+    metaDesc.setAttribute('content',
+      metaDesc.getAttribute('content').replace(/\d+年/, hospitalAge + '\u5E74'));
+  }
+
   // -------- Navbar scroll --------
   var navbar = document.querySelector('.navbar');
   if (navbar) {

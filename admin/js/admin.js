@@ -282,6 +282,10 @@ function renderSettings() {
   html += '<div class="form-group"><label>联系电话</label>';
   html += '<input class="form-control" id="set-phone" value="' + escHtml(settings.contactPhone || '') + '"></div>';
 
+  html += '<div class="form-group"><label>建院年份</label>';
+  html += '<input type="number" class="form-control" id="set-founded-year" value="' + (settings.foundedYear || '1991') + '" min="1900" max="2100">';
+  html += '<small class="form-text text-muted">前台将据此自动计算院龄（当前年份 - 建院年份）</small></div>';
+
   html += '<button class="btn btn-primary" id="btn-save-settings"><i class="fas fa-save mr-1"></i>保存设置</button>';
 
   html += '</div></div></div>';
@@ -377,7 +381,8 @@ $(document).ready(function() {
       siteSubtitle: $('#set-subtitle').val(),
       officialUrl: $('#set-url').val(),
       contactEmail: $('#set-email').val(),
-      contactPhone: $('#set-phone').val()
+      contactPhone: $('#set-phone').val(),
+      foundedYear: parseInt($('#set-founded-year').val()) || 1991
     };
     localStorage.setItem('hm_settings', JSON.stringify(settings));
     $(document).Toasts('create', { class: 'bg-success', title: '设置已保存', body: '网站设置已更新', autohide: true, delay: 2000 });
