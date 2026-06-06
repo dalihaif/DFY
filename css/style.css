@@ -260,6 +260,7 @@ button { font-family: inherit; }
     top:var(--nav-height); left:0; right:0;
     background:var(--nav-bg-scroll);
     backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
     padding:12px 0; gap:0; border-bottom:1px solid var(--border); z-index:999;
   }
   .nav-menu.open a { padding:14px 24px; border-bottom:1px solid var(--border); font-size:14px; }
@@ -307,6 +308,7 @@ button { font-family: inherit; }
   background:rgba(212,175,55,0.10); border:1px solid rgba(212,175,55,0.25);
   border-radius:9999px; font-size:13px; color:var(--gold-light);
   backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
 }
 .hero-title {
   font-family:var(--font-display); font-size:72px; font-weight:700;
@@ -340,6 +342,7 @@ button { font-family: inherit; }
   border-radius:var(--radius-md);
   font-size:16px; color:var(--gold-light);
   cursor:pointer; backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
   transition:all var(--dur) var(--ease-out);
 }
 .btn-outline:hover { background:rgba(212,175,55,0.08); border-color:var(--gold-light); transform:translateY(-2px); }

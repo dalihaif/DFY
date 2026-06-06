@@ -1,5 +1,9 @@
 /* sections.css — 板块页面专属组件样式 */
 
+/* -------- 通用 block -------- */
+.section-block { padding:60px var(--pad-x); }
+.section-block.alt { background:var(--section-alt); }
+
 /* -------- 人物风采 -------- */
 .people-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-bottom:48px; }
 .people-card {

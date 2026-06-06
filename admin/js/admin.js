@@ -278,7 +278,14 @@ function seedContent() {
 function escHtml(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function pad2(n) { return n<10?'0'+n:''+n; }
 function getContent() { return JSON.parse(localStorage.getItem('hm_content')||'{}'); }
-function saveContent(data) { localStorage.setItem('hm_content', JSON.stringify(data)); }
+function saveContent(data) {
+  try { localStorage.setItem('hm_content', JSON.stringify(data)); return true; }
+  catch(e) { if (typeof showToast === 'function') showToast('保存失败：存储空间不足，请清理浏览器缓存', 'danger'); return false; }
+}
+function safeSetItem(key, val) {
+  try { localStorage.setItem(key, typeof val === 'string' ? val : JSON.stringify(val)); return true; }
+  catch(e) { if (typeof showToast === 'function') showToast('存储失败：' + key, 'danger'); return false; }
+}
 
 // ====== 页面路由 ======
 var currentPage = 'dashboard';
