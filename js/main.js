@@ -55,6 +55,197 @@
       metaDesc.getAttribute('content').replace(/\d+年/, hospitalAge + '\u5E74'));
   }
 
+  // -------- Content from localStorage (CMS) --------
+  var hmContent = {};
+  try { hmContent = JSON.parse(localStorage.getItem('hm_content') || '{}'); } catch(e) {}
+
+  // Detect current page section
+  function getCurrentSection() {
+    var path = window.location.pathname;
+    var map = {
+      '01-history': 'history', '02-people': 'people', '03-disciplines': 'disciplines',
+      '04-campus': 'campus', '05-education': 'education', '06-culture': 'culture',
+      '07-tech': 'tech', '08-duty': 'duty', '09-honors': 'honors',
+      '10-vision': 'vision', '11-structure': 'structure', '12-leadership': 'leadership'
+    };
+    for (var k in map) { if (path.indexOf(k) >= 0) return hmContent[map[k]]; }
+    return null;
+  }
+
+  var sectionContent = getCurrentSection();
+  if (sectionContent) {
+    // ---- Hero ----
+    if (sectionContent.hero) {
+      var h = sectionContent.hero;
+      var heroBg = document.querySelector('.page-hero-bg');
+      if (heroBg && h.bgImage) heroBg.setAttribute('src', h.bgImage);
+      var heroNum = document.querySelector('.page-hero-num');
+      if (heroNum && h.num) heroNum.textContent = h.num;
+      var heroTitle = document.querySelector('.page-hero-title');
+      if (heroTitle && h.title) heroTitle.textContent = h.title;
+      var heroSub = document.querySelector('.page-hero-sub');
+      if (heroSub && h.subtitle) heroSub.textContent = h.subtitle;
+      var heroDesc = document.querySelector('.page-hero-desc');
+      if (heroDesc && h.desc) heroDesc.textContent = h.desc;
+    }
+
+    // ---- Timeline (history) ----
+    if (Array.isArray(sectionContent.timeline) && sectionContent.timeline.length > 0) {
+      var tlContainer = document.querySelector('.timeline');
+      if (tlContainer) {
+        var tlHTML = '';
+        sectionContent.timeline.forEach(function(t, i) {
+          var side = i % 2 === 0 ? 'left' : 'right';
+          if (side === 'left') {
+            tlHTML += '<div class="tl-node left"><div class="tl-content fade-in"><div class="tl-year">' + esc(t.year) + '</div><div class="tl-title">' + esc(t.title) + '</div><p class="tl-desc">' + esc(t.desc) + '</p></div><div class="tl-dot-col"><div class="tl-dot">' + esc(t.dot||'●') + '</div></div><div></div></div>';
+          } else {
+            tlHTML += '<div class="tl-node right"><div></div><div class="tl-dot-col"><div class="tl-dot">' + esc(t.dot||'●') + '</div></div><div class="tl-content fade-in"><div class="tl-year">' + esc(t.year) + '</div><div class="tl-title">' + esc(t.title) + '</div><p class="tl-desc">' + esc(t.desc) + '</p></div></div>';
+          }
+        });
+        tlContainer.innerHTML = tlHTML;
+      }
+    }
+
+    // ---- Content Blocks ----
+    if (Array.isArray(sectionContent.blocks) && sectionContent.blocks.length > 0) {
+      var blockHeaders = document.querySelectorAll('.block-header');
+      var contentPairs = document.querySelectorAll('.content-pair');
+      var imgSlots = document.querySelectorAll('.img-slot');
+
+      sectionContent.blocks.forEach(function(b, i) {
+        // Update block header
+        if (blockHeaders[i]) {
+          var bh = blockHeaders[i];
+          var numEl = bh.querySelector('.block-num');
+          var titleEl = bh.querySelector('.block-title');
+          var subEl = bh.querySelector('.block-sub');
+          if (numEl && b.num) numEl.textContent = b.num;
+          if (titleEl && b.title) titleEl.textContent = b.title;
+          if (subEl && b.subtitle) subEl.textContent = b.subtitle;
+        }
+        // Update content text
+        if (contentPairs[i]) {
+          var ct = contentPairs[i].querySelector('.content-text');
+          if (ct && b.text) ct.innerHTML = b.text;
+        }
+        // Update image slot
+        if (imgSlots[i]) {
+          var is = imgSlots[i];
+          var iconEl = is.querySelector('.img-slot-icon');
+          var labelEl = is.querySelector('.img-slot-label');
+          var sizeEl = is.querySelector('.img-slot-size');
+          if (iconEl && b.imgIcon) iconEl.textContent = b.imgIcon;
+          if (labelEl && b.imgLabel) labelEl.innerHTML = b.imgLabel;
+          if (sizeEl && b.imgSize) sizeEl.textContent = b.imgSize;
+          if (b.imgUrl && is.tagName === 'IMG') {
+            is.setAttribute('src', b.imgUrl);
+          }
+        }
+      });
+    }
+
+    // ---- Leaders (院长/书记) ----
+    if (Array.isArray(sectionContent.leaders) && sectionContent.leaders.length > 0) {
+      // Only for people section — match leader-card elements
+      var leaderCards = document.querySelectorAll('.leader-card');
+      if (leaderCards.length > 0) {
+        var deans = sectionContent.leaders.filter(function(l) { return l.category === '院长'; });
+        var secretaries = sectionContent.leaders.filter(function(l) { return l.category === '书记'; });
+        var allLeaders = deans.concat(secretaries);
+        leaderCards.forEach(function(card, i) {
+          if (allLeaders[i]) {
+            var l = allLeaders[i];
+            var nameEl = card.querySelector('.leader-name');
+            var yearsEl = card.querySelector('.leader-years');
+            var eraEl = card.querySelector('.leader-era');
+            var descEl = card.querySelector('.leader-desc');
+            if (nameEl) nameEl.textContent = l.name;
+            if (yearsEl) yearsEl.textContent = l.years;
+            if (eraEl) eraEl.textContent = l.era;
+            if (descEl) descEl.textContent = l.desc;
+          }
+        });
+      }
+      // For 12-leadership section — match leadership-card elements
+      var lshipCards = document.querySelectorAll('.leadership-card');
+      if (lshipCards.length > 0) {
+        lshipCards.forEach(function(card, i) {
+          if (sectionContent.leaders[i]) {
+            var l = sectionContent.leaders[i];
+            var nameEl = card.querySelector('.leadership-name');
+            var roleEl = card.querySelector('.leadership-role');
+            var dutyEl = card.querySelector('.leadership-responsibility');
+            var resumeEl = card.querySelector('.leadership-resume');
+            if (nameEl) nameEl.textContent = l.name;
+            if (roleEl) roleEl.textContent = l.role;
+            if (dutyEl) dutyEl.textContent = l.duty;
+            if (resumeEl) resumeEl.textContent = l.resume;
+          }
+        });
+      }
+    }
+
+    // ---- Profiles (人物简介) ----
+    ['profiles','profiles2'].forEach(function(group) {
+      if (Array.isArray(sectionContent[group])) {
+        var cards = document.querySelectorAll('.profile-card');
+        // Find the right subset of cards for this group
+        var offset = group === 'profiles2' ? (sectionContent.profiles ? sectionContent.profiles.length : 0) : 0;
+        sectionContent[group].forEach(function(p, i) {
+          var card = cards[offset + i];
+          if (!card) return;
+          var nameEl = card.querySelector('.profile-name');
+          var titleEl = card.querySelector('.profile-title');
+          var deptEl = card.querySelector('.profile-dept');
+          var descEl = card.querySelector('.profile-desc');
+          if (nameEl) nameEl.textContent = p.name;
+          if (titleEl) titleEl.textContent = p.title;
+          if (deptEl) deptEl.textContent = p.dept;
+          if (descEl) descEl.textContent = p.desc;
+        });
+      }
+    });
+
+    // ---- Data Cards ----
+    if (Array.isArray(sectionContent.dataCards) && sectionContent.dataCards.length > 0) {
+      var dcContainers = document.querySelectorAll('.data-grid, .matrix-grid, .people-stats-banner');
+      dcContainers.forEach(function(container) {
+        var cards = container.querySelectorAll('.data-card, .matrix-item, .people-stat');
+        cards.forEach(function(card, i) {
+          if (sectionContent.dataCards[i]) {
+            var d = sectionContent.dataCards[i];
+            var valEl = card.querySelector('.data-card-value, .matrix-num, span');
+            var labelEl = card.querySelector('.data-card-label, label, .matrix-label');
+            var noteEl = card.querySelector('.data-card-note, small');
+            if (valEl) valEl.textContent = d.value;
+            if (labelEl) labelEl.textContent = d.label;
+            if (noteEl && d.note) noteEl.textContent = d.note;
+          }
+        });
+      });
+    }
+
+    // ---- Gallery ----
+    if (Array.isArray(sectionContent.gallery) && sectionContent.gallery.length > 0) {
+      var galleryGrid = document.querySelector('.gallery-grid');
+      if (galleryGrid) {
+        var gHTML = '';
+        sectionContent.gallery.forEach(function(g, i) {
+          gHTML += '<div class="gallery-item fade-in stagger-' + ((i%4)+1) + '"><div class="gallery-item-icon">' + esc(g.icon) + '</div><div class="gallery-item-label">' + esc(g.label) + '</div></div>';
+        });
+        galleryGrid.innerHTML = gHTML;
+      }
+    }
+  }
+
+  // helper
+  function esc(s) {
+    if (!s) return '';
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
   // -------- Navbar scroll --------
   var navbar = document.querySelector('.navbar');
   if (navbar) {
