@@ -1,0 +1,313 @@
+/* ========================================
+   云端院史馆 · 后台管理系统 — 自定义主题
+   基于 AdminLTE 3.x + Bootstrap 4
+   ======================================== */
+
+:root {
+  --admin-primary: #1a3a5c;
+  --admin-primary-light: #2c5f8a;
+  --admin-accent: #d4a853;
+  --admin-accent-light: #f0d78c;
+  --admin-bg: #f4f6f9;
+  --admin-card-bg: #ffffff;
+  --admin-text: #2c3e50;
+  --admin-text-muted: #7f8c8d;
+  --admin-border: #e0e4e8;
+  --admin-success: #27ae60;
+  --admin-warning: #f39c12;
+  --admin-danger: #e74c3c;
+  --admin-info: #3498db;
+}
+
+/* ===== 覆盖 AdminLTE 主色调 ===== */
+.main-header {
+  background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-light) 100%) !important;
+  border-bottom: 3px solid var(--admin-accent) !important;
+}
+
+.main-header .navbar-nav .nav-link {
+  color: rgba(255,255,255,0.85) !important;
+}
+
+.main-header .navbar-nav .nav-link:hover {
+  color: #fff !important;
+}
+
+.main-header .navbar-nav .nav-item.active .nav-link {
+  color: var(--admin-accent-light) !important;
+}
+
+/* 侧边栏 */
+.main-sidebar {
+  background: linear-gradient(180deg, #0d1f33 0%, #1a3a5c 100%) !important;
+}
+
+.main-sidebar .brand-link {
+  background: rgba(0,0,0,0.15) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+  padding: 0.8rem 1rem !important;
+}
+
+.main-sidebar .brand-link .brand-image {
+  margin-left: 0 !important;
+  opacity: 1 !important;
+  float: none !important;
+  max-height: 36px !important;
+}
+
+.main-sidebar .brand-link .brand-text {
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  margin-left: 0.5rem !important;
+}
+
+.main-sidebar .user-panel {
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* 侧边栏菜单 */
+.sidebar {
+  padding-top: 0.5rem !important;
+}
+
+.nav-sidebar .nav-link {
+  color: rgba(255,255,255,0.7) !important;
+  padding: 0.6rem 1rem !important;
+  border-left: 3px solid transparent;
+  border-radius: 0 4px 4px 0;
+  margin: 2px 8px;
+  transition: all 0.2s;
+}
+
+.nav-sidebar .nav-link:hover {
+  color: #fff !important;
+  background: rgba(255,255,255,0.08) !important;
+  border-left-color: var(--admin-accent);
+}
+
+.nav-sidebar .nav-link.active {
+  color: #fff !important;
+  background: rgba(212,168,83,0.2) !important;
+  border-left-color: var(--admin-accent);
+}
+
+.nav-sidebar .nav-link i {
+  color: var(--admin-accent-light);
+  margin-right: 0.5rem;
+}
+
+.nav-sidebar .nav-treeview .nav-link {
+  padding-left: 2.5rem !important;
+  font-size: 0.9rem;
+}
+
+/* 面包屑 */
+.content-header {
+  padding: 1rem 1.5rem !important;
+}
+
+.content-header h1 {
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  color: var(--admin-primary);
+}
+
+.breadcrumb {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.breadcrumb-item a {
+  color: var(--admin-primary-light);
+}
+
+/* 卡片 */
+.card {
+  border-radius: 8px !important;
+  border: 1px solid var(--admin-border) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+  transition: box-shadow 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important;
+}
+
+.card-header {
+  background: #fff !important;
+  border-bottom: 1px solid var(--admin-border) !important;
+  border-radius: 8px 8px 0 0 !important;
+  font-weight: 600 !important;
+  color: var(--admin-primary);
+  padding: 0.75rem 1.25rem !important;
+}
+
+.card-primary.card-outline {
+  border-top: 3px solid var(--admin-primary) !important;
+}
+
+.card-accent.card-outline {
+  border-top: 3px solid var(--admin-accent) !important;
+}
+
+/* 小信息盒子 */
+.small-box {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+}
+
+.small-box .icon i {
+  color: rgba(255,255,255,0.2) !important;
+}
+
+.bg-info { background: linear-gradient(135deg, #3498db, #2980b9) !important; }
+.bg-success { background: linear-gradient(135deg, #27ae60, #229954) !important; }
+.bg-warning { background: linear-gradient(135deg, #f39c12, #e67e22) !important; }
+.bg-danger { background: linear-gradient(135deg, #e74c3c, #c0392b) !important; }
+
+/* 表格 */
+.table th {
+  background: var(--admin-bg) !important;
+  border-bottom: 2px solid var(--admin-primary) !important;
+  font-weight: 600 !important;
+  color: var(--admin-primary);
+}
+
+.table td {
+  vertical-align: middle !important;
+}
+
+/* 按钮 */
+.btn-primary {
+  background: var(--admin-primary) !important;
+  border-color: var(--admin-primary) !important;
+}
+
+.btn-primary:hover {
+  background: var(--admin-primary-light) !important;
+  border-color: var(--admin-primary-light) !important;
+}
+
+.btn-accent {
+  background: var(--admin-accent) !important;
+  border-color: var(--admin-accent) !important;
+  color: #fff !important;
+}
+
+.btn-accent:hover {
+  background: #c0953a !important;
+  border-color: #c0953a !important;
+  color: #fff !important;
+}
+
+/* 内容管理面板 */
+.section-card {
+  border-left: 4px solid var(--admin-accent);
+  margin-bottom: 1rem;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.section-card:hover {
+  transform: translateX(4px);
+  border-left-color: var(--admin-primary);
+}
+
+.section-card .card-body {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.section-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.section-icon.history { background: #e8f4fd; color: #2980b9; }
+.section-icon.people { background: #fef3e2; color: #e67e22; }
+.section-icon.disciplines { background: #e8f8f0; color: #27ae60; }
+.section-icon.campus { background: #f5eef8; color: #8e44ad; }
+.section-icon.education { background: #fdf2f8; color: #e91e63; }
+.section-icon.culture { background: #fff3e0; color: #f57c00; }
+.section-icon.tech { background: #e3f2fd; color: #1565c0; }
+.section-icon.duty { background: #fce4ec; color: #c62828; }
+.section-icon.honors { background: #fff8e1; color: #f9a825; }
+.section-icon.vision { background: #e0f2f1; color: #00695c; }
+.section-icon.structure { background: #ede7f6; color: #4527a0; }
+.section-icon.leadership { background: #fbe9e7; color: #bf360c; }
+
+.section-info h5 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.section-info small {
+  color: var(--admin-text-muted);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .content-header h1 { font-size: 1.2rem !important; }
+  .card-header { font-size: 0.9rem !important; }
+}
+
+/* footer */
+.main-footer {
+  border-top: 2px solid var(--admin-accent) !important;
+  background: #fff !important;
+  padding: 0.8rem !important;
+  text-align: center;
+  color: var(--admin-text-muted);
+  font-size: 0.85rem;
+}
+
+/* quick action buttons */
+.quick-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text);
+  font-weight: 500;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.quick-action-btn:hover {
+  background: var(--admin-bg);
+  border-color: var(--admin-primary-light);
+  color: var(--admin-primary);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* status badges */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-published { background: #e8f8f0; color: #27ae60; }
+.status-draft { background: #fef3e2; color: #e67e22; }
+.status-review { background: #e8f4fd; color: #2980b9; }

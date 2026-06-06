@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>云端院史馆 · 后台管理系统</title>
+  <!-- Bootstrap 4 CSS (CDN) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- AdminLTE -->
+  <link rel="stylesheet" href="css/adminlte.min.css">
+  <!-- Custom Theme -->
+  <link rel="stylesheet" href="css/admin-custom.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+  <!-- ===== 顶栏 ===== -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="../index.html" class="nav-link" target="_blank"><i class="fas fa-external-link-alt mr-1"></i>预览前台</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="https://www.dfy.dali.edu.cn" class="nav-link" target="_blank"><i class="fas fa-hospital mr-1"></i>医院官网</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="btn-save-all"><i class="fas fa-save mr-1"></i>全部保存</a>
+      </li>
+      <li class="nav-item">
+        <span class="nav-link text-muted"><i class="fas fa-user-circle mr-1"></i>管理员</span>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ===== 侧边栏 ===== -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <a href="#" class="brand-link">
+      <img src="../assets/images/logo-hospital.png" alt="院徽" class="brand-image img-circle elevation-3" style="opacity:.9">
+      <span class="brand-text font-weight-light">后台管理</span>
+    </a>
+    <div class="sidebar">
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+          <li class="nav-item">
+            <a href="#" class="nav-link active" data-page="dashboard">
+              <i class="nav-icon fas fa-tachometer-alt"></i><p>控制台</p>
+            </a>
+          </li>
+          <li class="nav-header text-uppercase">板块管理</li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="history"><i class="nav-icon fas fa-history"></i><p>01 历史沿革</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="people"><i class="nav-icon fas fa-users"></i><p>02 人物风采</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="disciplines"><i class="nav-icon fas fa-microscope"></i><p>03 学科建设</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="campus"><i class="nav-icon fas fa-building"></i><p>04 院区建设</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="education"><i class="nav-icon fas fa-graduation-cap"></i><p>05 教学人才</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="culture"><i class="nav-icon fas fa-heart"></i><p>06 文化建设</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="tech"><i class="nav-icon fas fa-robot"></i><p>07 科技交流</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="duty"><i class="nav-icon fas fa-shield-alt"></i><p>08 责任担当</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="honors"><i class="nav-icon fas fa-trophy"></i><p>09 荣誉殿堂</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="vision"><i class="nav-icon fas fa-eye"></i><p>10 展望未来</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="structure"><i class="nav-icon fas fa-sitemap"></i><p>11 组织架构</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="leadership"><i class="nav-icon fas fa-user-tie"></i><p>12 领导团队</p></a></li>
+          <li class="nav-header text-uppercase">系统</li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="announcements"><i class="nav-icon fas fa-bullhorn"></i><p>公告管理</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="settings"><i class="nav-icon fas fa-cog"></i><p>网站设置</p></a></li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- ===== 主内容区 ===== -->
+  <div class="content-wrapper" id="content-wrapper">
+    <!-- 面包屑 -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6"><h1 class="m-0" id="page-title">控制台</h1></div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right" id="breadcrumb">
+              <li class="breadcrumb-item active">控制台</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 内容 -->
+    <section class="content" id="main-content">
+      <!-- 动态加载内容 -->
+      <div class="text-center py-5"><i class="fas fa-spinner fa-spin fa-2x text-muted"></i></div>
+    </section>
+  </div>
+
+  <!-- ===== 页脚 ===== -->
+  <footer class="main-footer">
+    <strong>云端院史馆 v1.0</strong> &mdash; 大理大学第一附属医院 | <a href="https://www.dfy.dali.edu.cn" target="_blank">医院官网</a>
+  </footer>
+</div>
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE -->
+<script src="js/adminlte.min.js"></script>
+<!-- Custom -->
+<script src="js/admin.js"></script>
+</body>
+</html>
