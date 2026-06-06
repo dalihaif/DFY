@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>平台资质 · 大理大学第一附属医院</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .module-hero { width: 100%; height: 360px; background: linear-gradient(135deg, #0A1628, #1A2E4A); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; text-align: center; }
+    .module-hero h1 { font-family: var(--font-display); font-size: 48px; color: var(--gold); }
+    .module-hero p { font-size: 16px; color: var(--text-muted); }
+    .module-content { max-width: 1000px; margin: 0 auto; padding: 60px 32px; }
+    .info-section { margin-bottom: 48px; }
+    .info-section h2 { font-family: var(--font-display); font-size: 28px; color: var(--gold); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .info-section h3 { font-size: 18px; color: var(--text-primary); margin: 20px 0 12px; }
+    .info-section p { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+    .info-section ul { list-style: none; padding: 0; }
+    .info-section ul li { padding: 6px 0; padding-left: 20px; position: relative; font-size: 14px; color: var(--text-dim); }
+    .info-section ul li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); font-size: 12px; top: 9px; }
+    .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; margin: 20px 0; }
+    .platform-card { background: var(--bg-card); border-radius: 2px; padding: 24px; border-top: 3px solid var(--gold); }
+    .platform-card.national { border-top-color: var(--gold); }
+    .platform-card.provincial { border-top-color: var(--blue-accent); }
+    .platform-card h4 { font-size: 16px; color: var(--text-white); margin-bottom: 8px; }
+    .platform-card .tag { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 11px; margin-bottom: 8px; }
+    .platform-card .tag.national { background: rgba(201,168,76,0.15); color: var(--gold); }
+    .platform-card .tag.provincial { background: rgba(102,165,229,0.15); color: var(--blue-light); }
+    .platform-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-size: 14px; margin-bottom: 32px; transition: opacity 0.2s; }
+    .back-link:hover { opacity: 0.8; }
+    @media (max-width: 768px) { .module-hero h1 { font-size: 32px; } }
+  </style>
+</head>
+<body style="background: var(--bg-primary);">
+  <div class="module-hero">
+    <h1>平台资质</h1>
+    <p>国家级平台 · 省州级救治中心 · 特色专科群</p>
+  </div>
+  <div class="module-content">
+    <a href="../index.html" class="back-link">← 返回首页</a>
+
+    <div class="info-section">
+      <h2>国家级平台</h2>
+      <div class="platform-grid">
+        <div class="platform-card national">
+          <span class="tag national">国家级</span>
+          <h4>国家临床教学示范中心</h4>
+          <p>集教学、培训、考核于一体的国家级临床技能训练平台。</p>
+        </div>
+        <div class="platform-card national">
+          <span class="tag national">国家级</span>
+          <h4>住院医师规范化培训基地</h4>
+          <p>承担滇西地区住院医师规范化培训核心任务。</p>
+        </div>
+        <div class="platform-card national">
+          <span class="tag national">国家级</span>
+          <h4>全科医师培养基地</h4>
+          <p>国家级全科医学人才培养与输送基地。</p>
+        </div>
+        <div class="platform-card national">
+          <span class="tag national">国家级</span>
+          <h4>胸痛中心</h4>
+          <p>急性胸痛患者的快速救治绿色通道体系。</p>
+        </div>
+        <div class="platform-card national">
+          <span class="tag national">国家级</span>
+          <h4>高级卒中中心</h4>
+          <p>脑卒中急危重症救治与康复一体化平台。</p>
+        </div>
+        <div class="platform-card national">
+          <span class="tag national">国家级</span>
+          <h4>国际SP教学示范中心</h4>
+          <p>标准化病人（SP）国际教学与考核示范单位。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>省/州级救治中心</h2>
+      <ul>
+        <li>省级创伤中心</li>
+        <li>省级危重孕产妇救治中心</li>
+        <li>州级危重新生儿救治中心</li>
+        <li>滇西独有职业健康体检资质机构</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h2>SP教学领先</h2>
+      <p>医院是国际SP教学示范中心和SP国标试点单位，在标准化病人教学领域处于国内领先水平。全国标准化病人案例大赛获银奖2项。</p>
+    </div>
+
+    <a href="../index.html" class="back-link" style="margin-top: 32px;">← 返回首页</a>
+  </div>
+</body>
+</html>

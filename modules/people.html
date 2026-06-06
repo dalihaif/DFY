@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>人才队伍 · 大理大学第一附属医院</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .module-hero { width: 100%; height: 360px; background: linear-gradient(135deg, #0A1628, #1A2E4A); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; text-align: center; }
+    .module-hero h1 { font-family: var(--font-display); font-size: 48px; color: var(--gold); }
+    .module-hero p { font-size: 16px; color: var(--text-muted); }
+    .module-content { max-width: 1000px; margin: 0 auto; padding: 60px 32px; }
+    .info-section { margin-bottom: 48px; }
+    .info-section h2 { font-family: var(--font-display); font-size: 28px; color: var(--gold); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .info-section h3 { font-size: 18px; color: var(--text-primary); margin: 20px 0 12px; }
+    .info-section p { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+    .data-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 16px; margin: 20px 0; }
+    .data-card { background: var(--bg-card); border-radius: 2px; padding: 20px; text-align: center; }
+    .data-card .value { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--gold); }
+    .data-card .label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .talent-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    .talent-table th { background: var(--bg-stats); color: var(--gold); padding: 12px 16px; text-align: left; font-size: 14px; font-weight: 700; }
+    .talent-table td { padding: 10px 16px; border-bottom: 1px solid rgba(201,168,76,0.08); color: var(--text-dim); font-size: 14px; }
+    .talent-table tr:hover td { background: rgba(201,168,76,0.03); }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-size: 14px; margin-bottom: 32px; transition: opacity 0.2s; }
+    .back-link:hover { opacity: 0.8; }
+    @media (max-width: 768px) { .module-hero h1 { font-size: 32px; } .data-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body style="background: var(--bg-primary);">
+  <div class="module-hero">
+    <h1>人才队伍</h1>
+    <p>高素质人才驱动医院高质量发展</p>
+  </div>
+  <div class="module-content">
+    <a href="../index.html" class="back-link">← 返回首页</a>
+
+    <div class="info-section">
+      <h2>人员概况</h2>
+      <div class="data-grid">
+        <div class="data-card"><span class="value">1946人</span><span class="label">全院职工</span></div>
+        <div class="data-card"><span class="value">1638人</span><span class="label">卫技人员</span></div>
+        <div class="data-card"><span class="value">294人</span><span class="label">高级职称</span></div>
+        <div class="data-card"><span class="value">29人</span><span class="label">博士</span></div>
+        <div class="data-card"><span class="value">360人</span><span class="label">硕士</span></div>
+        <div class="data-card"><span class="value">803人</span><span class="label">党员</span></div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>高层次人才名录</h2>
+      <table class="talent-table">
+        <thead>
+          <tr><th>人才类别</th><th>人数</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>省突/省贴专家</td><td>3人</td></tr>
+          <tr><td>兴滇英才</td><td>4人</td></tr>
+          <tr><td>省级教学名师</td><td>1人</td></tr>
+          <tr><td>省学术带头人</td><td>6人</td></tr>
+          <tr><td>省卫健委高层次人才</td><td>16人</td></tr>
+          <tr><td>苍洱霞光人才</td><td>5人</td></tr>
+          <tr><td>校学术带头人</td><td>16人</td></tr>
+          <tr><td>校级名师</td><td>2人</td></tr>
+          <tr><td>院级学术带头人</td><td>59人</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-section">
+      <h2>师资力量</h2>
+      <p>医院拥有省级教学名师1人、校级名师2人，承担大理大学临床医学院教学任务。21个教研室/实验室支撑5个本科专业的临床教学、研究生培养及住院医师规范化培训工作。研究生导师队伍覆盖21个临床医学专硕招生方向、17个学硕研究方向。</p>
+    </div>
+
+    <a href="../index.html" class="back-link" style="margin-top: 32px;">← 返回首页</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>科研成果 · 大理大学第一附属医院</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .module-hero { width: 100%; height: 360px; background: linear-gradient(135deg, #0A1628, #1A2E4A); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; text-align: center; }
+    .module-hero h1 { font-family: var(--font-display); font-size: 48px; color: var(--gold); }
+    .module-hero p { font-size: 16px; color: var(--text-muted); }
+    .module-content { max-width: 1000px; margin: 0 auto; padding: 60px 32px; }
+    .info-section { margin-bottom: 48px; }
+    .info-section h2 { font-family: var(--font-display); font-size: 28px; color: var(--gold); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .info-section h3 { font-size: 18px; color: var(--text-primary); margin: 20px 0 12px; }
+    .info-section p { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+    .info-section ul { list-style: none; padding: 0; }
+    .info-section ul li { padding: 6px 0; padding-left: 20px; position: relative; font-size: 14px; color: var(--text-dim); }
+    .info-section ul li::before { content: '▸'; position: absolute; left: 0; color: var(--gold); font-size: 12px; top: 9px; }
+    .data-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 16px; margin: 20px 0; }
+    .data-card { background: var(--bg-card); border-radius: 2px; padding: 20px; text-align: center; }
+    .data-card .value { font-family: var(--font-display); font-size: 32px; font-weight: 700; color: var(--gold); }
+    .data-card .label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .award-card { background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(201,168,76,0.01)); border: 1px solid rgba(201,168,76,0.1); border-radius: 2px; padding: 24px; margin-bottom: 16px; }
+    .award-card h4 { font-size: 16px; color: var(--gold); margin-bottom: 8px; }
+    .award-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-size: 14px; margin-bottom: 32px; transition: opacity 0.2s; }
+    .back-link:hover { opacity: 0.8; }
+    @media (max-width: 768px) { .module-hero h1 { font-size: 32px; } .data-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body style="background: var(--bg-primary);">
+  <div class="module-hero">
+    <h1>科研成果</h1>
+    <p>国自然9项 · SCI 193篇 · 总经费1535.7万元</p>
+  </div>
+  <div class="module-content">
+    <a href="../index.html" class="back-link">← 返回首页</a>
+
+    <div class="info-section">
+      <h2>科研数据总览（2021年起）</h2>
+      <div class="data-grid">
+        <div class="data-card"><span class="value">9项</span><span class="label">国家自然科学基金</span></div>
+        <div class="data-card"><span class="value">31项</span><span class="label">省部级课题</span></div>
+        <div class="data-card"><span class="value">921项</span><span class="label">其他科研课题</span></div>
+        <div class="data-card"><span class="value">22项</span><span class="label">横向课题</span></div>
+        <div class="data-card"><span class="value">1535.7万</span><span class="label">总科研经费（元）</span></div>
+        <div class="data-card"><span class="value">193篇</span><span class="label">SCI论文</span></div>
+        <div class="data-card"><span class="value">107篇</span><span class="label">中文核心论文</span></div>
+        <div class="data-card"><span class="value">37部</span><span class="label">专著教材</span></div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>专利成果</h2>
+      <ul>
+        <li>发明专利：5项</li>
+        <li>实用新型专利：86项</li>
+        <li>软件著作权：11项</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h2>科研获奖</h2>
+      <div class="award-card">
+        <h4>省部级科技奖</h4>
+        <p>省科技进步三等奖2项、省卫生科技三等奖3项、省级教学成果一等奖1项</p>
+      </div>
+      <div class="award-card">
+        <h4>教学创新大赛</h4>
+        <p>全国教学创新大赛二等奖1项；云南赛区特等奖3项、一等奖2项</p>
+      </div>
+      <div class="award-card">
+        <h4>全国标准化病人案例大赛</h4>
+        <p>银奖2项</p>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>研究平台</h2>
+      <ul>
+        <li>省工程研究中心：1个</li>
+        <li>省高校重点实验室：3个</li>
+        <li>省创新团队：1个</li>
+        <li>院士工作站：1个</li>
+        <li>省级名医工作室：1个</li>
+        <li>省级基层科研工作站：5个</li>
+        <li>厅级创新团队：3个</li>
+        <li>省级导师项目：5项</li>
+        <li>8个省医学研究分中心</li>
+      </ul>
+    </div>
+
+    <a href="../index.html" class="back-link" style="margin-top: 32px;">← 返回首页</a>
+  </div>
+</body>
+</html>

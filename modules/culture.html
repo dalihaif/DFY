@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>医院文化 · 大理大学第一附属医院</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .module-hero { width: 100%; height: 360px; background: linear-gradient(135deg, #0A1628, #1A2E4A); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; text-align: center; }
+    .module-hero h1 { font-family: var(--font-display); font-size: 48px; color: var(--gold); }
+    .module-hero p { font-size: 16px; color: var(--text-muted); }
+    .module-content { max-width: 1000px; margin: 0 auto; padding: 60px 32px; }
+    .info-section { margin-bottom: 48px; }
+    .info-section h2 { font-family: var(--font-display); font-size: 28px; color: var(--gold); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(201,168,76,0.2); }
+    .info-section p { font-size: 15px; color: var(--text-dim); line-height: 1.8; }
+    .motto-box { background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02)); border: 1px solid rgba(201,168,76,0.15); border-radius: 2px; padding: 40px; text-align: center; margin: 20px 0; }
+    .motto-box .motto-cn { font-family: var(--font-display); font-size: 42px; color: var(--gold); font-weight: 700; }
+    .motto-box .motto-en { font-size: 16px; color: var(--text-muted); margin-top: 8px; }
+    .values-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; margin: 20px 0; }
+    .value-card { background: var(--bg-card); border-radius: 2px; padding: 28px; }
+    .value-card .icon { font-size: 28px; margin-bottom: 12px; }
+    .value-card h4 { font-size: 18px; color: var(--gold); margin-bottom: 8px; }
+    .value-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--gold); font-size: 14px; margin-bottom: 32px; transition: opacity 0.2s; }
+    .back-link:hover { opacity: 0.8; }
+    @media (max-width: 768px) { .module-hero h1 { font-size: 32px; } .values-grid { grid-template-columns: 1fr; } .motto-box .motto-cn { font-size: 28px; } }
+  </style>
+</head>
+<body style="background: var(--bg-primary);">
+  <div class="module-hero">
+    <h1>医院文化</h1>
+    <p>厚德精医 · 博学笃行</p>
+  </div>
+  <div class="module-content">
+    <a href="../index.html" class="back-link">← 返回首页</a>
+
+    <div class="motto-box">
+      <div class="motto-cn">厚德精医 · 博学笃行</div>
+      <div class="motto-en">Virtue, Excellence, Erudition, Practice</div>
+    </div>
+
+    <div class="info-section">
+      <h2>核心价值</h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="icon">🏥</div>
+          <h4>厚德</h4>
+          <p>以高尚医德为先，恪守医者仁心，践行公立医院公益性使命。</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">💉</div>
+          <h4>精医</h4>
+          <p>精益求精追求卓越医术，持续提升临床诊疗与疑难重症救治能力。</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">📚</div>
+          <h4>博学</h4>
+          <p>广纳新知推动医教研融合，培养具有国际视野的医学人才。</p>
+        </div>
+        <div class="value-card">
+          <div class="icon">🤝</div>
+          <h4>笃行</h4>
+          <p>扎根滇西躬行实践，以扎实行动服务边疆民族地区人民健康。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h2>公益帮扶</h2>
+      <p><strong style="color: var(--gold);">乡村振兴：</strong>长期帮扶云龙县关坪乡胜利村87户贫困户脱贫，对口帮扶10余家州县医院提升诊疗水平。</p>
+      <p style="margin-top: 12px;"><strong style="color: var(--gold);">疫情防控：</strong>累计157名医护人员驰援武汉、上海、瑞丽、怒江、祥云。承担疫苗接种保障任务，平稳落地乙类乙管常态化防控机制。</p>
+    </div>
+
+    <div class="info-section">
+      <h2>发展定位</h2>
+      <p>立足大理、辐射滇西，承接疑难危重症与突发公共卫生事件救治。打造<strong style="color: var(--gold);">云南先进、滇西领先、特色鲜明</strong>的区域性医疗与医学教研高地。建院34年来坚持医教研防一体化发展，留学生培养位列云南前列。</p>
+    </div>
+
+    <a href="../index.html" class="back-link" style="margin-top: 32px;">← 返回首页</a>
+  </div>
+</body>
+</html>

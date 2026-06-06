@@ -1,0 +1,81 @@
+/* visuals.css — 轻量视觉点缀，不覆盖主题变量 */
+
+/* floating ambient orbs on body */
+body::before, body::after {
+  content:''; position:fixed; pointer-events:none; z-index:0; border-radius:50%;
+  filter:blur(80px);
+  animation:orbFloat 18s ease-in-out infinite alternate;
+  opacity:0.35;
+}
+[data-theme="light"] body::before,
+[data-theme="light"] body::after { opacity:0.12; }
+
+body::before {
+  width:500px; height:500px;
+  background:radial-gradient(circle, rgba(139,92,246,0.25), transparent 70%);
+  top:-100px; left:-150px;
+}
+body::after {
+  width:600px; height:600px;
+  background:radial-gradient(circle, rgba(91,141,239,0.20), transparent 70%);
+  bottom:-200px; right:-200px;
+  animation-delay:-9s;
+}
+
+@keyframes orbFloat {
+  0%   { transform:translate(0,0) scale(1); }
+  100% { transform:translate(40px,40px) scale(1.08); }
+}
+
+/* gold shimmer on section numbers */
+.sections-grid-eyebrow-text,
+.block-num,
+.card-tag { position:relative; }
+
+/* card hover gold top line */
+.section-card::before,
+.card::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+  opacity:0; transition:opacity 0.3s; border-radius:var(--radius-md) var(--radius-md) 0 0;
+  pointer-events:none;
+}
+.section-card:hover::before,
+.card:hover::after { opacity:1; }
+.card { position:relative; overflow:hidden; }
+
+/* hero parallax shimmer */
+.hero-title { position:relative; }
+
+/* gallery hover overlay */
+.gallery-item::after {
+  content:'🔍'; position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%) scale(0.5);
+  font-size:28px; opacity:0;
+  transition:opacity 0.2s, transform 0.2s var(--ease-spring);
+}
+.gallery-item:hover::after { opacity:0.6; transform:translate(-50%,-50%) scale(1); }
+
+/* img-slot pulse border */
+@keyframes borderPulse {
+  0%,100% { border-color: var(--border-hover); }
+  50% { border-color: rgba(212,175,55,0.35); }
+}
+.img-slot { animation:borderPulse 3s ease-in-out infinite; }
+.img-slot:hover { animation:none; border-color:var(--gold-soft); }
+
+/* data-card gradient shimmer on value */
+.data-card-value::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);
+  background-size:200% 100%; animation:shimmer 3s linear infinite;
+  pointer-events:none;
+}
+.data-card { position:relative; overflow:hidden; }
+@keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+
+/* timeline dot glow */
+.tl-dot { box-shadow:0 0 0 3px var(--gold-soft), 0 0 16px rgba(212,175,55,0.35); }
+
+/* page hero title text shadow */
+.page-hero-title { text-shadow:0 2px 20px rgba(0,0,0,0.5); }

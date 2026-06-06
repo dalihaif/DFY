@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>云端院史馆 · 大理大学第一附属医院</title>
+  <meta name="description" content="大理大学第一附属医院（云南省第四人民医院）云端院史馆。立足大理、辐射滇西，三级甲等综合医院，建院34年。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/visuals.css">
+</head>
+<body>
+
+  <!-- ====== 导航栏 ====== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="nav-logo-img">
+        <span class="nav-logo-subtitle">云南省第四人民医院 · 云端院史馆</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="菜单" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="pages/01-history.html">历史沿革</a></li>
+        <li><a href="pages/02-people.html">人物风采</a></li>
+        <li><a href="pages/03-disciplines.html">学科建设</a></li>
+        <li><a href="pages/04-campus.html">院区建设</a></li>
+        <li><a href="pages/05-education.html">教学人才</a></li>
+        <li><a href="pages/06-culture.html">文化建设</a></li>
+        <li><a href="pages/07-tech.html">科技交流</a></li>
+        <li><a href="pages/08-duty.html">责任担当</a></li>
+        <li><a href="pages/09-honors.html">荣誉殿堂</a></li>
+        <li><a href="pages/10-vision.html">展望未来</a></li>
+        <li><a href="pages/11-structure.html">组织架构</a></li>
+        <li><a href="pages/12-leadership.html">领导团队</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#announcements" class="btn-announce">📢 公告</a>
+        <a href="https://www.dfy.dali.edu.cn" class="btn-official" target="_blank" rel="noopener" title="跳转至医院官方网站">🌐 官网</a>
+        <button class="btn-theme" onclick="toggleTheme()" title="切换明暗主题">☀️</button>
+        <a href="pages/01-history.html" class="btn-tour">云端参观</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ====== Hero ====== -->
+  <section class="hero" id="hero">
+    <img class="hero-bg" src="assets/images/2_20.png" alt="大理大学第一附属医院" onerror="this.style.display='none'">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span>🏛</span>
+        <span>云南省卫健委直管 · 非省会三甲综合高校附属医院 · 建院34年</span>
+      </div>
+      <h1 class="hero-title">大理大学第一附属医院</h1>
+      <div class="hero-flip">
+        <div class="hero-flip-track" id="heroFlipTrack">
+          <span class="hero-flip-item">云南省第四人民医院</span>
+          <span class="hero-flip-item">三级甲等综合医院</span>
+          <span class="hero-flip-item">国家临床教学示范中心</span>
+          <span class="hero-flip-item">滇西区域医疗高地</span>
+        </div>
+      </div>
+      <p class="hero-desc">1991年始建，坐落于大理市，一院两区运营。编制床位1500张，开放2013张，职工1946人，临床科室41个，集医疗、教学、科研、预防于一体。</p>
+      <div class="hero-ctas">
+        <a href="pages/01-history.html" class="btn-primary">探索院史</a>
+        <button class="btn-outline" onclick="document.getElementById('grid-section').scrollIntoView({behavior:'smooth'})">查看全部板块</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 统计条 ====== -->
+  <section class="stats-bar">
+    <div class="container">
+      <div class="stat-item"><span class="stat-value">162<small>亩</small></span><span class="stat-label">总占地面积</span></div>
+      <div class="stat-item"><span class="stat-value">1946<small>人</small></span><span class="stat-label">全院职工</span></div>
+      <div class="stat-item"><span class="stat-value">1500<small>张</small></span><span class="stat-label">编制床位</span></div>
+      <div class="stat-item"><span class="stat-value">11.15<small>亿</small></span><span class="stat-label">资产总额</span></div>
+      <div class="stat-item"><span class="stat-value">41<small>个</small></span><span class="stat-label">临床科室</span></div>
+    </div>
+  </section>
+
+  <!-- ====== 医院公告 ====== -->
+  <section class="announcements-section" id="announcements">
+    <div class="announcements-header">
+      <div class="announcements-title-group">
+        <div class="announcements-icon">📋</div>
+        <div>
+          <h2 class="announcements-title">医院公告</h2>
+          <p class="announcements-sub">最新通知 · 学术动态 · 人事信息</p>
+        </div>
+      </div>
+      <a href="#" class="announcements-more">查看全部公告 →</a>
+    </div>
+    <div class="announcements-grid">
+
+      <div class="announce-card fade-in stagger-1">
+        <div class="announce-card-top">
+          <span class="announce-card-date">2025-05-15</span>
+          <span class="announce-card-tag notice">通知</span>
+        </div>
+        <h4 class="announce-card-title">关于2025年度医疗服务质量提升工作的通知</h4>
+        <p class="announce-card-desc">为进一步提升医疗服务质量，保障患者安全，经院长办公会研究决定，在全院范围内开展医疗服务质量提升专项行动。</p>
+        <div class="announce-card-footer"><span>📌</span> 医务部</div>
+      </div>
+
+      <div class="announce-card fade-in stagger-2">
+        <div class="announce-card-top">
+          <span class="announce-card-date">2025-04-28</span>
+          <span class="announce-card-tag event">活动</span>
+        </div>
+        <h4 class="announce-card-title">医院成功举办"滇西医疗高质量发展"学术论坛</h4>
+        <p class="announce-card-desc">来自省内外20余家医疗机构的200余名专家学者齐聚大理，共话滇西区域医疗中心建设与高质量发展路径。</p>
+        <div class="announce-card-footer"><span>📌</span> 科研部</div>
+      </div>
+
+      <div class="announce-card fade-in stagger-3">
+        <div class="announce-card-top">
+          <span class="announce-card-date">2025-04-10</span>
+          <span class="announce-card-tag notice">通知</span>
+        </div>
+        <h4 class="announce-card-title">门诊预约挂号系统升级公告</h4>
+        <p class="announce-card-desc">为进一步优化患者就诊体验，我院将于4月15日起正式启用新版预约挂号系统，支持在线缴费、报告查询等功能。</p>
+        <div class="announce-card-footer"><span>📌</span> 信息科</div>
+      </div>
+
+      <div class="announce-card fade-in stagger-4">
+        <div class="announce-card-top">
+          <span class="announce-card-date">2025-03-20</span>
+          <span class="announce-card-tag hr">人事</span>
+        </div>
+        <h4 class="announce-card-title">2025年度公开招聘工作人员公告</h4>
+        <p class="announce-card-desc">根据医院发展需要，2025年计划面向社会公开招聘临床、医技、护理、行政管理等岗位工作人员共计80名。</p>
+        <div class="announce-card-footer"><span>📌</span> 人事科</div>
+      </div>
+
+      <div class="announce-card fade-in stagger-5">
+        <div class="announce-card-top">
+          <span class="announce-card-date">2025-03-05</span>
+          <span class="announce-card-tag academic">科研</span>
+        </div>
+        <h4 class="announce-card-title">我院获批4项国家自然科学基金项目</h4>
+        <p class="announce-card-desc">2025年度国家自然科学基金评审结果揭晓，我院共获批4项地区科学基金项目，资助经费总计136万元。</p>
+        <div class="announce-card-footer"><span>📌</span> 科研部</div>
+      </div>
+
+      <div class="announce-card fade-in stagger-6">
+        <div class="announce-card-top">
+          <span class="announce-card-date">2025-02-15</span>
+          <span class="announce-card-tag notice">通知</span>
+        </div>
+        <h4 class="announce-card-title">关于调整门诊时间的通知</h4>
+        <p class="announce-card-desc">自2025年3月1日起，我院门诊时间调整为上午8:00-12:00、下午14:00-17:30，急诊24小时正常接诊。</p>
+        <div class="announce-card-footer"><span>📌</span> 门诊部</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ====== 9板块入口卡片 ====== -->
+  <section class="sections-grid-wrapper" id="grid-section">
+    <div class="container">
+      <div class="sections-grid-header fade-in">
+        <div class="sections-grid-eyebrow">
+          <span class="sections-grid-eyebrow-line"></span>
+          <span class="sections-grid-eyebrow-text">云端院史馆 · 十二板块</span>
+          <span class="sections-grid-eyebrow-line" style="transform:scaleX(-1)"></span>
+        </div>
+        <h2 class="sections-grid-title">探索医院发展的每一个维度</h2>
+        <p class="sections-grid-desc">从建院历史到未来展望，九大主题板块完整呈现大附院34年的奋进历程与辉煌成就。</p>
+      </div>
+
+      <div class="sections-grid">
+
+        <a href="pages/01-history.html" class="section-card fade-in stagger-1">
+          <span class="section-card-num">板块一</span>
+          <div class="section-card-icon">📜</div>
+          <div class="section-card-title">历史沿革</div>
+          <div class="section-card-sub">医院发展的时光足迹</div>
+          <p class="section-card-desc">从1991年获批成立到2015年三甲评审，7个关键节点完整记录医院从无到有、从弱到强的发展历程。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/02-people.html" class="section-card fade-in stagger-2">
+          <span class="section-card-num">板块二</span>
+          <div class="section-card-icon">👨‍⚕️</div>
+          <div class="section-card-title">人物风采</div>
+          <div class="section-card-sub">医院发展的核心力量</div>
+          <p class="section-card-desc">致敬先驱领导者，礼赞学科带头人，展示1946名职工与803名党员的奋斗风貌与精神风采。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/03-disciplines.html" class="section-card fade-in stagger-3">
+          <span class="section-card-num">板块三</span>
+          <div class="section-card-icon">🏥</div>
+          <div class="section-card-title">学科建设</div>
+          <div class="section-card-sub">医院实力的核心体现</div>
+          <p class="section-card-desc">9个省级重点专科、41个临床科室、8个省医学研究分中心，展现滇西领先的综合学科实力矩阵。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/04-campus.html" class="section-card fade-in stagger-4">
+          <span class="section-card-num">板块四</span>
+          <div class="section-card-icon">🏗</div>
+          <div class="section-card-title">院区建设</div>
+          <div class="section-card-sub">医院空间的拓展与升级</div>
+          <p class="section-card-desc">从初创简陋建筑到现代化医疗综合体，162亩双院区协同运营，业务用房18万平方米的壮阔蜕变。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/05-education.html" class="section-card fade-in stagger-5">
+          <span class="section-card-num">板块五</span>
+          <div class="section-card-icon">🎓</div>
+          <div class="section-card-title">教学与人才</div>
+          <div class="section-card-sub">医院发展的智力支撑</div>
+          <p class="section-card-desc">5个本科专业、977名在读研究生（含22名留学生）、来自全球16个国家的国际化办学生态。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/06-culture.html" class="section-card fade-in stagger-6">
+          <span class="section-card-num">板块六</span>
+          <div class="section-card-icon">💎</div>
+          <div class="section-card-title">文化建设</div>
+          <div class="section-card-sub">医院发展的精神灵魂</div>
+          <p class="section-card-desc">使命、愿景、价值观三核心构筑精神根基；"厚德精医，博学笃行"院训凝聚全院上下的文化认同。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/07-tech.html" class="section-card fade-in stagger-1">
+          <span class="section-card-num">板块七</span>
+          <div class="section-card-icon">🤖</div>
+          <div class="section-card-title">科技与交流</div>
+          <div class="section-card-sub">创新引擎与国际视野</div>
+          <p class="section-card-desc">达芬奇手术机器人、智慧医院、193篇SCI论文、16国留学生，科技赋能与国际合作双轮驱动。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/08-duty.html" class="section-card fade-in stagger-2">
+          <span class="section-card-num">板块八</span>
+          <div class="section-card-icon">🚑</div>
+          <div class="section-card-title">责任与担当</div>
+          <div class="section-card-sub">践行使命的生动实践</div>
+          <p class="section-card-desc">157名医护驰援武汉、上海、瑞丽等地；帮扶云龙县87户脱贫；长期对口支援10余家基层医院。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/09-honors.html" class="section-card fade-in stagger-3">
+          <span class="section-card-num">板块九</span>
+          <div class="section-card-icon">🏆</div>
+          <div class="section-card-title">荣誉殿堂</div>
+          <div class="section-card-sub">三十四载荣耀征程</div>
+          <p class="section-card-desc">三甲认证、省科技进步奖、102项专利、9个省级重点专科——每一份荣誉都是奋斗的见证。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/10-vision.html" class="section-card fade-in stagger-4">
+          <span class="section-card-num">板块十</span>
+          <div class="section-card-icon">🔭</div>
+          <div class="section-card-title">展望未来</div>
+          <div class="section-card-sub">砥砺奋进新征程</div>
+          <p class="section-card-desc">区域医疗中心、精准医疗、AI诊断、国际拓展——四大战略引领高质量发展新篇章。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/11-structure.html" class="section-card fade-in stagger-1">
+          <span class="section-card-num">板块十一</span>
+          <div class="section-card-icon">🏛</div>
+          <div class="section-card-title">组织架构</div>
+          <div class="section-card-sub">科学布局 · 高效运转</div>
+          <p class="section-card-desc">党委领导下的院长负责制，41个临床科室、9党总支/55党支部，三级甲等现代医院治理体系。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+        <a href="pages/12-leadership.html" class="section-card fade-in stagger-2">
+          <span class="section-card-num">板块十二</span>
+          <div class="section-card-icon">👥</div>
+          <div class="section-card-title">领导团队</div>
+          <div class="section-card-sub">领航定向 · 掌舵前行</div>
+          <p class="section-card-desc">现任院党政领导班子成员介绍，各临床科室负责人风采展示，凝聚全院1946名职工的力量。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 院史图片画廊（主页） ====== -->
+  <section class="gallery-section">
+    <div class="gallery-header">
+      <h3 class="gallery-title">院史影像 · 光影岁月</h3>
+      <span class="gallery-hint">照片可替换为实际院史影像资料</span>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item fade-in stagger-1" title="奠基典礼">
+        <div class="gallery-item-icon">📷</div>
+        <div class="gallery-item-label">1992年奠基典礼<br><small>历史影像</small></div>
+      </div>
+      <div class="gallery-item fade-in stagger-2" title="开诊纪念">
+        <div class="gallery-item-icon">📷</div>
+        <div class="gallery-item-label">1997年正式开诊<br><small>珍贵历史</small></div>
+      </div>
+      <div class="gallery-item fade-in stagger-3" title="三甲评审">
+        <div class="gallery-item-icon">📷</div>
+        <div class="gallery-item-label">2015年三甲评审<br><small>里程碑时刻</small></div>
+      </div>
+      <div class="gallery-item fade-in stagger-4" title="抗疫驰援">
+        <div class="gallery-item-icon">📷</div>
+        <div class="gallery-item-label">2020年抗疫驰援<br><small>逆行英雄</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== Footer ====== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="footer-logo-img">
+        </div>
+        <p class="footer-slogan">厚德精医 · 博学笃行<br>云南省第四人民医院 · 云端院史馆</p>
+        <div class="footer-addr">
+          <strong>院本部：</strong>云南省大理市嘉士伯大道32号<br>
+          <strong>凤仪院区：</strong>大理经开区凤仪镇工业大道西侧、白塔河以东
+        </div>
+        <div class="footer-phones">
+          <span>党政办：0872-2201062</span>
+          <span>门诊部：0872-2201150</span>
+          <span>投诉办：0872-2201309</span>
+          <span>体检中心：0872-2201119</span>
+          <span>医务部：0872-2201168</span>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-col">
+          <span class="footer-col-title">院史馆板块</span>
+          <a href="pages/01-history.html">历史沿革</a>
+          <a href="pages/02-people.html">人物风采</a>
+          <a href="pages/03-disciplines.html">学科建设</a>
+          <a href="pages/04-campus.html">院区建设</a>
+          <a href="pages/05-education.html">教学人才</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">&nbsp;</span>
+          <a href="pages/06-culture.html">文化建设</a>
+          <a href="pages/07-tech.html">科技交流</a>
+          <a href="pages/08-duty.html">责任担当</a>
+          <a href="pages/09-honors.html">荣誉殿堂</a>
+          <a href="pages/10-vision.html">展望未来</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">更多板块</span>
+          <a href="pages/11-structure.html">组织架构</a>
+          <a href="pages/12-leadership.html">领导团队</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">快速联系</span>
+          <a href="https://www.dfy.dali.edu.cn" target="_blank" rel="noopener">🌐 医院官网</a>
+          <a href="mailto:yuanzhang@dlufh.com">院长信箱</a>
+          <a href="#announcements">📢 医院公告</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 大理大学第一附属医院（云南省第四人民医院）版权所有 | 云端院史馆 v4.0 | 本网站非官方站点，信息仅供参考
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
