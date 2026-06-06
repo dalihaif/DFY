@@ -105,6 +105,65 @@
     sections.forEach(function (s) { sectionObserver.observe(s); });
   }
 
+  // -------- Announcement card modal --------
+  document.querySelectorAll('.announce-card').forEach(function (card) {
+    card.addEventListener('click', function (e) {
+      // don't trigger when clicking internal links
+      if (e.target.closest('a')) return;
+      var title = card.querySelector('.announce-card-title');
+      var desc  = card.querySelector('.announce-card-desc');
+      var date  = card.querySelector('.announce-card-date');
+      var tag   = card.querySelector('.announce-card-tag');
+      var src   = card.querySelector('.announce-card-footer');
+      var titleText = title ? title.textContent : '';
+      var descText  = desc  ? desc.textContent  : '';
+      var dateText  = date ? date.textContent  : '';
+      var tagText   = tag  ? tag.textContent   : '';
+      var tagClass  = tag  ? tag.className.replace('announce-card-tag', '').trim() : '';
+      var srcText   = src  ? src.textContent.replace(/^\\s*📌\\s*/, '').trim() : '';
+
+      // build overlay
+      var overlay = document.createElement('div');
+      overlay.className = 'announce-modal-overlay';
+
+      var box = document.createElement('div');
+      box.className = 'announce-modal-box';
+
+      box.innerHTML =
+        '<button class=\"announce-modal-close\" title=\"关闭\">&times;</button>' +
+        '<div class=\"announce-modal-header\">' +
+          '<span class=\"announce-card-tag ' + tagClass + '\">' + tagText + '</span>' +
+          '<span class=\"announce-modal-date\">' + dateText + '</span>' +
+        '</div>' +
+        '<h3 class=\"announce-modal-title\">' + titleText + '</h3>' +
+        '<div class=\"announce-modal-body\">' + descText + '</div>' +
+        '<div class=\"announce-modal-footer\"><span>📌</span> 发布部门：' + srcText + '</div>';
+
+      overlay.appendChild(box);
+
+      function close() {
+        if (overlay.parentNode) {
+          overlay.classList.remove('active');
+          setTimeout(function () {
+            if (overlay.parentNode) document.body.removeChild(overlay);
+          }, 280);
+        }
+      }
+
+      overlay.addEventListener('click', function (ev) {
+        if (ev.target === overlay) close();
+      });
+      box.querySelector('.announce-modal-close').addEventListener('click', close);
+      document.addEventListener('keydown', function escHandler(ev) {
+        if (ev.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); }
+      });
+
+      document.body.appendChild(overlay);
+      // trigger animation
+      requestAnimationFrame(function () { overlay.classList.add('active'); });
+    });
+  });
+
   // -------- Gallery lightbox (simple) --------
   document.querySelectorAll('.gallery-item[data-src]').forEach(function (item) {
     item.addEventListener('click', function () {
