@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="大理大学第一附属医院（云南省第四人民医院）云端院史馆。立足大理、辐射滇西，三级甲等综合医院，建院<span class="hospital-age"></span>年。">
+  <meta name="description" content="大理大学第一附属医院（云南省第四人民医院）云端院史馆。立足大理、辐射滇西，三级甲等综合医院，建院34年以来的发展历程与辉煌成就。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
@@ -25,18 +25,19 @@
       </button>
 
       <ul class="nav-menu" id="navMenu">
-        <li><a href="pages/01-history.html">历史沿革</a></li>
-        <li><a href="pages/02-people.html">人物风采</a></li>
-        <li><a href="pages/03-disciplines.html">学科建设</a></li>
-        <li><a href="pages/04-campus.html">院区建设</a></li>
-        <li><a href="pages/05-education.html">教学人才</a></li>
-        <li><a href="pages/06-culture.html">文化建设</a></li>
-        <li><a href="pages/07-tech.html">科技交流</a></li>
-        <li><a href="pages/08-duty.html">责任担当</a></li>
-        <li><a href="pages/09-honors.html">荣誉殿堂</a></li>
-        <li><a href="pages/10-vision.html">展望未来</a></li>
-        <li><a href="pages/11-structure.html">组织架构</a></li>
-        <li><a href="pages/12-leadership.html">领导团队</a></li>
+        <li><a href="pages/01-history.html">历史<br>沿革</a></li>
+        <li><a href="pages/02-people.html">人物<br>风采</a></li>
+        <li><a href="pages/03-disciplines.html">学科<br>建设</a></li>
+        <li><a href="pages/04-campus.html">院区<br>建设</a></li>
+        <li><a href="pages/05-education.html">教学<br>人才</a></li>
+        <li><a href="pages/06-culture.html">文化<br>建设</a></li>
+        <li><a href="pages/07-tech.html">科技<br>交流</a></li>
+        <li><a href="pages/08-duty.html">责任<br>担当</a></li>
+        <li><a href="pages/09-honors.html">荣誉<br>殿堂</a></li>
+        <li><a href="pages/10-vision.html">展望<br>未来</a></li>
+        <li><a href="pages/11-structure.html">组织<br>架构</a></li>
+        <li><a href="pages/12-leadership.html">领导<br>团队</a></li>
+        <li><a href="pages/13-staff.html">职工<br>名录</a></li>
       </ul>
 
       <div class="nav-actions">
@@ -97,8 +98,8 @@
       </div>
       <a href="#" class="announcements-more">查看全部公告 →</a>
     </div>
-    <div class="announcements-grid">
-
+    <div class="announcements-grid" id="announcements-grid">
+      <!-- 公告由 main.js 动态渲染，此处为加载前占位 -->
       <div class="announce-card fade-in stagger-1">
         <div class="announce-card-top">
           <span class="announce-card-date">2025-05-15</span>
@@ -168,11 +169,11 @@
       <div class="sections-grid-header fade-in">
         <div class="sections-grid-eyebrow">
           <span class="sections-grid-eyebrow-line"></span>
-          <span class="sections-grid-eyebrow-text">云端院史馆 · 十二板块</span>
+          <span class="sections-grid-eyebrow-text">云端院史馆 · 十三板块</span>
           <span class="sections-grid-eyebrow-line" style="transform:scaleX(-1)"></span>
         </div>
         <h2 class="sections-grid-title">探索医院发展的每一个维度</h2>
-        <p class="sections-grid-desc">从建院历史到未来展望，九个主题板块完整呈现大附院<span class="hospital-age"></span>年的奋进历程与辉煌成就。</p>
+        <p class="sections-grid-desc">从建院历史到未来展望，十二个主题板块完整呈现大附院<span class="hospital-age"></span>年的奋进历程与辉煌成就。</p>
       </div>
 
       <div class="sections-grid">
@@ -285,6 +286,15 @@
           <div class="section-card-arrow">进入板块 →</div>
         </a>
 
+        <a href="pages/13-staff.html" class="section-card fade-in stagger-3">
+          <span class="section-card-num">板块十三</span>
+          <div class="section-card-icon">📇</div>
+          <div class="section-card-title">职工名录</div>
+          <div class="section-card-sub">铭记每一份力量</div>
+          <p class="section-card-desc">1946名职工完整名录，记录每一位职工的姓名、科室、职称与任职经历，铭感每一位奋斗者。</p>
+          <div class="section-card-arrow">进入板块 →</div>
+        </a>
+
       </div>
     </div>
   </section>
@@ -357,21 +367,41 @@
           <span class="footer-col-title">更多板块</span>
           <a href="pages/11-structure.html">组织架构</a>
           <a href="pages/12-leadership.html">领导团队</a>
+          <a href="pages/13-staff.html">职工名录</a>
         </div>
         <div class="footer-col">
           <span class="footer-col-title">快速联系</span>
           <a href="https://www.dfy.dali.edu.cn" target="_blank" rel="noopener">🌐 医院官网</a>
-          <a href="mailto:yuanzhang@dlufh.com">院长信箱</a>
+          <a href="mailto:yuanzhang@dlufh.com">📧 院长信箱</a>
           <a href="#announcements">📢 医院公告</a>
           <a href="admin/index.html">⚙️ 后台管理</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      © 2025 大理大学第一附属医院（云南省第四人民医院）版权所有 | 云端院史馆 v4.0 | 本网站非官方站点，信息仅供参考
+      © 2026 大理大学第一附属医院（云南省第四人民医院）版权所有 | 云端院史馆 v4.0 | 本网站非官方站点，信息仅供参考
     </div>
   </footer>
 
+  <!-- ====== 公告详情弹窗 ====== -->
+  <div class="announce-modal-overlay" id="announce-modal-overlay" style="display:none;" onclick="closeAnnounceModal()">
+    <div class="announce-modal-box" onclick="event.stopPropagation()">
+      <button class="announce-modal-close" onclick="closeAnnounceModal()">×</button>
+      <div class="announce-modal-header">
+        <h3 class="announce-modal-title" id="announce-modal-title">公告标题</h3>
+        <span class="announce-modal-date" id="announce-modal-time">发布时间</span>
+      </div>
+      <div class="announce-modal-body" id="announce-modal-body">
+        <p>公告正文内容</p>
+      </div>
+      <div class="announce-modal-footer">
+        <button class="btn btn-primary" onclick="closeAnnounceModal()">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 数据同步脚本（自动同步 localStorage 到服务器） ====== -->
+  <script src="js/localStorage-sync.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

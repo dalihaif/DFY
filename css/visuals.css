@@ -65,6 +65,7 @@ body::after {
 .img-slot:hover { animation:none; border-color:var(--gold-soft); }
 
 /* data-card gradient shimmer on value */
+.data-card-value { position:relative; }
 .data-card-value::after {
   content:''; position:absolute; inset:0;
   background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%);

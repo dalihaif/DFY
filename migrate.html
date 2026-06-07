@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据迁移工具 - 云端院史馆</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .migrate-container { max-width: 800px; margin: 40px auto; padding: 20px; }
+    .migrate-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 20px; }
+    .migrate-card h2 { margin-bottom: 16px; color: var(--primary); }
+    .migrate-card p { margin-bottom: 12px; line-height: 1.6; }
+    .status-box { background: var(--bg-main); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin: 16px 0; }
+    .status-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .status-item:last-child { border-bottom: none; }
+    .btn-migrate { background: var(--primary); color: #fff; border: none; padding: 12px 24px; border-radius: var(--radius); cursor: pointer; font-size: 16px; }
+    .btn-migrate:hover { opacity: 0.9; }
+    .btn-migrate:disabled { opacity: 0.5; cursor: not-allowed; }
+    .success { color: #27ae60; }
+    .error { color: #e74c3c; }
+  </style>
+</head>
+<body>
+  <div class="migrate-container">
+    <div class="migrate-card">
+      <h2>📦 数据迁移工具</h2>
+      <p>此工具将帮助您将浏览器 <code>localStorage</code> 中的数据迁移到服务器，实现数据持久化存储。</p>
+      <p><strong>使用步骤：</strong></p>
+      <ol>
+        <li>确保服务器已启动（运行 <code>node server.js</code>）</li>
+        <li>点击"检测本地数据"按钮，查看有哪些数据可以迁移</li>
+        <li>点击"迁移到服务器"按钮，将数据上传到服务器</li>
+        <li>迁移完成后，在任何设备上打开网站，数据都会从服务器自动加载</li>
+      </ol>
+    </div>
+
+    <div class="migrate-card">
+      <h2>🔍 检测本地数据</h2>
+      <button class="btn-migrate" onclick="checkLocalData()">检测本地数据</button>
+      <div id="check-result" class="status-box" style="display:none;"></div>
+    </div>
+
+    <div class="migrate-card">
+      <h2>🚀 迁移到服务器</h2>
+      <p>点击下方按钮，将检测到的所有数据迁移到服务器。</p>
+      <button class="btn-migrate" onclick="migrateToServer()" id="btn-migrate" disabled>迁移到服务器</button>
+      <div id="migrate-result" class="status-box" style="display:none;"></div>
+    </div>
+
+    <div class="migrate-card">
+      <h2>📥 从服务器加载数据</h2>
+      <p>如果您已经在其他设备上迁移了数据，可以点击下方按钮从服务器加载数据到当前浏览器。</p>
+      <button class="btn-migrate" onclick="loadFromServer()">从服务器加载数据</button>
+      <div id="load-result" class="status-box" style="display:none;"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = window.location.origin.includes('localhost') 
+      ? 'http://localhost:3000/api' 
+      : '/api';
+
+    let detectedData = {};
+
+    // 检测本地数据
+    async function checkLocalData() {
+      const resultDiv = document.getElementById('check-result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = '<p>正在检测...</p>';
+
+      const keys = ['hm_content', 'hm_settings', 'hm_admin_sections', 'hm_announcements', 'hm_staff'];
+      detectedData = {};
+      let html = '';
+
+      keys.forEach(key => {
+        const data = localStorage.getItem(key);
+        if (data) {
+          try {
+            const parsed = JSON.parse(data);
+            const size = new Blob([data]).size;
+            detectedData[key] = parsed;
+            html += `
+              <div class="status-item">
+                <span><strong>${key}</strong></span>
+                <span class="success">✅ 已找到 (${size} 字节, ${Array.isArray(parsed) ? parsed.length + ' 条记录' : '对象'})</span>
+              </div>
+            `;
+          } catch (e) {
+            html += `
+              <div class="status-item">
+                <span><strong>${key}</strong></span>
+                <span class="error">❌ 数据格式错误</span>
+              </div>
+            `;
+          }
+        } else {
+          html += `
+            <div class="status-item">
+              <span><strong>${key}</strong></span>
+              <span>⚠️ 未找到</span>
+            </div>
+          `;
+        }
+      });
+
+      resultDiv.innerHTML = html;
+
+      // 启用迁移按钮
+      if (Object.keys(detectedData).length > 0) {
+        document.getElementById('btn-migrate').disabled = false;
+      }
+    }
+
+    // 迁移到服务器
+    async function migrateToServer() {
+      const resultDiv = document.getElementById('migrate-result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = '<p>正在迁移...</p>';
+
+      let html = '';
+      const endpointMap = {
+        'hm_content': 'content',
+        'hm_settings': 'settings',
+        'hm_admin_sections': 'sections',
+        'hm_announcements': 'announcements',
+        'hm_staff': 'staff'
+      };
+
+      for (const [key, data] of Object.entries(detectedData)) {
+        try {
+          const endpoint = endpointMap[key];
+          const response = await fetch(`${API_BASE}/${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            html += `
+              <div class="status-item">
+                <span><strong>${key}</strong></span>
+                <span class="success">✅ 迁移成功</span>
+              </div>
+            `;
+          } else {
+            html += `
+              <div class="status-item">
+                <span><strong>${key}</strong></span>
+                <span class="error">❌ 迁移失败 (${response.status})</span>
+              </div>
+            `;
+          }
+        } catch (e) {
+          html += `
+            <div class="status-item">
+              <span><strong>${key}</strong></span>
+              <span class="error">❌ 迁移失败 (${e.message})</span>
+            </div>
+          `;
+        }
+      }
+
+      resultDiv.innerHTML = html;
+    }
+
+    // 从服务器加载数据
+    async function loadFromServer() {
+      const resultDiv = document.getElementById('load-result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = '<p>正在从服务器加载...</p>';
+
+      try {
+        const response = await fetch(`${API_BASE}/all-data`);
+        if (!response.ok) {
+          throw new Error(`服务器响应错误: ${response.status}`);
+        }
+
+        const serverData = await response.json();
+        let html = '';
+        let loadedCount = 0;
+
+        for (const [key, value] of Object.entries(serverData)) {
+          const fullKey = key.includes('hm_') ? key : `hm_${key}`;
+          localStorage.setItem(fullKey, JSON.stringify(value));
+          loadedCount++;
+          html += `
+            <div class="status-item">
+              <span><strong>${fullKey}</strong></span>
+              <span class="success">✅ 已加载</span>
+            </div>
+          `;
+        }
+
+        html = `<p>成功加载 ${loadedCount} 个数据项</p>` + html;
+        resultDiv.innerHTML = html;
+      } catch (e) {
+        resultDiv.innerHTML = `<p class="error">❌ 加载失败: ${e.message}</p><p>请确保服务器已启动 (运行 <code>node server.js</code>)</p>`;
+      }
+    }
+  </script>
+</body>
+</html>

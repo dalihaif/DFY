@@ -11,9 +11,94 @@
   <link rel="stylesheet" href="css/adminlte.min.css">
   <!-- Custom Theme -->
   <link rel="stylesheet" href="css/admin-custom.css">
+  <!-- Auth CSS -->
+  <style>
+    /* ===== Login Overlay ===== */
+    #login-overlay {
+      position: fixed; inset: 0; z-index: 99999;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    }
+    #login-overlay .login-card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      padding: 40px 36px 32px;
+      width: 380px; max-width: 92vw;
+      text-align: center;
+      animation: loginFadeIn 0.4s ease;
+    }
+    @keyframes loginFadeIn {
+      from { opacity:0; transform: translateY(16px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    #login-overlay .login-logo { font-size: 42px; margin-bottom: 6px; }
+    #login-overlay .login-title {
+      font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px;
+    }
+    #login-overlay .login-sub {
+      font-size: 13px; color: #888; margin-bottom: 24px;
+    }
+    #login-overlay .form-group { text-align: left; margin-bottom: 16px; }
+    #login-overlay .form-group label {
+      font-size: 13px; font-weight: 600; color: #333; margin-bottom: 5px; display: block;
+    }
+    #login-overlay .form-control {
+      width: 100%; padding: 10px 14px;
+      border: 1px solid #d0d0d0; border-radius: 8px;
+      font-size: 15px; transition: border-color .2s;
+      box-sizing: border-box;
+    }
+    #login-overlay .form-control:focus {
+      border-color: #d4af37; outline: none;
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
+    }
+    #login-overlay .btn-login {
+      width: 100%; padding: 11px 0;
+      background: linear-gradient(135deg, #d4af37, #c9a227);
+      color: #fff; border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      transition: opacity .2s;
+    }
+    #login-overlay .btn-login:hover { opacity: 0.88; }
+    #login-overlay .login-msg {
+      font-size: 13px; margin-top: 12px; min-height: 20px;
+    }
+    #login-overlay .login-msg.text-danger { color: #e74c3c; }
+    #login-overlay .login-msg.text-success { color: #27ae60; }
+    #login-overlay .login-hint {
+      font-size: 12px; color: #aaa; margin-top: 18px;
+    }
+    /* Setup mode */
+    #login-overlay.setup .login-title::after {
+      content: ' — 首次使用请设置密码';
+      font-size: 13px; color: #e67e22;
+    }
+  </style>
 </head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
+<body class="hold-transition sidebar-mini" style="overflow:hidden;" id="admin-body">
+
+<!-- ===== Login Overlay ===== -->
+<div id="login-overlay">
+  <div class="login-card" id="login-card">
+    <div class="login-logo">🏥</div>
+    <div class="login-title" id="login-title">云端院史馆 · 管理后台</div>
+    <div class="login-sub" id="login-sub">请输入管理密码以继续</div>
+    <form id="login-form" onsubmit="return false;">
+      <div class="form-group">
+        <label for="login-pwd">管理密码</label>
+        <input type="password" class="form-control" id="login-pwd" placeholder="请输入密码" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-login" id="login-btn">进入后台</button>
+    </form>
+    <div class="login-msg" id="login-msg"></div>
+    <div class="login-hint" id="login-hint">首次使用？请输入并确认您的管理密码</div>
+  </div>
+</div>
+
+<!-- ===== Main App (hidden until auth) ===== -->
+<div class="wrapper" id="admin-app" style="display:none;">
 
   <!-- ===== 顶栏 ===== -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -29,11 +114,14 @@
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
+      <li class="nav-item" id="nav-logout-li" style="display:none;">
+        <a href="#" class="nav-link" id="nav-logout-btn"><i class="fas fa-sign-out-alt mr-1"></i>退出</a>
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="#" id="btn-save-all"><i class="fas fa-save mr-1"></i>全部保存</a>
       </li>
       <li class="nav-item">
-        <span class="nav-link text-muted"><i class="fas fa-user-circle mr-1"></i>管理员</span>
+        <span class="nav-link text-muted" id="nav-user-display"><i class="fas fa-user-circle mr-1"></i>管理员</span>
       </li>
     </ul>
   </nav>
@@ -65,6 +153,7 @@
           <li class="nav-item"><a href="#" class="nav-link" data-page="vision"><i class="nav-icon fas fa-eye"></i><p>10 展望未来</p></a></li>
           <li class="nav-item"><a href="#" class="nav-link" data-page="structure"><i class="nav-icon fas fa-sitemap"></i><p>11 组织架构</p></a></li>
           <li class="nav-item"><a href="#" class="nav-link" data-page="leadership"><i class="nav-icon fas fa-user-tie"></i><p>12 领导团队</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="staff"><i class="nav-icon fas fa-id-card"></i><p>13 职工名录</p></a></li>
           <li class="nav-header text-uppercase">系统</li>
           <li class="nav-item"><a href="#" class="nav-link" data-page="announcements"><i class="nav-icon fas fa-bullhorn"></i><p>公告管理</p></a></li>
           <li class="nav-item"><a href="#" class="nav-link" data-page="settings"><i class="nav-icon fas fa-cog"></i><p>网站设置</p></a></li>
@@ -100,6 +189,129 @@
     <strong>云端院史馆 v1.0</strong> &mdash; 大理大学第一附属医院 | <a href="https://www.dfy.dali.edu.cn" target="_blank">医院官网</a>
   </footer>
 </div>
+
+<!-- Auth System (runs before AdminLTE) -->
+  <!-- ====== 数据同步脚本（自动同步 localStorage 到服务器）====== -->
+  <script src="js/localStorage-sync.js"></script>
+<script>
+(function(){
+  // ===== Storage Keys =====
+  var PW_KEY = 'hm_auth_pwhash';
+  var isSetup = !localStorage.getItem(PW_KEY);
+
+  // ===== Simple hash (base64, client-side only) =====
+  function hashPwd(p) { return btoa(unescape(encodeURIComponent('dfy@2026!'+p))); }
+
+  // ===== Show / hide =====
+  function showLogin() {
+    document.getElementById('login-overlay').style.display = 'flex';
+    document.getElementById('admin-app').style.display = 'none';
+    document.body.style.overflow = 'hidden';
+    var titleEl = document.getElementById('login-title');
+    var subEl   = document.getElementById('login-sub');
+    var hintEl  = document.getElementById('login-hint');
+    var card    = document.getElementById('login-card');
+    if (isSetup) {
+      // Switch to setup mode: need confirm password
+      titleEl.textContent = '云端院史馆 · 初始化设置';
+      subEl.textContent = '请设置您的管理密码';
+      hintEl.textContent = '设置后请牢记您的密码，遗失无法找回';
+      document.getElementById('login-pwd').placeholder = '设置管理密码';
+      document.getElementById('login-pwd').value = '';
+      // Add confirm field if not exists
+      if (!document.getElementById('login-pwd2')) {
+        var confirmInput = document.createElement('input');
+        confirmInput.type = 'password';
+        confirmInput.className = 'form-control';
+        confirmInput.id = 'login-pwd2';
+        confirmInput.placeholder = '确认管理密码';
+        confirmInput.autocomplete = 'new-password';
+        confirmInput.style.marginTop = '10px';
+        document.getElementById('login-form').insertBefore(confirmInput, document.getElementById('login-btn'));
+      }
+      document.getElementById('login-btn').textContent = '确认设置';
+      card.classList.add('setup');
+    } else {
+      card.classList.remove('setup');
+      titleEl.textContent = '云端院史馆 · 管理后台';
+      subEl.textContent = '请输入管理密码以继续';
+      hintEl.textContent = '首次使用？请输入并确认您的管理密码';
+      var existingConfirm = document.getElementById('login-pwd2');
+      if (existingConfirm) existingConfirm.remove();
+      document.getElementById('login-pwd').placeholder = '请输入密码';
+      document.getElementById('login-btn').textContent = '进入后台';
+    }
+    setTimeout(function(){ document.getElementById('login-pwd').focus(); }, 200);
+  }
+
+  function showApp() {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('admin-app').style.display = '';
+    document.body.style.overflow = '';
+    // Update user display
+    var userSpan = document.getElementById('nav-user-display');
+    if (userSpan) userSpan.textContent = '管理员';
+    var logoutLi = document.getElementById('nav-logout-li');
+    if (logoutLi) logoutLi.style.display = '';
+  }
+
+  function doLogin(e) {
+    if (e) e.preventDefault();
+    var msgEl = document.getElementById('login-msg');
+    msgEl.className = 'login-msg';
+    msgEl.textContent = '';
+    var pwd  = document.getElementById('login-pwd').value;
+    if (!pwd) { msgEl.className = 'login-msg text-danger'; msgEl.textContent = '请输入密码'; return false; }
+    if (isSetup) {
+      var pwd2 = document.getElementById('login-pwd2') ? document.getElementById('login-pwd2').value : '';
+      if (pwd.length < 4) { msgEl.className = 'login-msg text-danger'; msgEl.textContent = '密码至少4位'; return false; }
+      if (pwd !== pwd2) { msgEl.className = 'login-msg text-danger'; msgEl.textContent = '两次密码不一致'; return false; }
+      localStorage.setItem(PW_KEY, hashPwd(pwd));
+      isSetup = false;
+      msgEl.className = 'login-msg text-success';
+      msgEl.textContent = '密码设置成功！正在进入…';
+      setTimeout(function(){ doLogin(); }, 800);
+      return false;
+    }
+    // Normal login
+    var stored = localStorage.getItem(PW_KEY);
+    if (hashPwd(pwd) === stored) {
+      sessionStorage.setItem('hm_auth_loggedin', true);
+      showApp();
+    } else {
+      msgEl.className = 'login-msg text-danger';
+      msgEl.textContent = '密码错误，请重试';
+      document.getElementById('login-pwd').value = '';
+    }
+    return false;
+  }
+
+  function doLogout() {
+    sessionStorage.removeItem('hm_auth_loggedin');
+    location.reload();
+  }
+
+  // Expose for button onclick
+  window.doLogin  = doLogin;
+  window.doLogout = doLogout;
+
+  // ===== Init =====
+  document.addEventListener('DOMContentLoaded', function(){
+    // Bind form
+    var form = document.getElementById('login-form');
+    if (form) form.onsubmit = doLogin;
+    // Logout button
+    var logoutBtn = document.getElementById('nav-logout-btn');
+    if (logoutBtn) logoutBtn.addEventListener('click', doLogout);
+    // Check session
+    if (sessionStorage.getItem('hm_auth_loggedin')) {
+      showApp();
+    } else {
+      showLogin();
+    }
+  });
+})();
+</script>
 
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>

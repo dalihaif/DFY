@@ -533,10 +533,31 @@ button { font-family: inherit; }
 .section-body.alt { background: var(--section-alt); }
 
 .section-block {
-  max-width:var(--container); margin:0 auto; padding:0 var(--pad-x);
+  max-width:var(--container); margin:0 auto; padding:60px var(--pad-x);
   margin-bottom:80px;
 }
 .section-block:last-child { margin-bottom:0; }
+
+/* Leader Group — 历任院领导综合展示 */
+.leader-group-section {
+  padding: var(--pad-y) var(--pad-x);
+  margin-bottom: 0;
+}
+.leader-group-header {
+  text-align: center; margin-bottom: 36px;
+}
+.leader-group-title {
+  font-family: var(--font-display); font-size: 32px; font-weight: 700;
+  color: var(--text-primary); margin-bottom: 6px;
+}
+.leader-group-sub {
+  font-size: 16px; color: var(--gold-soft);
+}
+.leader-group-desc {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  text-align: justify;
+}
 
 /* block header */
 .block-header { margin-bottom:40px; }
@@ -928,7 +949,7 @@ button { font-family: inherit; }
   line-height: 1.45;
 }
 .announce-modal-body {
-  font-size: 15px; color: var(--text-secondary);
+  font-size: 15px; color: var(--text-dim);
   line-height: 1.85;
   /* allow full text, no clamp */
   white-space: pre-wrap;
@@ -1008,4 +1029,516 @@ button { font-family: inherit; }
   .gallery-grid { grid-template-columns:1fr 1fr; }
   .data-row { grid-template-columns:1fr 1fr; }
   .sections-grid-title { font-size:32px; }
+}
+
+/* Ensure img inside photo slots fills the container properly */
+.leader-photo img,
+.profile-photo img,
+.leadership-photo img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+/* Fix gallery-item background-image rendering with icons on top */
+.gallery-item[style*="background-image"] .gallery-item-icon,
+.gallery-item[style*="background-image"] .gallery-item-label {
+  position: relative; z-index: 1;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  color: #fff;
+}
+
+/* ====== Image Lightbox ====== */
+#img-lightbox {
+  position: fixed; inset: 0;
+  z-index: 10000;
+  background: rgba(0,0,0,0.92);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  cursor: zoom-out;
+}
+#img-lightbox.active {
+  opacity: 1; visibility: visible;
+}
+#img-lightbox .lb-img {
+  max-width: 92vw; max-height: 92vh;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  object-fit: contain;
+  cursor: default;
+  transition: transform 0.3s ease;
+}
+#img-lightbox .lb-close {
+  position: absolute; top: 20px; right: 24px;
+  background: rgba(255,255,255,0.15); color: #fff;
+  border: none; width: 44px; height: 44px;
+  border-radius: 50%; font-size: 28px; line-height: 1;
+  cursor: pointer; z-index: 1;
+  transition: background 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+#img-lightbox .lb-close:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* Click-to-enlarge cursor hints */
+.img-slot[data-has-image],
+.leader-photo[data-has-image],
+.profile-photo[data-has-image],
+.leadership-photo[data-has-image],
+.gallery-item[style*="background-image"] {
+  cursor: zoom-in;
+}
+.img-slot[data-has-image]:hover img,
+.leader-photo[data-has-image]:hover img,
+.profile-photo[data-has-image]:hover img,
+.leadership-photo[data-has-image]:hover img {
+  opacity: 0.85;
+  transition: opacity 0.2s;
+}
+
+/* ====== 13 · 职工名录 ====== */
+.staff-search-bar {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.staff-search-input-wrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+.staff-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.staff-search-input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+.staff-search-input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+.staff-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.staff-filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 13px;
+  min-width: 140px;
+}
+.staff-filter-btn {
+  padding: 8px 18px;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gold);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.staff-filter-btn:hover {
+  background: var(--gold);
+  color: #000;
+}
+.staff-filter-reset {
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+}
+.staff-filter-reset:hover {
+  background: var(--text-muted);
+  color: var(--bg-primary);
+}
+
+/* 统计 */
+.staff-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.staff-stat-item {
+  flex: 1;
+  min-width: 140px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  text-align: center;
+}
+.staff-stat-num {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1.2;
+}
+.staff-stat-label {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* 职工卡片网格 */
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+.staff-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.staff-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--gold-soft);
+}
+.staff-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  background: var(--placeholder-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid var(--border);
+  transition: border-color 0.2s;
+}
+.staff-photo[data-has-image] {
+  border-color: var(--gold-soft);
+}
+.staff-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.staff-photo-icon {
+  font-size: 32px;
+  opacity: 0.3;
+}
+.staff-photo-hint {
+  display: none;
+  font-size: 11px;
+  color: var(--placeholder-text);
+}
+.staff-card:hover .staff-photo-hint {
+  display: block;
+}
+.staff-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.staff-dept {
+  font-size: 13px;
+  color: var(--gold);
+  margin-bottom: 2px;
+}
+.staff-title {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+.staff-years {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.staff-remark {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* 加载更多 */
+.staff-load-more {
+  text-align: center;
+  margin: 24px 0;
+}
+.staff-load-btn {
+  padding: 10px 32px;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gold);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.staff-load-btn:hover {
+  background: var(--gold);
+  color: #000;
+}
+
+/* 无结果 */
+.staff-no-result {
+  text-align: center;
+  padding: 60px 20px;
+}
+.staff-no-result-icon {
+  font-size: 48px;
+  opacity: 0.4;
+  margin-bottom: 12px;
+}
+.staff-no-result-text {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.staff-no-result-hint {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* 后台职工编辑区 */
+.staff-item-editor {
+  background: var(--bg-elevated);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+.staff-item-editor:hover {
+  border-color: var(--gold-soft);
+}
+
+/* ====== 相关板块链接 ====== */
+.related-sections {
+  padding: 40px 0;
+  margin-bottom: 32px;
+}
+.related-sections-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.related-sections-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.related-section-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all 0.3s;
+  text-align: center;
+}
+.related-section-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  text-decoration: none;
+}
+.related-section-card i {
+  font-size: 32px;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.related-section-card span {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.related-section-card small {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ====== 职工详情模态框 ====== */
+.staff-detail-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+.staff-detail-modal {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.staff-detail-header {
+  display: flex;
+  align-items: center;
+  padding: 32px 32px 24px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.staff-detail-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  margin-right: 24px;
+  overflow: hidden;
+  border: 3px solid var(--gold-soft);
+}
+.staff-detail-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.staff-detail-info {
+  flex: 1;
+}
+.staff-detail-name {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+.staff-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.staff-detail-gender {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.staff-detail-title {
+  font-size: 14px;
+  color: var(--gold);
+  font-weight: 600;
+}
+.staff-detail-dept {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.staff-detail-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: var(--bg-elevated);
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+.staff-detail-close:hover {
+  background: var(--danger);
+  color: #fff;
+}
+.staff-detail-body {
+  padding: 32px;
+}
+.staff-detail-section {
+  margin-bottom: 24px;
+}
+.staff-detail-section h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.staff-detail-section h4 i {
+  color: var(--gold);
+}
+.staff-detail-row {
+  display: flex;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+.staff-detail-row label {
+  min-width: 100px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+.staff-detail-row span {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+.staff-status-badge {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.staff-status-badge.status-online {
+  background: rgba(76,175,80,0.15);
+  color: #4caf50;
+}
+.staff-status-badge.status-retired {
+  background: rgba(255,152,0,0.15);
+  color: #ff9800;
+}
+.staff-status-badge.status-left {
+  background: rgba(158,158,158,0.15);
+  color: #9e9e9e;
+}
+.related-section-card small {
+  font-size: 12px;
+  color: var(--text-muted);
 }

@@ -66,7 +66,8 @@
       '01-history': 'history', '02-people': 'people', '03-disciplines': 'disciplines',
       '04-campus': 'campus', '05-education': 'education', '06-culture': 'culture',
       '07-tech': 'tech', '08-duty': 'duty', '09-honors': 'honors',
-      '10-vision': 'vision', '11-structure': 'structure', '12-leadership': 'leadership'
+      '10-vision': 'vision', '11-structure': 'structure', '12-leadership': 'leadership',
+      '13-staff': 'staff'
     };
     for (var k in map) { if (path.indexOf(k) >= 0) return hmContent[map[k]]; }
     return null;
@@ -137,8 +138,9 @@
           if (iconEl && b.imgIcon) iconEl.textContent = b.imgIcon;
           if (labelEl && b.imgLabel) labelEl.innerHTML = b.imgLabel;
           if (sizeEl && b.imgSize) sizeEl.textContent = b.imgSize;
-          if (b.imgUrl && is.tagName === 'IMG') {
-            is.setAttribute('src', b.imgUrl);
+          // Render image if URL provided (img-slot is a div, inject <img> child)
+          if (b.imgUrl) {
+            setPlaceholderImage(is, b.imgUrl, b.imgLabel || '');
           }
         }
       });
@@ -146,12 +148,13 @@
 
     // ---- Leaders (院长/书记) ----
     if (Array.isArray(sectionContent.leaders) && sectionContent.leaders.length > 0) {
-      // Only for people section — match leader-card elements
       var leaderCards = document.querySelectorAll('.leader-card');
       if (leaderCards.length > 0) {
+        // 分离院长和书记
         var deans = sectionContent.leaders.filter(function(l) { return l.category === '院长'; });
         var secretaries = sectionContent.leaders.filter(function(l) { return l.category === '书记'; });
         var allLeaders = deans.concat(secretaries);
+        
         leaderCards.forEach(function(card, i) {
           if (allLeaders[i]) {
             var l = allLeaders[i];
@@ -159,32 +162,29 @@
             var yearsEl = card.querySelector('.leader-years');
             var eraEl = card.querySelector('.leader-era');
             var descEl = card.querySelector('.leader-desc');
+            var photoEl = card.querySelector('.leader-photo');
+            
             if (nameEl) nameEl.textContent = l.name;
             if (yearsEl) yearsEl.textContent = l.years;
             if (eraEl) eraEl.textContent = l.era;
             if (descEl) descEl.textContent = l.desc;
-          }
-        });
-      }
-      // For 12-leadership section — match leadership-card elements
-      var lshipCards = document.querySelectorAll('.leadership-card');
-      if (lshipCards.length > 0) {
-        lshipCards.forEach(function(card, i) {
-          if (sectionContent.leaders[i]) {
-            var l = sectionContent.leaders[i];
-            var nameEl = card.querySelector('.leadership-name');
-            var roleEl = card.querySelector('.leadership-role');
-            var dutyEl = card.querySelector('.leadership-responsibility');
-            var resumeEl = card.querySelector('.leadership-resume');
-            if (nameEl) nameEl.textContent = l.name;
-            if (roleEl) roleEl.textContent = l.role;
-            if (dutyEl) dutyEl.textContent = l.duty;
-            if (resumeEl) resumeEl.textContent = l.resume;
+            
+            // 根据类别设置不同样式
+            if (photoEl) {
+              if (l.category === '书记') {
+                photoEl.style.borderColor = '#D44';
+                photoEl.style.borderStyle = 'solid';
+              } else {
+                photoEl.style.borderColor = '';
+                photoEl.style.borderStyle = '';
+              }
+              if (l.photo) setPlaceholderImage(photoEl, l.photo, l.name);
+            }
           }
         });
       }
     }
-
+    
     // ---- Profiles (人物简介) ----
     ['profiles','profiles2'].forEach(function(group) {
       if (Array.isArray(sectionContent[group])) {
@@ -202,6 +202,9 @@
           if (titleEl) titleEl.textContent = p.title;
           if (deptEl) deptEl.textContent = p.dept;
           if (descEl) descEl.textContent = p.desc;
+          // Render profile photo if URL provided
+          var pphotoEl = card.querySelector('.profile-photo');
+          if (pphotoEl && p.photo) setPlaceholderImage(pphotoEl, p.photo, p.name);
         });
       }
     });
@@ -217,24 +220,19 @@
             var valEl = card.querySelector('.data-card-value, .matrix-num, span');
             var labelEl = card.querySelector('.data-card-label, label, .matrix-label');
             var noteEl = card.querySelector('.data-card-note, small');
+            var iconEl = card.querySelector('.data-card-icon');
             if (valEl) valEl.textContent = d.value;
             if (labelEl) labelEl.textContent = d.label;
             if (noteEl && d.note) noteEl.textContent = d.note;
+            if (iconEl) iconEl.textContent = d.icon || '';
           }
         });
       });
     }
 
-    // ---- Gallery ----
-    if (Array.isArray(sectionContent.gallery) && sectionContent.gallery.length > 0) {
-      var galleryGrid = document.querySelector('.gallery-grid');
-      if (galleryGrid) {
-        var gHTML = '';
-        sectionContent.gallery.forEach(function(g, i) {
-          gHTML += '<div class="gallery-item fade-in stagger-' + ((i%4)+1) + '"><div class="gallery-item-icon">' + esc(g.icon) + '</div><div class="gallery-item-label">' + esc(g.label) + '</div></div>';
-        });
-        galleryGrid.innerHTML = gHTML;
-      }
+    // ---- Staff Roster (13-职工名录) ----
+    if (Array.isArray(sectionContent.staff) && sectionContent.staff.length > 0) {
+      renderStaffRoster(sectionContent.staff);
     }
   }
 
@@ -244,6 +242,270 @@
     var d = document.createElement('div');
     d.textContent = s;
     return d.innerHTML;
+  }
+
+  // -------- Render Staff Roster --------
+  function renderStaffRoster(staffList) {
+    var grid = document.getElementById('staff-grid');
+    var statTotal = document.getElementById('stat-total');
+    var statOnline = document.getElementById('stat-online');
+    var statRetired = document.getElementById('stat-retired');
+    var statDepts = document.getElementById('stat-depts');
+    var noResult = document.getElementById('staff-no-result');
+    var loadMore = document.getElementById('staff-load-more');
+
+    if (!grid) return;
+
+    // Stats
+    if (statTotal) statTotal.textContent = staffList.length;
+    if (statOnline) statOnline.textContent = staffList.filter(function(s){ return s.status === '在职'; }).length;
+    if (statRetired) statRetired.textContent = staffList.filter(function(s){ return s.status === '退休'; }).length;
+    if (statDepts) {
+      var deptSet = {};
+      staffList.forEach(function(s){ if(s.department) deptSet[s.department] = true; });
+      statDepts.textContent = Object.keys(deptSet).length;
+    }
+
+    // Populate filter dropdowns
+    populateStaffFilters(staffList);
+
+    // Render (with pagination)
+    renderStaffCards(staffList, 0, 12);
+
+    // Search & filter
+    var searchInput = document.getElementById('staff-search');
+    var btnSearch = document.getElementById('btn-staff-search');
+    var btnReset = document.getElementById('btn-staff-reset');
+    var filterDept = document.getElementById('filter-dept');
+    var filterTitle = document.getElementById('filter-title');
+    var filterStatus = document.getElementById('filter-status');
+
+    if (btnSearch && searchInput) {
+      btnSearch.addEventListener('click', function() {
+        filterAndRenderStaff(staffList);
+      });
+      searchInput.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') filterAndRenderStaff(staffList);
+      });
+    }
+    if (btnReset) {
+      btnReset.addEventListener('click', function() {
+        if (searchInput) searchInput.value = '';
+        if (filterDept) filterDept.value = '';
+        if (filterTitle) filterTitle.value = '';
+        if (filterStatus) filterStatus.value = '';
+        renderStaffCards(staffList, 0, 12);
+        if (loadMore) loadMore.style.display = 'none';
+        if (noResult) noResult.style.display = 'none';
+      });
+    }
+    if (filterDept) filterDept.addEventListener('change', function() { filterAndRenderStaff(staffList); });
+    if (filterTitle) filterTitle.addEventListener('change', function() { filterAndRenderStaff(staffList); });
+    if (filterStatus) filterStatus.addEventListener('change', function() { filterAndRenderStaff(staffList); });
+  }
+
+  // -------- Populate filter dropdowns --------
+  function populateStaffFilters(staffList) {
+    var deptSet = {};
+    var titleSet = {};
+    staffList.forEach(function(s) {
+      if (s.department) deptSet[s.department] = true;
+      if (s.title) titleSet[s.title] = true;
+    });
+
+    var filterDept = document.getElementById('filter-dept');
+    var filterTitle = document.getElementById('filter-title');
+    if (filterDept) {
+      var currentDept = filterDept.value;
+      filterDept.innerHTML = '<option value="">全部科室</option>';
+      Object.keys(deptSet).sort().forEach(function(d) {
+        filterDept.innerHTML += '<option value="' + esc(d) + '">' + esc(d) + '</option>';
+      });
+      filterDept.value = currentDept;
+    }
+    if (filterTitle) {
+      var currentTitle = filterTitle.value;
+      filterTitle.innerHTML = '<option value="">全部职称</option>';
+      Object.keys(titleSet).sort().forEach(function(t) {
+        filterTitle.innerHTML += '<option value="' + esc(t) + '">' + esc(t) + '</option>';
+      });
+      filterTitle.value = currentTitle;
+    }
+  }
+
+  // -------- Filter and Render --------
+  function filterAndRenderStaff(staffList) {
+    var searchInput = document.getElementById('staff-search');
+    var filterDept = document.getElementById('filter-dept');
+    var filterTitle = document.getElementById('filter-title');
+    var filterStatus = document.getElementById('filter-status');
+    var noResult = document.getElementById('staff-no-result');
+    var loadMore = document.getElementById('staff-load-more');
+
+    var keyword = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    var deptVal = filterDept ? filterDept.value : '';
+    var titleVal = filterTitle ? filterTitle.value : '';
+    var statusVal = filterStatus ? filterStatus.value : '';
+
+    var filtered = staffList.filter(function(s) {
+      var matchKeyword = !keyword || (s.name && s.name.toLowerCase().indexOf(keyword) >= 0);
+      var matchDept = !deptVal || s.department === deptVal;
+      var matchTitle = !titleVal || s.title === titleVal;
+      var matchStatus = !statusVal || s.status === statusVal;
+      return matchKeyword && matchDept && matchTitle && matchStatus;
+    });
+
+    if (filtered.length === 0) {
+      if (noResult) noResult.style.display = 'block';
+      var grid = document.getElementById('staff-grid');
+      if (grid) grid.innerHTML = '';
+    } else {
+      if (noResult) noResult.style.display = 'none';
+      renderStaffCards(filtered, 0, 12);
+    }
+    if (loadMore) loadMore.style.display = 'none';
+  }
+
+  // -------- Render Staff Cards --------
+  function renderStaffCards(list, start, count) {
+    var grid = document.getElementById('staff-grid');
+    var loadMore = document.getElementById('staff-load-more');
+    if (!grid) return;
+
+    if (start === 0) grid.innerHTML = '';
+
+    var end = Math.min(start + count, list.length);
+    for (var i = start; i < end; i++) {
+      var s = list[i];
+      var card = document.createElement('div');
+      card.className = 'staff-card fade-in stagger-' + ((i % 5) + 1);
+      card.onclick = (function(staff) {
+        return function() { showStaffDetail(staff); };
+      })(s);
+      card.innerHTML =
+        '<div class="staff-photo">' +
+          '<span class="staff-photo-icon">👤</span>' +
+          '<span class="staff-photo-hint">职工照片</span>' +
+        '</div>' +
+        '<div class="staff-name">' + esc(s.name || '[待补充]') + '</div>' +
+        '<div class="staff-dept">' + esc(s.department || '[科室]') + '</div>' +
+        '<div class="staff-title">' + esc(s.title || '[职称]') + '</div>' +
+        '<div class="staff-years">' + esc(s.hireDate || '[任职时间]') + (s.leaveDate ? ' – ' + esc(s.leaveDate) : '') + '</div>' +
+        (s.remark ? '<div class="staff-remark">' + esc(s.remark) + '</div>' : '');
+      grid.appendChild(card);
+
+      // Set photo if available
+      if (s.photo) {
+        setPlaceholderImage(card.querySelector('.staff-photo'), s.photo, s.name);
+      }
+    }
+
+    // Show/hide load more
+    if (loadMore) {
+      if (end < list.length) {
+        loadMore.style.display = 'block';
+        var btnLoadMore = document.getElementById('btn-load-more');
+        if (btnLoadMore) {
+          btnLoadMore.onclick = function() { renderStaffCards(list, end, count); };
+        }
+      } else {
+        loadMore.style.display = 'none';
+      }
+    }
+  }
+
+  // -------- Show Staff Detail --------
+  function showStaffDetail(staff) {
+    var overlay = document.getElementById('staff-detail-overlay');
+    if (!overlay) return;
+
+    // Set photo
+    var photoEl = document.getElementById('staff-detail-photo');
+    if (photoEl) {
+      if (staff.photo) {
+        photoEl.innerHTML = '<img src="' + esc(staff.photo) + '" alt="' + esc(staff.name) + '">';
+      } else {
+        photoEl.innerHTML = '👤';
+      }
+    }
+
+    // Set info
+    var nameEl = document.getElementById('staff-detail-name');
+    if (nameEl) nameEl.textContent = staff.name || '[待补充]';
+
+    var genderEl = document.getElementById('staff-detail-gender');
+    if (genderEl) genderEl.textContent = staff.gender || '';
+
+    var titleEl = document.getElementById('staff-detail-title');
+    if (titleEl) titleEl.textContent = staff.title || '';
+
+    var deptEl = document.getElementById('staff-detail-dept');
+    if (deptEl) deptEl.textContent = staff.department || '';
+
+    // Set任职信息
+    var hireEl = document.getElementById('staff-detail-hire');
+    if (hireEl) hireEl.textContent = staff.hireDate || '未知';
+
+    var statusEl = document.getElementById('staff-detail-status');
+    if (statusEl) {
+      statusEl.textContent = staff.status || '在职';
+      statusEl.className = 'staff-status-badge status-' + (staff.status === '在职' ? 'online' : (staff.status === '退休' ? 'retired' : 'left'));
+    }
+
+    var leaveRow = document.getElementById('staff-detail-leave-row');
+    var leaveEl = document.getElementById('staff-detail-leave');
+    if (leaveRow && leaveEl) {
+      if (staff.leaveDate && staff.status !== '在职') {
+        leaveRow.style.display = 'flex';
+        leaveEl.textContent = staff.leaveDate;
+      } else {
+        leaveRow.style.display = 'none';
+      }
+    }
+
+    // Set备注
+    var remarkSection = document.getElementById('staff-detail-remark-section');
+    var remarkEl = document.getElementById('staff-detail-remark');
+    if (remarkSection && remarkEl) {
+      if (staff.remark) {
+        remarkSection.style.display = 'block';
+        remarkEl.textContent = staff.remark;
+      } else {
+        remarkSection.style.display = 'none';
+      }
+    }
+
+    overlay.style.display = 'flex';
+  }
+
+  // -------- Close Staff Detail --------
+  function closeStaffDetail() {
+    var overlay = document.getElementById('staff-detail-overlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  // -------- Set image on placeholder element --------
+  // Works for .img-slot, .leader-photo, .profile-photo, .leadership-photo, .gallery-item
+  function setPlaceholderImage(el, url, alt) {
+    if (!url) return;
+    // Remove existing img if any
+    var existingImg = el.querySelector('img:not(.keep)');
+    if (existingImg) existingImg.remove();
+    // Remove background-image inline style
+    el.style.backgroundImage = '';
+    // Create and inject img
+    var img = document.createElement('img');
+    img.src = url;
+    img.alt = alt || '';
+    img.setAttribute('loading', 'lazy');
+    img.onerror = function () {
+      img.style.display = 'none';
+    };
+    img.onload = function () {
+      img.style.display = '';
+    };
+    el.appendChild(img);
+    el.setAttribute('data-has-image', 'true');
   }
 
   // -------- Navbar scroll --------
@@ -285,6 +547,11 @@
     }
 
     var flipInterval = setInterval(flipNext, 3500);
+
+    /* cleanup on page unload to prevent memory leak */
+    window.addEventListener('beforeunload', function () {
+      clearInterval(flipInterval);
+    });
 
     window.addEventListener('resize', function () {
       flipTrack.style.transform = 'translateY(-' + (idx * getItemH()) + 'px)';
@@ -336,7 +603,7 @@
       var dateText  = date ? date.textContent  : '';
       var tagText   = tag  ? tag.textContent   : '';
       var tagClass  = tag  ? tag.className.replace('announce-card-tag', '').trim() : '';
-      var srcText   = src  ? src.textContent.replace(/^\\s*📌\\s*/, '').trim() : '';
+      var srcText   = src  ? src.textContent.replace(/^\s*📌\s*/, '').trim() : '';
 
       // build overlay
       var overlay = document.createElement('div');
@@ -380,19 +647,155 @@
     });
   });
 
-  // -------- Gallery lightbox (simple) --------
-  document.querySelectorAll('.gallery-item[data-src]').forEach(function (item) {
-    item.addEventListener('click', function () {
-      var src = item.getAttribute('data-src');
-      var overlay = document.createElement('div');
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
-      var img = document.createElement('img');
-      img.src = src;
-      img.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.7);';
-      overlay.appendChild(img);
-      overlay.addEventListener('click', function () { document.body.removeChild(overlay); });
-      document.body.appendChild(overlay);
+  // -------- Universal Image Lightbox --------
+  (function() {
+    // Create persistent lightbox overlay
+    var lbOverlay = document.createElement('div');
+    lbOverlay.id = 'img-lightbox';
+    lbOverlay.innerHTML =
+      '<button class="lb-close" title="关闭">&times;</button>' +
+      '<img class="lb-img" src="" alt="" />';
+    document.body.appendChild(lbOverlay);
+
+    var lbImg = lbOverlay.querySelector('.lb-img');
+
+    function openLightbox(src) {
+      lbImg.src = src;
+      lbOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lbOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(function() { lbImg.src = ''; }, 350);
+    }
+
+    // Close on overlay background click or close button
+    lbOverlay.addEventListener('click', function(e) {
+      if (e.target === lbOverlay || e.target.classList.contains('lb-close')) {
+        closeLightbox();
+      }
     });
-  });
+
+    // Close on ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && lbOverlay.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+
+    // Event delegation — catch clicks on any image within the page
+    document.addEventListener('click', function(e) {
+      // 1) Handle <img> tags (injected by setPlaceholderImage)
+      var img = e.target.closest('img');
+      if (img && !img.closest('#img-lightbox') && !img.closest('.announce-modal-overlay') && !img.closest('.nav-logo')) {
+        var src = img.getAttribute('src') || img.src;
+        if (src && src.indexOf('data:') !== 0 && src !== window.location.href) {
+          e.preventDefault();
+          openLightbox(src);
+          return;
+        }
+      }
+
+      // 2) Handle .gallery-item with inline background-image (CMS gallery)
+      var galleryItem = e.target.closest('.gallery-item');
+      if (galleryItem && !galleryItem.closest('#img-lightbox')) {
+        var bgStyle = galleryItem.style.backgroundImage || getComputedStyle(galleryItem).backgroundImage;
+        if (bgStyle && bgStyle !== 'none') {
+          var urlMatch = bgStyle.match(/url\(["']?([^"')]+)["']?\)/);
+          if (urlMatch && urlMatch[1]) {
+            e.preventDefault();
+            openLightbox(urlMatch[1]);
+          }
+        }
+      }
+    });
+
+  })();
+
+  // -------- Render Announcements --------
+  function renderAnnouncements() {
+    var grid = document.getElementById('announcements-grid');
+    if (!grid) return;
+
+    var data;
+    try {
+      data = JSON.parse(localStorage.getItem('hm_announcements') || '[]');
+    } catch (e) {
+      data = [];
+    }
+
+    if (!Array.isArray(data) || data.length === 0) return;
+
+    var active = data
+      .filter(function (a) { return a.isActive !== false; })
+      .sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+
+    if (active.length === 0) return;
+
+    var catClassMap = { notice: 'notice', event: 'event', hr: 'hr', academic: 'academic' };
+    var catLabelMap = { notice: '通知', event: '活动', hr: '人事', academic: '科研' };
+
+    var html = '';
+    active.forEach(function (a, idx) {
+      var stagger = (idx % 6) + 1;
+      var cls = catClassMap[a.category] || 'notice';
+      var label = catLabelMap[a.category] || '通知';
+      var date = a.date || '';
+      var title = a.title || '无标题';
+      var desc = a.content ? a.content.substring(0, 80) + (a.content.length > 80 ? '…' : '') : '';
+      var dept = a.department || '';
+
+      html +=
+        '<div class="announce-card fade-in stagger-' + stagger + '" onclick="openAnnounceModal(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">' +
+          '<div class="announce-card-top">' +
+            '<span class="announce-card-date">' + esc(date) + '</span>' +
+            '<span class="announce-card-tag ' + cls + '">' + esc(label) + '</span>' +
+          '</div>' +
+          '<h4 class="announce-card-title">' + esc(title) + '</h4>' +
+          (desc ? '<p class="announce-card-desc">' + esc(desc) + '</p>' : '') +
+          (dept ? '<div class="announce-card-footer"><span aria-hidden="true">📌</span> ' + esc(dept) + '</div>' : '') +
+        '</div>';
+    });
+
+    if (html) {
+      grid.innerHTML = html;
+    }
+  }
+
+  function openAnnounceModal(a) {
+    if (typeof a === 'string') {
+      try { a = JSON.parse(a); } catch (e) { return; }
+    }
+    var overlay = document.getElementById('announce-modal-overlay');
+    if (!overlay) return;
+    var titleEl = document.getElementById('announce-modal-title');
+    var bodyEl = document.getElementById('announce-modal-body');
+    var timeEl = document.getElementById('announce-modal-time');
+    if (titleEl) titleEl.textContent = a.title || '公告详情';
+    if (bodyEl) bodyEl.innerHTML = '<p>' + esc(a.content || '暂无内容').replace(/\n/g, '<br>') + '</p>';
+    if (timeEl) timeEl.textContent = '发布时间：' + (a.date || '未知');
+    overlay.classList.add('active');
+    overlay.style.display = 'flex';
+  }
+
+  function closeAnnounceModal() {
+    var overlay = document.getElementById('announce-modal-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+      overlay.style.display = 'none';
+    }
+  }
+
+  renderAnnouncements();
+
+    // ------- Expose functions for inline event handlers -------
+    window.openAnnounceModal = openAnnounceModal;
+    window.closeAnnounceModal = closeAnnounceModal;
+    window.closeStaffDetail = closeStaffDetail;
+    window.showStaffDetail = showStaffDetail;
+    window.toggleMenu = toggleMenu;
+    window.toggleTheme = toggleTheme;
 
 })();

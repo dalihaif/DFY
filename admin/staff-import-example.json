@@ -1,0 +1,52 @@
+[
+  {
+    "name": "张三",
+    "gender": "男",
+    "title": "主任医师",
+    "department": "内科",
+    "hireDate": "1995-07",
+    "status": "在职",
+    "leaveDate": "",
+    "remark": "心血管内科专家，享受国务院特殊津贴"
+  },
+  {
+    "name": "李四",
+    "gender": "女",
+    "title": "副主任医师",
+    "department": "外科",
+    "hireDate": "1998-09",
+    "status": "退休",
+    "leaveDate": "2020-12",
+    "remark": "普通外科知名专家"
+  },
+  {
+    "name": "王五",
+    "gender": "男",
+    "title": "主治医师",
+    "department": "儿科",
+    "hireDate": "2005-03",
+    "status": "在职",
+    "leaveDate": "",
+    "remark": "儿童呼吸疾病专家"
+  },
+  {
+    "name": "赵六",
+    "gender": "女",
+    "title": "护士长",
+    "department": "护理部",
+    "hireDate": "1992-05",
+    "status": "退休",
+    "leaveDate": "2018-08",
+    "remark": "从事临床护理30年"
+  },
+  {
+    "name": "钱七",
+    "gender": "男",
+    "title": "教授",
+    "department": "骨科",
+    "hireDate": "2000-09",
+    "status": "在职",
+    "leaveDate": "",
+    "remark": "脊柱外科专家，博士生导师"
+  }
+]

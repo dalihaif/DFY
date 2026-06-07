@@ -7,7 +7,7 @@
 // ====== 底层数据模型 ======
 var SECTIONS = [
   { id:'history',     name:'历史沿革', icon:'fas fa-history',       color:'#2980b9', page:'01-history.html',     types:['hero','block','timeline','gallery'] },
-  { id:'people',      name:'人物风采', icon:'fas fa-users',         color:'#e67e22', page:'02-people.html',      types:['hero','leader','profile','dataCard','gallery'] },
+  { id:'people',      name:'人物风采', icon:'fas fa-users',         color:'#e67e22', page:'02-people.html',      types:['hero','block','leader','profile','dataCard','gallery'] },
   { id:'disciplines', name:'学科建设', icon:'fas fa-microscope',    color:'#27ae60', page:'03-disciplines.html', types:['hero','block','profile','gallery'] },
   { id:'campus',      name:'院区建设', icon:'fas fa-building',      color:'#8e44ad', page:'04-campus.html',      types:['hero','block','gallery'] },
   { id:'education',   name:'教学人才', icon:'fas fa-graduation-cap',color:'#e91e63', page:'05-education.html',   types:['hero','block','profile','dataCard','gallery'] },
@@ -16,8 +16,9 @@ var SECTIONS = [
   { id:'duty',        name:'责任担当', icon:'fas fa-shield-alt',    color:'#c62828', page:'08-duty.html',        types:['hero','block','gallery'] },
   { id:'honors',      name:'荣誉殿堂', icon:'fas fa-trophy',        color:'#f9a825', page:'09-honors.html',      types:['hero','block','dataCard','gallery'] },
   { id:'vision',      name:'展望未来', icon:'fas fa-eye',           color:'#00695c', page:'10-vision.html',      types:['hero','block','gallery'] },
-  { id:'structure',   name:'组织架构', icon:'fas fa-sitemap',       color:'#4527a0', page:'11-structure.html',   types:['hero','block'] },
-  { id:'leadership',  name:'领导团队', icon:'fas fa-user-tie',      color:'#bf360c', page:'12-leadership.html',  types:['hero','block','leadership'] }
+  { id:'structure',   name:'组织架构', icon:'fas fa-sitemap',       color:'#4527a0', page:'11-structure.html',   types:['hero','block','gallery'] },
+  { id:'leadership',  name:'领导团队', icon:'fas fa-user-tie',      color:'#bf360c', page:'12-leadership.html',  types:['hero','block','leadership','gallery'] },
+  { id:'staff',       name:'职工名录', icon:'fas fa-id-card',      color:'#00796b', page:'13-staff.html',       types:['hero','block','staffRoster','gallery'] }
 ];
 
 // ====== 初始化全部数据 ======
@@ -78,17 +79,37 @@ function seedContent() {
     },
     people: {
       hero: { bgImage:'../assets/images/2_20.png', num:'板块二 · SECTION 02', title:'人物风采', subtitle:'医院发展的核心力量', desc:'历任院长、党委书记、学科带头人、医学名家……每一位为医院发展倾注心血的人都值得被铭记。' },
+      blocks: [
+        { id:'pb1', num:'01 · 薪火 · 传承接力', title:'薪火相传', subtitle:'一棒接一棒，精神永相传',
+          text:'<h4>薪火相传</h4><p>从首任院长到现任领导，一代代大附院人接过接力棒，赓续百年薪火，书写新时代高质量发展新篇章。</p>',
+          imgIcon:'🤝', imgLabel:'领导交接合影 /  milestone 时刻', imgSize:'16:9' },
+        { id:'pb2', num:'02 · 党建 · 领航把舵', title:'党建领航', subtitle:'党建引领，筑牢发展根基',
+          text:'<h4>党建领航</h4><p>坚持和加强党对医院工作的全面领导，以高质量党建引领高质量发展，筑牢公立医院发展的「根」和「魂」。</p>',
+          imgIcon:'🚩', imgLabel:'党建活动 / 主题教育', imgSize:'4:3' },
+        { id:'pb3', num:'03 · 群英 · 学科领军', title:'群英荟萃', subtitle:'学科带头人，医院的脊梁',
+          text:'<h4>群英荟萃</h4><p>一批批省突专家、省学术带头人、兴滇英才扎根滇西，以精湛医术和高尚医德服务边疆各族群众。</p>',
+          imgIcon:'👨‍⚕️', imgLabel:'学科带头人在手术 / 带教', imgSize:'16:9' },
+        { id:'pb4', num:'04 · 组织 · 凝心聚力', title:'组织有力', subtitle:'基层组织，坚强堡垒',
+          text:'<h4>组织有力</h4><p>全院X个党支部、Y名党员，战斗在医疗、教学、科研、管理各条战线的最前沿，让党旗在高原大地高高飘扬。</p>',
+          imgIcon:'🏗️', imgLabel:'支部活动 / 志愿者服务', imgSize:'4:3' },
+        { id:'pb5', num:'05 · 人才 · 厚德精医', title:'厚德精医', subtitle:'医学人才，立德树人',
+          text:'<h4>厚德精医</h4><p>秉承「厚德精医、博学笃行」院训，培养了一批批医术精湛、医德高尚的医学人才，为滇西医疗卫生事业输送源源不断的新鲜血液。</p>',
+          imgIcon:'🎓', imgLabel:'教学查房 / 名师授课', imgSize:'16:9' },
+        { id:'pb6', num:'06 · 荣誉 · 榜样力量', title:'榜样力量', subtitle:'优秀员工，闪耀星光',
+          text:'<h4>榜样力量</h4><p>每年评选表彰一批优秀员工，用身边事教育身边人，让崇尚先进、学习先进、争当先进在医院蔚然成风。</p>',
+          imgIcon:'🏆', imgLabel:'表彰大会 / 优秀员工合影', imgSize:'4:3' }
+      ],
       leaders: [
-        { id:'l1', category:'院长', name:'[待补充]', years:'1992 – 2000', era:'建院奠基', eraColor:'', desc:'主持建院筹备工作，从零起步搭建医院基本架构。' },
-        { id:'l2', category:'院长', name:'[待补充]', years:'2000 – 2008', era:'规模拓展', eraColor:'', desc:'推动医院规模化发展，扩充临床科室。' },
-        { id:'l3', category:'院长', name:'[待补充]', years:'2008 – 2015', era:'三甲创建', eraColor:'', desc:'带领全院奋力冲刺三级甲等评审。' },
-        { id:'l4', category:'院长', name:'[待补充]', years:'2015 – 2022', era:'跨越发展', eraColor:'', desc:'推进凤仪院区建设，实现一院两区格局。' },
-        { id:'l5', category:'院长', name:'[待补充]', years:'2022 – 至今', era:'现任 · 高质量发展', eraColor:'', desc:'深化医教研协同，推动智慧医院建设。' },
-        { id:'l6', category:'书记', name:'[待补充]', years:'1992 – 2000', era:'建院初期', eraColor:'', desc:'在建院最艰难时期，以党建凝聚人心。' },
-        { id:'l7', category:'书记', name:'[待补充]', years:'2000 – 2008', era:'党建规范', eraColor:'', desc:'推进党建工作规范化制度化建设。' },
-        { id:'l8', category:'书记', name:'[待补充]', years:'2008 – 2015', era:'思政引领', eraColor:'', desc:'强化思想政治引领，推动党建与业务融合。' },
-        { id:'l9', category:'书记', name:'[待补充]', years:'2015 – 2022', era:'全面从严', eraColor:'', desc:'落实全面从严治党，打造清廉医院。' },
-        { id:'l10', category:'书记', name:'[待补充]', years:'2022 – 至今', era:'现任 · 党建引领', eraColor:'', desc:'以高质量党建引领高质量发展。' }
+        { id:'l1', category:'院长', name:'[待补充]', years:'1992 – 2000', era:'建院奠基', eraColor:'', desc:'主持建院筹备工作，从零起步搭建医院基本架构。', photo:'' },
+        { id:'l2', category:'院长', name:'[待补充]', years:'2000 – 2008', era:'规模拓展', eraColor:'', desc:'推动医院规模化发展，扩充临床科室。', photo:'' },
+        { id:'l3', category:'院长', name:'[待补充]', years:'2008 – 2015', era:'三甲创建', eraColor:'', desc:'带领全院奋力冲刺三级甲等评审。', photo:'' },
+        { id:'l4', category:'院长', name:'[待补充]', years:'2015 – 2022', era:'跨越发展', eraColor:'', desc:'推进凤仪院区建设，实现一院两区格局。', photo:'' },
+        { id:'l5', category:'院长', name:'[待补充]', years:'2022 – 至今', era:'现任 · 高质量发展', eraColor:'', desc:'深化医教研协同，推动智慧医院建设。', photo:'' },
+        { id:'l6', category:'书记', name:'[待补充]', years:'1992 – 2000', era:'建院初期', eraColor:'', desc:'在建院最艰难时期，以党建凝聚人心。', photo:'' },
+        { id:'l7', category:'书记', name:'[待补充]', years:'2000 – 2008', era:'党建规范', eraColor:'', desc:'推进党建工作规范化制度化建设。', photo:'' },
+        { id:'l8', category:'书记', name:'[待补充]', years:'2008 – 2015', era:'思政引领', eraColor:'', desc:'强化思想政治引领，推动党建与业务融合。', photo:'' },
+        { id:'l9', category:'书记', name:'[待补充]', years:'2015 – 2022', era:'全面从严', eraColor:'', desc:'落实全面从严治党，打造清廉医院。', photo:'' },
+        { id:'l10', category:'书记', name:'[待补充]', years:'2022 – 至今', era:'现任 · 党建引领', eraColor:'', desc:'以高质量党建引领高质量发展。', photo:'' }
       ],
       profiles: [
         { id:'p1', name:'[待补充]', title:'省突专家 · 二级教授 · 博导', dept:'心血管内科', desc:'深耕冠心病介入治疗30年，主持国自然3项。' },
@@ -111,11 +132,11 @@ function seedContent() {
         { id:'p18', name:'[待补充]', title:'硕士 · 主治医师', dept:'康复医学科', desc:'神经康复与骨伤康复专家。' }
       ],
       dataCards: [
-        { value:'1946', label:'全院职工', note:'含编内编外' },
-        { value:'1638', label:'卫技人员', note:'占比 84.2%' },
-        { value:'29', label:'博士', note:'含在读' },
-        { value:'360', label:'硕士', note:'含在读' },
-        { value:'294', label:'高级职称', note:'正高+副高' }
+        { icon:'👥', value:'1946', label:'全院职工', note:'含编内编外' },
+        { icon:'🩺', value:'1638', label:'卫技人员', note:'占比 84.2%' },
+        { icon:'🎓', value:'29', label:'博士', note:'含在读' },
+        { icon:'📚', value:'360', label:'硕士', note:'含在读' },
+        { icon:'🏅', value:'294', label:'高级职称', note:'正高+副高' }
       ],
       gallery: [
         { icon:'👥', label:'历任院领导集体合影' }, { icon:'👤', label:'首任院长工作照' },
@@ -171,9 +192,9 @@ function seedContent() {
         { id:'e4', name:'[待补充]', title:'全科医学导师', dept:'全科医学科', desc:'全科医师培养基地核心师资。' }
       ],
       dataCards: [
-        { value:'21', label:'教研室/实验室', note:'' },
-        { value:'5', label:'教学基地', note:'含住培/全科' },
-        { value:'800+', label:'年培养学员', note:'各级各类' }
+        { icon:'🎓', value:'21', label:'教研室/实验室', note:'' },
+        { icon:'📚', value:'5', label:'教学基地', note:'含住培/全科' },
+        { icon:'👨‍🏫', value:'800+', label:'年培养学员', note:'各级各类' }
       ],
       gallery: [
         { icon:'🎓', label:'教学活动' }, { icon:'📚', label:'技能培训' },
@@ -188,7 +209,7 @@ function seedContent() {
           imgIcon:'📜', imgLabel:'院训展示', imgSize:'16:9' }
       ],
       dataCards: [
-        { value:'35', label:'文化积淀（年）', note:'1991至今' }
+        { icon:'📜', value:'35', label:'文化积淀（年）', note:'1991至今' }
       ],
       gallery: [
         { icon:'🎭', label:'文化活动' }, { icon:'🎨', label:'职工书画' },
@@ -227,8 +248,8 @@ function seedContent() {
           imgIcon:'🏆', imgLabel:'荣誉奖牌/证书', imgSize:'16:9' }
       ],
       dataCards: [
-        { value:'50+', label:'省部级荣誉', note:'' },
-        { value:'100+', label:'厅局级荣誉', note:'' }
+        { icon:'🏅', value:'50+', label:'省部级荣誉', note:'' },
+        { icon:'🥇', value:'100+', label:'厅局级荣誉', note:'' }
       ],
       gallery: [
         { icon:'🏆', label:'荣誉奖牌' }, { icon:'🎖', label:'表彰证书' },
@@ -253,6 +274,10 @@ function seedContent() {
         { id:'b1', num:'01 · 架构 · 组织体系', title:'医院组织架构', subtitle:'党委领导下的院长负责制',
           text:'<h4>管理体系</h4><p>院党委—院行政—党政管理部门—临床医技科室—教研室/实验室，五级管理体系。</p>',
           imgIcon:'🏛', imgLabel:'组织架构图', imgSize:'4:3' }
+      ],
+      gallery: [
+        { icon:'🏛', label:'组织架构会议' }, { icon:'📋', label:'管理会议' },
+        { icon:'🤝', label:'科室协作' }, { icon:'📷', label:'团队合影' }
       ]
     },
     leadership: {
@@ -269,6 +294,10 @@ function seedContent() {
         { id:'ld4', name:'[待补充]', role:'副院长', duty:'分管医疗业务', resume:'分管医务部、护理部、临床科室质量管理等工作。' },
         { id:'ld5', name:'[待补充]', role:'副院长', duty:'分管科研教学', resume:'分管科研科、教学管理科、研究生培养等工作。' },
         { id:'ld6', name:'[待补充]', role:'纪委书记', duty:'分管纪检监察', resume:'主持医院纪委全面工作，分管纪检监察审计。' }
+      ],
+      gallery: [
+        { icon:'👔', label:'领导班子合影' }, { icon:'🤝', label:'党政联席会议' },
+        { icon:'📷', label:'科室主任会议' }, { icon:'🎗', label:'工会活动' }
       ]
     }
   };
@@ -280,11 +309,19 @@ function pad2(n) { return n<10?'0'+n:''+n; }
 function getContent() { return JSON.parse(localStorage.getItem('hm_content')||'{}'); }
 function saveContent(data) {
   try { localStorage.setItem('hm_content', JSON.stringify(data)); return true; }
-  catch(e) { if (typeof showToast === 'function') showToast('保存失败：存储空间不足，请清理浏览器缓存', 'danger'); return false; }
+  catch(e) { toastMsg('保存失败：存储空间不足，请清理浏览器缓存', 'danger'); return false; }
 }
 function safeSetItem(key, val) {
   try { localStorage.setItem(key, typeof val === 'string' ? val : JSON.stringify(val)); return true; }
-  catch(e) { if (typeof showToast === 'function') showToast('存储失败：' + key, 'danger'); return false; }
+  catch(e) { toastMsg('存储失败：' + key, 'danger'); return false; }
+}
+// Toast 快捷方法
+function toastMsg(body, type) {
+  type = type || 'success';
+  $(document).Toasts('create', {
+    class: 'bg-' + type, title: type === 'danger' ? '错误' : (type === 'warning' ? '提示' : '成功'),
+    body: body, autohide: true, delay: 2000
+  });
 }
 
 // ====== 页面路由 ======
@@ -433,25 +470,56 @@ function renderSectionEditor(sec) {
     html+='</div>';
   }
 
-  // ---- Leaders 编辑区 (02-people院长/书记) ----
-  if (sec.types.indexOf('leader')>=0 && Array.isArray(content.leaders)) {
-    html+='<div class="content-section" id="leaders-section"><h5 class="content-section-title"><i class="fas fa-user-tie text-warning mr-2"></i>历任领导';
-    html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-leader" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 新增</button></h5>';
-    var cats=['院长','书记'];
-    cats.forEach(function(cat){
-      var items=content.leaders.filter(function(l){return l.category===cat;});
-      html+='<h6 class="text-muted mb-2"><strong>'+cat+' ('+items.length+'人)</strong></h6>';
-      items.forEach(function(l,i){
-        var globalIdx=content.leaders.indexOf(l);
-        html+='<div class="leader-item-editor">';
-        html+='<div class="form-row"><div class="col-md-3"><label>姓名</label><input class="form-control form-control-sm ld-name" value="'+escHtml(l.name||'')+'"></div>';
-        html+='<div class="col-md-3"><label>任期</label><input class="form-control form-control-sm ld-years" value="'+escHtml(l.years||'')+'"></div>';
-        html+='<div class="col-md-2"><label>治院标签</label><input class="form-control form-control-sm ld-era" value="'+escHtml(l.era||'')+'"></div>';
-        html+='<div class="col-md-4"><label>简介</label><div class="input-group input-group-sm"><input class="form-control ld-desc" value="'+escHtml(l.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-leader" data-gidx="'+globalIdx+'"><i class="fas fa-trash"></i></button></div></div></div>';
-        html+='</div></div>';
-      });
-    });
-    html+='</div>';
+  // ---- 历任院领导 编辑区 ----
+  if (sec.types.indexOf('leader')>=0) {
+    if (!Array.isArray(content.leaders)) content.leaders=[];
+    // 按类别分组显示
+    var deans=content.leaders.filter(function(l){return l.category==='院长';});
+    var secretarys=content.leaders.filter(function(l){return l.category==='书记';});
+    html+='<div class="content-section card card-outline card-info"><div class="card-header"><h5 class="card-title mb-0"><i class="fas fa-users text-primary mr-2"></i>历任院领导</h5>';
+    html+='<div class="card-tools"><div class="btn-group btn-group-sm">';
+    html+='<button class="btn btn-outline-primary btn-add-leader" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 添加院长</button>';
+    html+='<button class="btn btn-outline-danger btn-add-party" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 添加书记</button>';
+    html+='</div></div></div>';
+    html+='<div class="card-body" id="leaders-editor-body">';
+
+    // 院长列表
+    if(deans.length>0 || secretarys.length>0) {
+      if(deans.length>0) {
+        html+='<h6 class="mt-2 mb-2 text-primary"><i class="fas fa-user-tie mr-1"></i>历任院长</h6>';
+        deans.forEach(function(l,i){
+          html+='<div class="leader-item-editor mb-3 p-2 border rounded">';
+          html+='<input type="hidden" class="ld-id" value="'+escHtml(l.id||'')+'">';
+          html+='<div class="form-row"><div class="col-md-3"><label>姓名</label><input class="form-control form-control-sm ld-name" value="'+escHtml(l.name||'')+'"></div>';
+          html+='<div class="col-md-3"><label>任期</label><input class="form-control form-control-sm ld-years" value="'+escHtml(l.years||'')+'"></div>';
+          html+='<div class="col-md-2"><label>标签</label><input class="form-control form-control-sm ld-era" value="'+escHtml(l.era||'')+'"></div>';
+          html+='<div class="col-md-4"><label>简介</label><div class="input-group input-group-sm"><input class="form-control ld-desc" value="'+escHtml(l.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-leader" data-id="'+escHtml(l.id||'')+'"><i class="fas fa-trash"></i></button></div></div></div>';
+          html+='</div>';
+          html+='<div class="form-row mt-1"><div class="col-md-4"><label>照片URL</label><input class="form-control form-control-sm ld-photo" value="'+escHtml(l.photo||'')+'" placeholder="留空使用占位符"></div>';
+          html+='<div class="col-md-3"><label>类型</label><select class="form-control form-control-sm ld-category"><option value="院长" selected>院长</option><option value="书记">书记</option></select></div></div>';
+          html+='</div>';
+        });
+      }
+      // 书记列表
+      if(secretarys.length>0) {
+        html+='<h6 class="mt-3 mb-2 text-danger"><i class="fas fa-flag mr-1"></i>历任书记</h6>';
+        secretarys.forEach(function(l,i){
+          html+='<div class="leader-item-editor mb-3 p-2 border rounded border-danger">';
+          html+='<input type="hidden" class="ld-id" value="'+escHtml(l.id||'')+'">';
+          html+='<div class="form-row"><div class="col-md-3"><label>姓名</label><input class="form-control form-control-sm ld-name" value="'+escHtml(l.name||'')+'"></div>';
+          html+='<div class="col-md-3"><label>任期</label><input class="form-control form-control-sm ld-years" value="'+escHtml(l.years||'')+'"></div>';
+          html+='<div class="col-md-2"><label>标签</label><input class="form-control form-control-sm ld-era" value="'+escHtml(l.era||'')+'"></div>';
+          html+='<div class="col-md-4"><label>简介</label><div class="input-group input-group-sm"><input class="form-control ld-desc" value="'+escHtml(l.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-leader" data-id="'+escHtml(l.id||'')+'"><i class="fas fa-trash"></i></button></div></div></div>';
+          html+='</div>';
+          html+='<div class="form-row mt-1"><div class="col-md-4"><label>照片URL</label><input class="form-control form-control-sm ld-photo" value="'+escHtml(l.photo||'')+'" placeholder="留空使用占位符"></div>';
+          html+='<div class="col-md-3"><label>类型</label><select class="form-control form-control-sm ld-category"><option value="院长">院长</option><option value="书记" selected>书记</option></select></div></div>';
+          html+='</div>';
+        });
+      }
+    } else {
+      html+='<p class="text-muted text-center py-2 mb-0">暂无院领导数据，点击上方按钮添加</p>';
+    }
+    html+='</div></div>';
   }
 
   // ---- Profiles 编辑区（学科带头人/医学人才） ----
@@ -476,6 +544,39 @@ function renderSectionEditor(sec) {
     }
   }
 
+  // ---- StaffRoster 编辑区（13-职工名录） ----
+  if (sec.types.indexOf('staffRoster')>=0) {
+    if (!Array.isArray(content.staff)) content.staff=[];
+    html+='<div class="content-section card card-outline card-info"><div class="card-header"><h5 class="card-title mb-0"><i class="fas fa-id-card text-primary mr-2"></i>职工名录</h5>';
+    html+='<div class="card-tools"><button class="btn btn-xs btn-outline-success btn-batch-import-staff" data-section="'+sec.id+'"><i class="fas fa-file-import"></i> 批量导入</button> ';
+    html+='<button class="btn btn-xs btn-outline-primary btn-add-staff" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 添加职工</button></div></div>';
+    html+='<div class="card-body" id="staff-editor-body">';
+    if(content.staff.length>0) {
+      content.staff.forEach(function(s,i){
+        html+='<div class="staff-item-editor mb-3 p-2 border rounded">';
+        html+='<input type="hidden" class="st-id" value="'+escHtml(s.id||'')+'">';
+        html+='<div class="form-row">';
+        html+='<div class="col-md-2"><label>姓名</label><input class="form-control form-control-sm st-name" value="'+escHtml(s.name||'')+'"></div>';
+        html+='<div class="col-md-1"><label>性别</label><select class="form-control form-control-sm st-gender"><option value="男" '+(s.gender==='男'?'selected':'')+'>男</option><option value="女" '+(s.gender==='女'?'selected':'')+'>女</option></select></div>';
+        html+='<div class="col-md-2"><label>职称</label><input class="form-control form-control-sm st-title" value="'+escHtml(s.title||'')+'"></div>';
+        html+='<div class="col-md-2"><label>科室</label><input class="form-control form-control-sm st-dept" value="'+escHtml(s.department||'')+'"></div>';
+        html+='<div class="col-md-2"><label>入职时间</label><input class="form-control form-control-sm st-hire" value="'+escHtml(s.hireDate||'')+'" placeholder="如：1995-07"></div>';
+        html+='<div class="col-md-2"><label>状态</label><select class="form-control form-control-sm st-status"><option value="在职" '+(s.status==='在职'?'selected':'')+'>在职</option><option value="退休" '+(s.status==='退休'?'selected':'')+'>退休</option><option value="离职" '+(s.status==='离职'?'selected':'')+'>离职</option></select></div>';
+        html+='<div class="col-md-1 d-flex align-items-end"><button class="btn btn-outline-danger btn-block btn-del-staff" data-id="'+escHtml(s.id||'')+'"><i class="fas fa-trash"></i></button></div>';
+        html+='</div>';
+        html+='<div class="form-row mt-1">';
+        html+='<div class="col-md-3"><label>离职时间</label><input class="form-control form-control-sm st-leave" value="'+escHtml(s.leaveDate||'')+'" placeholder="在职/退休留空"></div>';
+        html+='<div class="col-md-7"><label>备注</label><input class="form-control form-control-sm st-remark" value="'+escHtml(s.remark||'')+'" placeholder="可填写获奖情况、特长等"></div>';
+        html+='<div class="col-md-2"><label>照片URL</label><input class="form-control form-control-sm st-photo" value="'+escHtml(s.photo||'')+'" placeholder="留空使用占位符"></div>';
+        html+='</div>';
+        html+='</div>';
+      });
+    } else {
+      html+='<p class="text-muted text-center py-2 mb-0">暂无职工数据，点击上方按钮添加</p>';
+    }
+    html+='</div></div>';
+  }
+
   // ---- Leadership 编辑区（12-领导团队） ----
   if (sec.types.indexOf('leadership')>=0 && Array.isArray(content.leaders)) {
     html+='<div class="content-section"><h5 class="content-section-title"><i class="fas fa-crown text-danger mr-2"></i>领导班子成员';
@@ -497,7 +598,8 @@ function renderSectionEditor(sec) {
     html+='<div class="content-section"><h5 class="content-section-title"><i class="fas fa-chart-bar text-success mr-2"></i>数据卡片';
     html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-datacard" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 新增</button></h5>';
     content.dataCards.forEach(function(d,i){
-      html+='<div class="form-row datacard-row"><div class="col-md-2"><label>数值</label><input class="form-control form-control-sm dc-value" value="'+escHtml(d.value||'')+'"></div>';
+      html+='<div class="form-row datacard-row"><div class="col-md-1"><label>图标</label><input class="form-control form-control-sm dc-icon" value="'+escHtml(d.icon||'')+'" maxlength="4" placeholder="📊"></div>';
+      html+='<div class="col-md-2"><label>数值</label><input class="form-control form-control-sm dc-value" value="'+escHtml(d.value||'')+'"></div>';
       html+='<div class="col-md-3"><label>标签</label><input class="form-control form-control-sm dc-label" value="'+escHtml(d.label||'')+'"></div>';
       html+='<div class="col-md-3"><label>注释</label><input class="form-control form-control-sm dc-note" value="'+escHtml(d.note||'')+'"></div>';
       html+='<div class="col-md-2"><label>&nbsp;</label><button class="btn btn-sm btn-outline-danger btn-block btn-del-datacard" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div>';
@@ -511,7 +613,8 @@ function renderSectionEditor(sec) {
     html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-gallery" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 新增</button></h5>';
     content.gallery.forEach(function(g,i){
       html+='<div class="form-row gallery-row"><div class="col-md-2"><label>图标Emoji</label><input class="form-control form-control-sm ga-icon" value="'+escHtml(g.icon||'')+'" maxlength="4"></div>';
-      html+='<div class="col-md-8"><label>标签</label><input class="form-control form-control-sm ga-label" value="'+escHtml(g.label||'')+'"></div>';
+      html+='<div class="col-md-4"><label>标签</label><input class="form-control form-control-sm ga-label" value="'+escHtml(g.label||'')+'"></div>';
+      html+='<div class="col-md-4"><label>图片URL</label><input class="form-control form-control-sm ga-imgUrl" value="'+escHtml(g.imgUrl||'')+'" placeholder="可选：图片链接"></div>';
       html+='<div class="col-md-2"><label>&nbsp;</label><button class="btn btn-sm btn-outline-danger btn-block btn-del-gallery" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div>';
     });
     html+='</div>';
@@ -605,34 +708,24 @@ function saveSectionContent(secId) {
     });
   }
 
-  // Leaders (院长/书记)
+  // Leaders — 历任院领导（院长+书记）
   if(sec.types.indexOf('leader')>=0) {
-    content[secId].leaders=[];
-    var catOrder=['院长','书记'];
-    catOrder.forEach(function(cat){
-      // We need to rebuild from the leader items that were there before, since we don't have cat data from the DOM
-      // Use the existing data but update names/desc
-    });
-    // Actually we need to rebuild from DOM editors
-    var allLeaderEditors=$('#section-editor-body .leader-item-editor');
-    var oldLeaders=content[secId].leaders||[];
-    content[secId].leaders=[];
-    // count by category first
-    var deanCount=oldLeaders.filter(function(l){return l.category==='院长';}).length;
-    var partyCount=oldLeaders.filter(function(l){return l.category==='书记';}).length;
-
-    allLeaderEditors.each(function(i){
-      var cat=i<deanCount?'院长':'书记';
-      content[secId].leaders.push({
-        id: oldLeaders[i]?oldLeaders[i].id:('l'+Date.now()+i),
+    var savedLeaders=[];
+    $('#leaders-editor-body .leader-item-editor').each(function(){
+      var $el=$(this);
+      var cat=$el.find('.ld-category').val()||'院长';
+      savedLeaders.push({
+        id: $el.find('.ld-id').val()||('l'+Date.now()+Math.random()),
         category: cat,
-        name: $(this).find('.ld-name').val()||'',
-        years: $(this).find('.ld-years').val()||'',
-        era: $(this).find('.ld-era').val()||'',
+        name: $el.find('.ld-name').val()||'',
+        years: $el.find('.ld-years').val()||'',
+        era: $el.find('.ld-era').val()||'',
         eraColor: '',
-        desc: $(this).find('.ld-desc').val()||''
+        desc: $el.find('.ld-desc').val()||'',
+        photo: $el.find('.ld-photo').val()||''
       });
     });
+    content[secId].leaders=savedLeaders;
   }
 
   // Profiles
@@ -655,6 +748,25 @@ function saveSectionContent(secId) {
     }
   });
 
+  // StaffRoster — 职工名录
+  if(sec.types.indexOf('staffRoster')>=0) {
+    content[secId].staff=[];
+    $('#staff-editor-body .staff-item-editor').each(function(){
+      content[secId].staff.push({
+        id: $(this).find('.st-id').val()||('s'+Date.now()+Math.random()),
+        name: $(this).find('.st-name').val()||'',
+        gender: $(this).find('.st-gender').val()||'男',
+        title: $(this).find('.st-title').val()||'',
+        department: $(this).find('.st-dept').val()||'',
+        hireDate: $(this).find('.st-hire').val()||'',
+        leaveDate: $(this).find('.st-leave').val()||'',
+        status: $(this).find('.st-status').val()||'在职',
+        remark: $(this).find('.st-remark').val()||'',
+        photo: $(this).find('.st-photo').val()||''
+      });
+    });
+  }
+
   // Leadership (12-领导团队)
   if(sec.types.indexOf('leadership')>=0) {
     content[secId].leaders=[];
@@ -675,6 +787,7 @@ function saveSectionContent(secId) {
     content[secId].dataCards=[];
     $('#section-editor-body .datacard-row').each(function(){
       content[secId].dataCards.push({
+        icon: $(this).find('.dc-icon').val()||'',
         value: $(this).find('.dc-value').val()||'',
         label: $(this).find('.dc-label').val()||'',
         note: $(this).find('.dc-note').val()||''
@@ -688,7 +801,8 @@ function saveSectionContent(secId) {
     $('#section-editor-body .gallery-row').each(function(){
       content[secId].gallery.push({
         icon: $(this).find('.ga-icon').val()||'',
-        label: $(this).find('.ga-label').val()||''
+        label: $(this).find('.ga-label').val()||'',
+        imgUrl: $(this).find('.ga-imgUrl').val()||''
       });
     });
   }
@@ -749,7 +863,16 @@ function renderSettings() {
   html+='<div class="form-group"><label>建院年份</label><input type="number" class="form-control" id="set-founded-year" value="'+(settings.foundedYear||1991)+'" min="1900" max="2100"><small class="text-muted">前台据此自动计算院龄</small></div>';
   html+='<button class="btn btn-primary" id="btn-save-settings"><i class="fas fa-save mr-1"></i>保存设置</button>';
   html+='</div></div></div><div class="col-md-4"><div class="card"><div class="card-header"><h3 class="card-title">说明</h3></div>';
-  html+='<div class="card-body"><p class="text-muted mb-0">修改后前台刷新生效。</p></div></div></div></div></div>';
+  html+='<div class="card-body"><p class="text-muted mb-0">修改后前台刷新生效。</p></div></div></div></div>';
+
+  // 修改密码卡片
+  html+='<div class="row mt-4"><div class="col-md-8"><div class="card card-warning card-outline"><div class="card-header"><h3 class="card-title"><i class="fas fa-key mr-2"></i>修改管理密码</h3></div><div class="card-body">';
+  html+='<div class="row"><div class="col-md-4"><div class="form-group"><label>当前密码</label><input type="password" class="form-control" id="chpw-old" placeholder="输入当前密码"></div></div>';
+  html+='<div class="col-md-4"><div class="form-group"><label>新密码</label><input type="password" class="form-control" id="chpw-new" placeholder="至少4位"></div></div>';
+  html+='<div class="col-md-4"><div class="form-group"><label>确认新密码</label><input type="password" class="form-control" id="chpw-confirm" placeholder="再次输入"></div></div></div>';
+  html+='<button class="btn btn-warning" id="btn-change-pwd"><i class="fas fa-check mr-1"></i>修改密码</button> ';
+  html+='<span id="chpw-msg" class="ml-2" style="font-weight:600"></span>';
+  html+='</div></div></div></div></div>';
   return html;
 }
 
@@ -757,8 +880,8 @@ function renderSettings() {
 $(document).ready(function() {
   initAllData();
 
-  // 侧边栏导航
-  $(document).on('click','.nav-sidebar .nav-link[data-page]',function(e){ e.preventDefault(); navigateTo($(this).data('page')); });
+  // 侧边栏导航（直接绑定：AdminLTE Treeview 会 stopPropagation 阻止冒泡，故不能用 document 委托）
+  $('.nav-sidebar .nav-link[data-page]').on('click',function(e){ e.preventDefault(); navigateTo($(this).data('page')); });
   $(document).on('click','[data-nav]',function(e){
     if($(this).closest('.nav-sidebar').length>0) return;
     e.preventDefault(); navigateTo($(this).data('nav'));
@@ -782,8 +905,12 @@ $(document).ready(function() {
   $(document).on('click','.btn-del-block',function(){
     var idx=parseInt($(this).data('idx'));
     var content=getContent();
-    content[currentPage].blocks.splice(idx,1);
-    saveContent(content);
+    if(!content[currentPage]) content[currentPage]={};
+    if(!content[currentPage].blocks) content[currentPage].blocks=[];
+    if(idx>=0 && idx<content[currentPage].blocks.length){
+      content[currentPage].blocks.splice(idx,1);
+      if(saveContent(content)) toastMsg('已删除', 'success');
+    }
     navigateTo(currentPage);
   });
 
@@ -800,27 +927,50 @@ $(document).ready(function() {
   $(document).on('click','.btn-del-timeline',function(){
     var idx=parseInt($(this).data('idx'));
     var content=getContent();
-    content[currentPage].timeline.splice(idx,1);
-    saveContent(content);
+    if(!content[currentPage]) content[currentPage]={};
+    if(!content[currentPage].timeline) content[currentPage].timeline=[];
+    if(idx>=0 && idx<content[currentPage].timeline.length){
+      content[currentPage].timeline.splice(idx,1);
+      if(saveContent(content)) toastMsg('已删除', 'success');
+    }
     navigateTo(currentPage);
   });
 
-  // 新增/删除 Leader
+  // 新增/删除 Leader (院长)
   $(document).on('click','.btn-add-leader',function(){
     var secId=$(this).data('section');
     var content=getContent();
     if(!content[secId]) content[secId]={};
     if(!content[secId].leaders) content[secId].leaders=[];
-    content[secId].leaders.push({id:'l'+Date.now(),category:'院长',name:'新姓名',years:'2000–2005',era:'标签',eraColor:'',desc:'简介'});
+    content[secId].leaders.push({id:'l'+Date.now(),category:'院长',name:'新姓名',years:'2000–2005',era:'标签',eraColor:'',desc:'简介',photo:''});
     saveContent(content);
     navigateTo(secId);
   });
   $(document).on('click','.btn-del-leader',function(){
-    var gidx=parseInt($(this).data('gidx'));
+    var id=$(this).data('id');
+    if(!id) return;
     var content=getContent();
-    content[currentPage].leaders.splice(gidx,1);
-    saveContent(content);
+    if(!content[currentPage]) content[currentPage]={};
+    var arr=content[currentPage].leaders||[];
+    var realIdx=-1;
+    for(var i=0;i<arr.length;i++){ if(arr[i].id===id){ realIdx=i; break; } }
+    if(realIdx>=0){
+      var cat=arr[realIdx].category||'';
+      arr.splice(realIdx,1);
+      if(saveContent(content)) toastMsg('已删除'+ (cat==='书记'?'书记':'院长'), 'success');
+    }
     navigateTo(currentPage);
+  });
+
+  // 新增/删除 Party (书记)
+  $(document).on('click','.btn-add-party',function(){
+    var secId=$(this).data('section');
+    var content=getContent();
+    if(!content[secId]) content[secId]={};
+    if(!content[secId].leaders) content[secId].leaders=[];
+    content[secId].leaders.push({id:'l'+Date.now(),category:'书记',name:'新姓名',years:'2000–2005',era:'标签',eraColor:'',desc:'简介',photo:''});
+    saveContent(content);
+    navigateTo(secId);
   });
 
   // 新增/删除 Profile
@@ -838,8 +988,49 @@ $(document).ready(function() {
     var idx=parseInt($(this).data('idx'));
     var group=$(this).data('group')||'profiles';
     var content=getContent();
-    content[currentPage][group].splice(idx,1);
+    if(!content[currentPage]) content[currentPage]={};
+    if(!content[currentPage][group]) content[currentPage][group]=[];
+    if(idx>=0 && idx<content[currentPage][group].length){
+      content[currentPage][group].splice(idx,1);
+      if(saveContent(content)) toastMsg('已删除', 'success');
+    }
+    navigateTo(currentPage);
+  });
+
+  // 新增/删除 Staff（职工名录）
+  $(document).on('click','.btn-add-staff',function(){
+    var secId=$(this).data('section');
+    var content=getContent();
+    if(!content[secId]) content[secId]={};
+    if(!content[secId].staff) content[secId].staff=[];
+    content[secId].staff.push({
+      id:'s'+Date.now(),
+      name:'新职工',
+      gender:'男',
+      title:'职称',
+      department:'科室',
+      hireDate:'',
+      leaveDate:'',
+      status:'在职',
+      remark:'',
+      photo:''
+    });
     saveContent(content);
+    navigateTo(secId);
+  });
+  $(document).on('click','.btn-del-staff',function(){
+    var id=$(this).data('id');
+    if(!id) return;
+    var content=getContent();
+    if(!content[currentPage]) content[currentPage]={};
+    var arr=content[currentPage].staff||[];
+    var realIdx=-1;
+    for(var i=0;i<arr.length;i++){ if(arr[i].id===id){ realIdx=i; break; } }
+    if(realIdx>=0){
+      var nm=arr[realIdx].name||'';
+      arr.splice(realIdx,1);
+      if(saveContent(content)) toastMsg('已删除：'+nm, 'success');
+    }
     navigateTo(currentPage);
   });
 
@@ -856,8 +1047,12 @@ $(document).ready(function() {
   $(document).on('click','.btn-del-leadership',function(){
     var idx=parseInt($(this).data('idx'));
     var content=getContent();
-    content[currentPage].leaders.splice(idx,1);
-    saveContent(content);
+    if(!content[currentPage]) content[currentPage]={};
+    if(!content[currentPage].leaders) content[currentPage].leaders=[];
+    if(idx>=0 && idx<content[currentPage].leaders.length){
+      content[currentPage].leaders.splice(idx,1);
+      if(saveContent(content)) toastMsg('已删除', 'success');
+    }
     navigateTo(currentPage);
   });
 
@@ -867,15 +1062,19 @@ $(document).ready(function() {
     var content=getContent();
     if(!content[secId]) content[secId]={};
     if(!content[secId].gallery) content[secId].gallery=[];
-    content[secId].gallery.push({icon:'📷',label:'新图片'});
+    content[secId].gallery.push({icon:'📷',label:'新图片',imgUrl:''});
     saveContent(content);
     navigateTo(secId);
   });
   $(document).on('click','.btn-del-gallery',function(){
     var idx=parseInt($(this).data('idx'));
     var content=getContent();
-    content[currentPage].gallery.splice(idx,1);
-    saveContent(content);
+    if(!content[currentPage]) content[currentPage]={};
+    if(!content[currentPage].gallery) content[currentPage].gallery=[];
+    if(idx>=0 && idx<content[currentPage].gallery.length){
+      content[currentPage].gallery.splice(idx,1);
+      if(saveContent(content)) toastMsg('已删除', 'success');
+    }
     navigateTo(currentPage);
   });
 
@@ -892,28 +1091,32 @@ $(document).ready(function() {
   $(document).on('click','.btn-del-datacard',function(){
     var idx=parseInt($(this).data('idx'));
     var content=getContent();
-    content[currentPage].dataCards.splice(idx,1);
-    saveContent(content);
+    if(!content[currentPage]) content[currentPage]={};
+    if(!content[currentPage].dataCards) content[currentPage].dataCards=[];
+    if(idx>=0 && idx<content[currentPage].dataCards.length){
+      content[currentPage].dataCards.splice(idx,1);
+      if(saveContent(content)) toastMsg('已删除', 'success');
+    }
     navigateTo(currentPage);
   });
 
   // 全部保存
-  $('#btn-save-all').click(function(e){
+  $(document).on('click','#btn-save-all',function(e){
     e.preventDefault();
     var sd=JSON.parse(localStorage.getItem('hm_admin_sections')||'{}');
     SECTIONS.forEach(function(s){
       if(!sd[s.id]) sd[s.id]={title:s.name,status:'published',updatedAt:new Date().toISOString().split('T')[0],notes:''};
     });
     localStorage.setItem('hm_admin_sections',JSON.stringify(sd));
-    $(document).Toasts('create',{class:'bg-success',title:'全部保存',body:'12板块已全部设为已发布',autohide:true,delay:2000});
+    toastMsg('12板块已全部设为已发布', 'success');
   });
 
   // 公告管理
-  $('#btn-add-ann').click(function(){ $('#ann-form-title').text('新增公告'); $('#add-ann-form').slideDown(); });
-  $('#btn-cancel-ann').click(function(){ $('#add-ann-form').slideUp(); });
+  $(document).on('click','#btn-add-ann',function(){ $('#ann-form-title').text('新增公告'); $('#add-ann-form').slideDown(); });
+  $(document).on('click','#btn-cancel-ann',function(){ $('#add-ann-form').slideUp(); });
   $(document).on('click','.btn-edit-ann',function(){
     var anns=JSON.parse(localStorage.getItem('hm_announcements')||'[]');
-    var a=anns.find(function(x){return x.id===$(this).data('id');}.bind(this))||anns.find(function(x){return x.id===parseInt($(this).data('id'));});
+    var a=anns.find(function(x){return x.id===$(this).data('id');}.bind(this))||anns.find(function(x){return x.id===parseInt($(this).data('id'));}.bind(this));
     if(!a) return;
     $('#ann-form-title').text('编辑公告 #'+a.id); $('#ann-edit-id').val(a.id);
     $('#ann-title').val(a.title); $('#ann-date').val(a.date); $('#ann-cat').val(a.category);
@@ -931,7 +1134,7 @@ $(document).ready(function() {
     }
     localStorage.setItem('hm_announcements',JSON.stringify(anns));
     navigateTo('announcements');
-    $(document).Toasts('create',{class:'bg-success',title:editId?'更新成功':'新增成功',body:'公告已保存',autohide:true,delay:2000});
+    toastMsg(editId?'公告已更新':'公告已新增', 'success');
   });
   $(document).on('click','.toggle-ann',function(){
     var id=$(this).data('id');
@@ -947,6 +1150,7 @@ $(document).ready(function() {
     anns=anns.filter(function(a){return a.id!==id;});
     localStorage.setItem('hm_announcements',JSON.stringify(anns));
     navigateTo('announcements');
+    toastMsg('公告已删除', 'success');
   });
 
   // 保存设置
@@ -956,6 +1160,157 @@ $(document).ready(function() {
     $(document).Toasts('create',{class:'bg-success',title:'已保存',body:'网站设置已更新',autohide:true,delay:2000});
   });
 
-  if(!$('.toasts-top-right').length) $('body').append('<div class="toasts-top-right fixed" style="position:fixed;top:70px;right:20px;z-index:9999"></div>');
+  // 修改密码
+  $(document).on('click','#btn-change-pwd',function(){
+    var msgEl=$('#chpw-msg');
+    msgEl.removeClass('text-danger text-success').text('');
+    var oldPwd=$('#chpw-old').val();
+    var newPwd=$('#chpw-new').val();
+    var confirmPwd=$('#chpw-confirm').val();
+    if(!oldPwd){ msgEl.addClass('text-danger').text('请输入当前密码'); return; }
+    if(newPwd.length<4){ msgEl.addClass('text-danger').text('新密码至少4位'); return; }
+    if(newPwd!==confirmPwd){ msgEl.addClass('text-danger').text('两次新密码不一致'); return; }
+    var stored=localStorage.getItem('hm_auth_pwdhash');
+    if(!stored){ msgEl.addClass('text-danger').text('系统错误：无密码数据'); return; }
+    var calcHash=function(p){ return btoa(unescape(encodeURIComponent('dfy@2026!'+p))); };
+    if(calcHash(oldPwd)!==stored){ msgEl.addClass('text-danger').text('当前密码错误'); return; }
+    localStorage.setItem('hm_auth_pwdhash',calcHash(newPwd));
+    msgEl.addClass('text-success').text('密码修改成功！请牢记新密码。');
+    setTimeout(function(){ $('#chpw-old,#chpw-new,#chpw-confirm').val(''); msgEl.text(''); },1500);
+  });
+
+if(!$('.toasts-top-right').length) $('body').append('<div class="toasts-top-right fixed" style="position:fixed;top:70px;right:20px;z-index:9999"></div>');
+
+  // ====== 批量导入职工名录模态框 ======
+  if($('#staff-batch-import-modal').length===0){
+    var modalHtml='<div class="modal fade" id="staff-batch-import-modal" tabindex="-1" role="dialog">';
+    modalHtml+='<div class="modal-dialog modal-lg" role="document"><div class="modal-content">';
+    modalHtml+='<div class="modal-header bg-info"><h5 class="modal-title"><i class="fas fa-file-import mr-2"></i>批量导入职工名录</h5>';
+    modalHtml+='<button type="button" class="close" data-dismiss="modal" aria-label="关闭"><span aria-hidden="true">&times;</span></button></div>';
+    modalHtml+='<div class="modal-body">';
+    modalHtml+='<div class="alert alert-info"><i class="fas fa-info-circle mr-2"></i>支持JSON格式或CSV格式批量导入职工数据。';
+    modalHtml+='<br>JSON格式：粘贴包含职工对象的数组；CSV格式：第一行是表头（姓名,性别,职称,科室,入职时间,状态,离职时间,备注）。</div>';
+    modalHtml+='<div class="form-group"><label>选择导入格式</label><select class="form-control" id="batch-import-format">';
+    modalHtml+='<option value="json">JSON格式</option><option value="csv">CSV格式（逗号分隔）</option></select></div>';
+    modalHtml+='<div class="form-group"><label>粘贴数据或上传文件</label>';
+    modalHtml+='<div class="input-group mb-2"><div class="custom-file"><input type="file" class="custom-file-input" id="batch-import-file" accept=".json,.csv">';
+    modalHtml+='<label class="custom-file-label" for="batch-import-file">选择文件...</label></div></div>';
+    modalHtml+='<textarea class="form-control" id="batch-import-data" rows="10" placeholder="在此粘贴JSON数组或CSV数据...\n\nJSON示例：\n[\n  {\"name\":\"张三\",\"gender\":\"男\",\"title\":\"主任医师\",\"department\":\"内科\",\"hireDate\":\"1995-07\",\"status\":\"在职\",\"leaveDate\":\"\",\"remark\":\"优秀员工\"}\n]"></textarea></div>';
+    modalHtml+='<div class="form-group"><label>导入选项</label><div class="form-check">';
+    modalHtml+='<input class="form-check-input" type="radio" name="import-mode" id="import-mode-append" value="append" checked>';
+    modalHtml+='<label class="form-check-label" for="import-mode-append">追加到现有数据</label></div>';
+    modalHtml+='<div class="form-check"><input class="form-check-input" type="radio" name="import-mode" id="import-mode-replace" value="replace">';
+    modalHtml+='<label class="form-check-label" for="import-mode-replace">清空后导入（替换全部）</label></div></div>';
+    modalHtml+='<div id="batch-import-preview" style="display:none;"><hr><h6>数据预览（前5条）</h6><div class="table-responsive"><table class="table table-sm table-bordered" id="batch-import-preview-table">';
+    modalHtml+='<thead><tr><th>姓名</th><th>性别</th><th>职称</th><th>科室</th><th>入职时间</th><th>状态</th></tr></thead><tbody></tbody></table></div>';
+    modalHtml+='<div class="text-muted small" id="batch-import-count"></div></div></div>';
+    modalHtml+='<div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>';
+    modalHtml+='<button type="button" class="btn btn-info" id="btn-preview-import"><i class="fas fa-eye mr-1"></i>预览数据</button>';
+    modalHtml+='<button type="button" class="btn btn-primary" id="btn-confirm-import"><i class="fas fa-upload mr-1"></i>确认导入</button></div>';
+    modalHtml+='</div></div></div>';
+    $('body').append(modalHtml);
+  }
+
+  // ====== 批量导入事件处理 ======
+  // 打开批量导入模态框
+  $(document).on('click','.btn-batch-import-staff',function(){
+    $('#batch-import-data').val('');
+    $('#batch-import-file').val('');
+    $('#batch-import-preview').hide();
+    $('#staff-batch-import-modal').modal('show');
+  });
+
+  // 文件上传处理
+  $(document).on('change','#batch-import-file',function(){
+    var file=this.files[0];
+    if(!file) return;
+    $('.custom-file-label[for="batch-import-file"]').text(file.name);
+    var reader=new FileReader();
+    reader.onload=function(e){
+      $('#batch-import-data').val(e.target.result);
+      toastMsg('文件已加载，请点击"预览数据"检查', 'info');
+    };
+    reader.readAsText(file, 'UTF-8');
+  });
+
+  // 预览导入数据
+  $(document).on('click','#btn-preview-import',function(){
+    var format=$('#batch-import-format').val();
+    var rawData=$('#batch-import-data').val().trim();
+    if(!rawData){ toastMsg('请先粘贴数据或上传文件', 'warning'); return; }
+    try {
+      var data=[];
+      if(format==='json'){
+        data=JSON.parse(rawData);
+        if(!Array.isArray(data)) throw new Error('JSON数据必须是数组格式');
+      } else {
+        // CSV解析
+        var lines=rawData.split('\n').filter(function(l){return l.trim();});
+        if(lines.length<2) throw new Error('CSV文件至少需要包含表头和一行数据');
+        var headers=lines[0].split(',').map(function(h){return h.trim();});
+        for(var i=1;i<lines.length;i++){
+          var vals=lines[i].split(',').map(function(v){return v.trim();});
+          var obj={};
+          headers.forEach(function(h,idx){ obj[h]=vals[idx]||''; });
+          data.push(obj);
+        }
+      }
+      // 验证并标准化数据
+      var validData=[];
+      data.forEach(function(item,idx){
+        var staff={
+          id:'s'+Date.now()+'_'+idx,
+          name:item.name||item.姓名||'未命名',
+          gender:item.gender||item.性别||'男',
+          title:item.title||item.职称||'',
+          department:item.department||item.科室||'',
+          hireDate:item.hireDate||item.入职时间||'',
+          leaveDate:item.leaveDate||item.离职时间||'',
+          status:item.status||item.状态||'在职',
+          remark:item.remark||item.备注||'',
+          photo:item.photo||item.照片||''
+        };
+        validData.push(staff);
+      });
+      // 显示预览
+      var previewHtml='';
+      validData.slice(0,5).forEach(function(s){
+        previewHtml+='<tr><td>'+escHtml(s.name)+'</td><td>'+escHtml(s.gender)+'</td><td>'+escHtml(s.title)+'</td>';
+        previewHtml+='<td>'+escHtml(s.department)+'</td><td>'+escHtml(s.hireDate)+'</td><td>'+escHtml(s.status)+'</td></tr>';
+      });
+      $('#batch-import-preview-table tbody').html(previewHtml);
+      $('#batch-import-count').text('共 '+validData.length+' 条记录'+(validData.length>5?'（仅显示前5条）':''));
+      $('#batch-import-preview').show();
+      // 保存预览数据到全局变量
+      window._batchImportPreviewData=validData;
+      toastMsg('数据验证成功，共 '+validData.length+' 条记录', 'success');
+    } catch(e) {
+      toastMsg('数据格式错误：'+e.message, 'danger');
+      $('#batch-import-preview').hide();
+    }
+  });
+
+  // 确认导入
+  $(document).on('click','#btn-confirm-import',function(){
+    var data=window._batchImportPreviewData;
+    if(!data || !data.length){ toastMsg('请先预览数据', 'warning'); return; }
+    var mode=$('input[name="import-mode"]:checked').val()||'append';
+    var secId=currentPage;
+    if(secId!=='staff'){ toastMsg('当前页面不是职工名录', 'warning'); return; }
+    var content=getContent();
+    if(!content[secId]) content[secId]={};
+    if(mode==='replace'){
+      content[secId].staff=data;
+    } else {
+      if(!content[secId].staff) content[secId].staff=[];
+      content[secId].staff=content[secId].staff.concat(data);
+    }
+    if(saveContent(content)){
+      toastMsg('成功导入 '+data.length+' 条职工记录', 'success');
+      $('#staff-batch-import-modal').modal('hide');
+      navigateTo(secId);
+    }
+  });
+
   navigateTo('dashboard');
 });
