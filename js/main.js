@@ -729,7 +729,7 @@
     if (!Array.isArray(data) || data.length === 0) return;
 
     var active = data
-      .filter(function (a) { return a.isActive !== false; })
+      .filter(function (a) { return a.published !== false && a.isActive !== false; })
       .sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
 
     if (active.length === 0) return;
@@ -789,6 +789,11 @@
   }
 
   renderAnnouncements();
+
+  // Re-render announcements when server data arrives (async from localStorage-sync.js)
+  window.addEventListener('serverDataLoaded', function() {
+    renderAnnouncements();
+  });
 
     // ------- Expose functions for inline event handlers -------
     window.openAnnounceModal = openAnnounceModal;
