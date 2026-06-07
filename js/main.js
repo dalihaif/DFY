@@ -745,7 +745,7 @@
       var date = a.date || '';
       var title = a.title || '无标题';
       var desc = a.content ? a.content.substring(0, 80) + (a.content.length > 80 ? '…' : '') : '';
-      var dept = a.department || '';
+      var dept = a.dept || a.department || '';
 
       html +=
         '<div class="announce-card fade-in stagger-' + stagger + '" onclick="openAnnounceModal(' + JSON.stringify(a).replace(/"/g, '&quot;') + ')">' +
@@ -773,8 +773,11 @@
     var titleEl = document.getElementById('announce-modal-title');
     var bodyEl = document.getElementById('announce-modal-body');
     var timeEl = document.getElementById('announce-modal-time');
+    var dept = a.dept || a.department || '';
     if (titleEl) titleEl.textContent = a.title || '公告详情';
-    if (bodyEl) bodyEl.innerHTML = '<p>' + esc(a.content || '暂无内容').replace(/\n/g, '<br>') + '</p>';
+    if (bodyEl) bodyEl.innerHTML =
+      (dept ? '<p style="color:var(--accent);margin-bottom:8px">📌 发布部门：' + esc(dept) + '</p>' : '') +
+      '<p>' + esc(a.content || '暂无内容').replace(/\n/g, '<br>') + '</p>';
     if (timeEl) timeEl.textContent = '发布时间：' + (a.date || '未知');
     overlay.classList.add('active');
     overlay.style.display = 'flex';
@@ -788,12 +791,28 @@
     }
   }
 
+  // Initial render (uses whatever is in localStorage at this moment)
   renderAnnouncements();
 
-  // Re-render announcements when server data arrives (async from localStorage-sync.js)
+  // Re-render when server data arrives (async from localStorage-sync.js)
   window.addEventListener('serverDataLoaded', function() {
     renderAnnouncements();
   });
+
+  // Race-condition fix: if server data already loaded before this script runs,
+  // the event was missed. Check the flag and re-render if needed.
+  if (window.__serverDataLoaded) {
+    renderAnnouncements();
+  }
+
+  // Fallback: if server is slow, retry render after 3 seconds
+  setTimeout(function() {
+    var data = [];
+    try { data = JSON.parse(localStorage.getItem('hm_announcements') || '[]'); } catch(e) {}
+    if (Array.isArray(data) && data.length > 0) {
+      renderAnnouncements();
+    }
+  }, 3000);
 
     // ------- Expose functions for inline event handlers -------
     window.openAnnounceModal = openAnnounceModal;

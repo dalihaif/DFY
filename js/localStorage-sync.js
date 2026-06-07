@@ -69,11 +69,15 @@
 
       for (const [key, value] of Object.entries(serverData)) {
         const fullKey = key.includes('hm_') ? key : `hm_${key}`;
-        localStorage.setItem(fullKey, JSON.stringify(value));
+        // 使用原始 setItem 避免触发 saveToServer 无限循环
+        originalSetItem(fullKey, JSON.stringify(value));
         loadedCount++;
       }
 
       console.log(`✅ 从服务器加载了 ${loadedCount} 个数据项`);
+      
+      // 设置标志位，防止竞态条件
+      window.__serverDataLoaded = true;
       
       // 触发自定义事件，通知页面数据已更新
       window.dispatchEvent(new CustomEvent('serverDataLoaded'));
