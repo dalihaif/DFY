@@ -880,6 +880,11 @@ function renderSettings() {
 $(document).ready(function() {
   initAllData();
 
+  // 服务器数据加载完毕后重新渲染当前页（确保控制台显示最新服务器数据）
+  window.addEventListener('serverDataLoaded', function() {
+    navigateTo(currentPage);
+  });
+
   // 侧边栏导航（直接绑定：AdminLTE Treeview 会 stopPropagation 阻止冒泡，故不能用 document 委托）
   $('.nav-sidebar .nav-link[data-page]').on('click',function(e){ e.preventDefault(); navigateTo($(this).data('page')); });
   $(document).on('click','[data-nav]',function(e){
