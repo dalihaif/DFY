@@ -1,0 +1,93 @@
+{
+  "hm_content": [],
+  "hm_settings": {
+    "title": "大理大学第一附属医院云端院史馆",
+    "logo_text": "云端院史馆",
+    "footer_text": "© 2026 大理大学第一附属医院（云南省第四人民医院）版权所有",
+    "contact_phone": "0872-2201062",
+    "address": "云南省大理白族自治州大理市嘉士伯大道32号",
+    "email": "office@dali.edu.cn"
+  },
+  "hm_admin_sections": [
+    {
+      "id": "history",
+      "name": "历史沿革",
+      "icon": "📜",
+      "isActive": true
+    },
+    {
+      "id": "people",
+      "name": "人物风采",
+      "icon": "👥",
+      "isActive": true
+    },
+    {
+      "id": "disciplines",
+      "name": "学科建设",
+      "icon": "🔬",
+      "isActive": true
+    },
+    {
+      "id": "campus",
+      "name": "院区建设",
+      "icon": "🏥",
+      "isActive": true
+    },
+    {
+      "id": "education",
+      "name": "教学人才",
+      "icon": "🎓",
+      "isActive": true
+    },
+    {
+      "id": "culture",
+      "name": "文化建设",
+      "icon": "🎭",
+      "isActive": true
+    },
+    {
+      "id": "tech",
+      "name": "科技交流",
+      "icon": "🔬",
+      "isActive": true
+    },
+    {
+      "id": "duty",
+      "name": "责任担当",
+      "icon": "🤝",
+      "isActive": true
+    },
+    {
+      "id": "honors",
+      "name": "荣誉殿堂",
+      "icon": "🏆",
+      "isActive": true
+    },
+    {
+      "id": "vision",
+      "name": "展望未来",
+      "icon": "🔮",
+      "isActive": true
+    },
+    {
+      "id": "structure",
+      "name": "组织架构",
+      "icon": "🏢",
+      "isActive": true
+    },
+    {
+      "id": "leadership",
+      "name": "领导团队",
+      "icon": "👔",
+      "isActive": true
+    },
+    {
+      "id": "staff",
+      "name": "职工名录",
+      "icon": "👥",
+      "isActive": true
+    }
+  ],
+  "hm_announcements": [],
+  "hm_staff": []
+}
