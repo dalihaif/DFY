@@ -88,6 +88,16 @@
       "isActive": true
     }
   ],
-  "hm_announcements": [],
+  "hm_announcements": [
+    {
+      "id": 1,
+      "title": "大理大学第一附属医院2026年度工作要点通知",
+      "date": "2026-06-01",
+      "category": "notice",
+      "dept": "院办",
+      "content": "根据医院2026年工作部署，现就年度重点工作安排通知如下：\n一、全面推进智慧医院建设\n二、持续提升医疗服务质量\n三、加强人才队伍建设",
+      "published": true
+    }
+  ],
   "hm_staff": []
 }
