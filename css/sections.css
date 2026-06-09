@@ -89,9 +89,22 @@
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:6px; color:var(--placeholder-text); font-size:12px;
   transition:border-color 0.3s;
+  position:relative; overflow:hidden;
 }
 .profile-photo-icon { font-size:40px; opacity:0.5; }
 .profile-photo-hint { font-size:11px; opacity:0.4; }
+/* 真实照片覆盖占位 */
+.profile-photo .profile-real-img {
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  object-fit:cover;
+}
+.profile-photo.has-real-img .profile-photo-icon,
+.profile-photo.has-real-img .profile-photo-hint { display:none; }
+/* 姓名首字占位（无照片时） */
+.profile-photo .profile-photo-char {
+  font-family:var(--font-display); font-size:52px; font-weight:700;
+  color:var(--gold-light); opacity:0.75; line-height:1;
+}
 .profile-info { padding:22px 20px; display:flex; flex-direction:column; gap:8px; flex:1; }
 .profile-name {
   font-family:var(--font-display); font-size:17px; font-weight:700;
@@ -410,9 +423,22 @@
   background:var(--placeholder-bg); border-bottom:1px solid var(--border);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:6px; color:var(--placeholder-text); font-size:12px;
+  position:relative; overflow:hidden;
 }
 .leadership-photo-icon { font-size:44px; opacity:0.5; }
 .leadership-photo-hint { font-size:11px; opacity:0.4; }
+/* 真实照片覆盖占位 */
+.leadership-photo .leadership-real-img {
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  object-fit:cover;
+}
+.leadership-photo.has-real-img .leadership-photo-icon,
+.leadership-photo.has-real-img .leadership-photo-hint { display:none; }
+/* 姓名首字占位（无照片时） */
+.leadership-photo .leadership-photo-char {
+  font-family:var(--font-display); font-size:60px; font-weight:700;
+  color:var(--gold-light); opacity:0.75; line-height:1;
+}
 .leadership-info { padding:22px 20px; display:flex; flex-direction:column; gap:8px; flex:1; }
 .leadership-name { font-family:var(--font-display); font-size:18px; font-weight:700; color:var(--text-primary); }
 .leadership-role { font-size:14px; color:var(--gold-soft); font-weight:600; }

@@ -188,11 +188,11 @@ function seedContent() {
       ]
     },
     culture: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块六 · SECTION 06', title:'文化建设', subtitle:'厚德精医 · 博学笃行', desc:'以文化人，以文润心，构建有温度的人文医院。' },
+      hero: { bgImage:'../assets/images/2_20.png', num:'板块六 · SECTION 06', title:'文化建设', subtitle:'诚信 · 进取 · 和谐 · 奉献', desc:'以文化人，以文润心，构建有温度的人文医院。' },
       blocks: [
-        { id:'b1', num:'01 · 院训 · 精神文化', title:'医院精神与文化', subtitle:'厚德精医 · 博学笃行',
-          text:'<h4>院训</h4><p>"厚德精医，博学笃行"——八个字凝聚了大附院人的价值追求。</p>',
-          imgIcon:'📜', imgLabel:'院训展示', imgSize:'16:9' }
+        { id:'b1', num:'01 · 灵魂 · 医院精神', title:'医院精神与文化', subtitle:'诚信 · 进取 · 和谐 · 奉献',
+          text:'<h4>医院精神</h4><p>"诚信、进取、和谐、奉献"——四字精神凝聚了大附院人的价值追求。</p>',
+          imgIcon:'📜', imgLabel:'精神文化展示', imgSize:'16:9' }
       ],
       dataCards: [
         { value:'35', label:'文化积淀（年）', note:'1991至今' }
@@ -1064,8 +1064,8 @@ $(document).ready(function() {
   });
 
   // 公告管理
-  $('#btn-add-ann').click(function(){ $('#ann-form-title').text('新增公告'); $('#add-ann-form').slideDown(); });
-  $('#btn-cancel-ann').click(function(){ $('#add-ann-form').slideUp(); });
+  $(document).on('click','#btn-add-ann',function(){ $('#ann-form-title').text('新增公告'); $('#ann-edit-id').val('');$('#ann-title').val('');$('#ann-date').val('');$('#ann-cat').val('notice');$('#ann-dept').val('');$('#ann-content').val(''); $('#add-ann-form').slideDown(); });
+  $(document).on('click','#btn-cancel-ann',function(){ $('#add-ann-form').slideUp(); });
   $(document).on('click','.btn-edit-ann',function(){
     var anns=JSON.parse(localStorage.getItem('hm_announcements')||'[]');
     var a=anns.find(function(x){return x.id===$(this).data('id');}.bind(this))||anns.find(function(x){return x.id===parseInt($(this).data('id'));});

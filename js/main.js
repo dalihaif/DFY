@@ -174,6 +174,9 @@
             }
             existImg.src = b.imgUrl;
             existImg.alt = b.imgLabel || '';
+            existImg.setAttribute('data-lightbox', b.imgUrl);
+            existImg.setAttribute('data-lightbox-caption', b.imgLabel || '');
+            existImg.style.cursor = 'zoom-in';
             // 隐藏占位内容（图标/标签/尺寸文字）
             [iconEl, labelEl, sizeEl].forEach(function(el) { if (el) el.style.display = 'none'; });
           }
@@ -217,10 +220,16 @@
                   img.className = 'leader-real-img';
                   img.src = l.photo.trim();
                   img.alt = l.name || '';
+                  img.setAttribute('data-lightbox', l.photo.trim());
+                  img.setAttribute('data-lightbox-caption', l.name || '');
+                  img.style.cursor = 'zoom-in';
                   photoEl.appendChild(img);
                 } else {
                   existingImg.src = l.photo.trim();
                   existingImg.alt = l.name || '';
+                  existingImg.setAttribute('data-lightbox', l.photo.trim());
+                  existingImg.setAttribute('data-lightbox-caption', l.name || '');
+                  existingImg.style.cursor = 'zoom-in';
                 }
               } else {
                 photoEl.classList.remove('has-real-img');
@@ -247,10 +256,55 @@
             var roleEl = card.querySelector('.leadership-role');
             var dutyEl = card.querySelector('.leadership-responsibility');
             var resumeEl = card.querySelector('.leadership-resume');
+            var photoEl = card.querySelector('.leadership-photo');
             if (nameEl) nameEl.textContent = l.name;
             if (roleEl) roleEl.textContent = l.role;
             if (dutyEl) dutyEl.textContent = l.duty;
             if (resumeEl) resumeEl.textContent = l.resume;
+            // 照片URL：有则显示真实图片，无则显示姓名首字占位
+            if (photoEl) {
+              var existingImg = photoEl.querySelector('.leadership-real-img');
+              var charEl = photoEl.querySelector('.leadership-photo-char');
+              if (l.photo && l.photo.trim()) {
+                // 有照片URL → 显示真实图片
+                photoEl.classList.add('has-real-img');
+                if (!existingImg) {
+                  var img = document.createElement('img');
+                  img.className = 'leadership-real-img';
+                  img.src = l.photo.trim();
+                  img.alt = l.name || '';
+                  img.setAttribute('data-lightbox', l.photo.trim());
+                  img.setAttribute('data-lightbox-caption', l.name + (l.role ? ' · ' + l.role : ''));
+                  img.style.cursor = 'zoom-in';
+                  photoEl.appendChild(img);
+                } else {
+                  existingImg.src = l.photo.trim();
+                  existingImg.alt = l.name || '';
+                  existingImg.setAttribute('data-lightbox', l.photo.trim());
+                  existingImg.setAttribute('data-lightbox-caption', l.name + (l.role ? ' · ' + l.role : ''));
+                  existingImg.style.cursor = 'zoom-in';
+                }
+                if (charEl) charEl.remove();
+              } else {
+                // 无照片URL → 姓名首字占位
+                photoEl.classList.remove('has-real-img');
+                if (existingImg) existingImg.remove();
+                var iconEl = photoEl.querySelector('.leadership-photo-icon');
+                var hintEl = photoEl.querySelector('.leadership-photo-hint');
+                if (l.name && l.name !== '[待补充]') {
+                  if (!charEl) {
+                    charEl = document.createElement('span');
+                    charEl.className = 'leadership-photo-char';
+                    photoEl.insertBefore(charEl, iconEl);
+                  }
+                  charEl.textContent = l.name.charAt(0);
+                  if (iconEl) iconEl.style.display = 'none';
+                  if (hintEl) hintEl.style.display = 'none';
+                } else {
+                  if (charEl) charEl.remove();
+                }
+              }
+            }
           }
         });
       }
@@ -269,10 +323,56 @@
           var titleEl = card.querySelector('.profile-title');
           var deptEl = card.querySelector('.profile-dept');
           var descEl = card.querySelector('.profile-desc');
+          var photoEl = card.querySelector('.profile-photo');
           if (nameEl) nameEl.textContent = p.name;
           if (titleEl) titleEl.textContent = p.title;
           if (deptEl) deptEl.textContent = p.dept;
           if (descEl) descEl.textContent = p.desc;
+          // 照片URL：有则显示真实图片，无则显示姓名首字占位
+          if (photoEl) {
+            var existingImg = photoEl.querySelector('.profile-real-img');
+            var charEl = photoEl.querySelector('.profile-photo-char');
+            if (p.photo && p.photo.trim()) {
+              // 有照片URL → 显示真实图片
+              photoEl.classList.add('has-real-img');
+              if (!existingImg) {
+                var img = document.createElement('img');
+                img.className = 'profile-real-img';
+                img.src = p.photo.trim();
+                img.alt = p.name || '';
+                img.setAttribute('data-lightbox', p.photo.trim());
+                img.setAttribute('data-lightbox-caption', p.name || '');
+                img.style.cursor = 'zoom-in';
+                photoEl.appendChild(img);
+              } else {
+                existingImg.src = p.photo.trim();
+                existingImg.alt = p.name || '';
+                existingImg.setAttribute('data-lightbox', p.photo.trim());
+                existingImg.setAttribute('data-lightbox-caption', p.name || '');
+                existingImg.style.cursor = 'zoom-in';
+              }
+              if (charEl) charEl.remove();
+            } else {
+              // 无照片URL → 姓名首字占位
+              photoEl.classList.remove('has-real-img');
+              if (existingImg) existingImg.remove();
+              var iconEl = photoEl.querySelector('.profile-photo-icon');
+              var hintEl = photoEl.querySelector('.profile-photo-hint');
+              if (p.name && p.name !== '[待补充]') {
+                // 已有char元素则更新，否则插入
+                if (!charEl) {
+                  charEl = document.createElement('span');
+                  charEl.className = 'profile-photo-char';
+                  photoEl.insertBefore(charEl, iconEl);
+                }
+                charEl.textContent = p.name.charAt(0);
+                if (iconEl) iconEl.style.display = 'none';
+                if (hintEl) hintEl.style.display = 'none';
+              } else {
+                if (charEl) charEl.remove();
+              }
+            }
+          }
         });
       }
     });
@@ -427,78 +527,217 @@
     sections.forEach(function (s) { sectionObserver.observe(s); });
   }
 
-  // -------- Announcement card modal --------
-  document.querySelectorAll('.announce-card').forEach(function (card) {
-    card.addEventListener('click', function (e) {
-      // don't trigger when clicking internal links
-      if (e.target.closest('a')) return;
-      var title = card.querySelector('.announce-card-title');
-      var desc  = card.querySelector('.announce-card-desc');
-      var date  = card.querySelector('.announce-card-date');
-      var tag   = card.querySelector('.announce-card-tag');
-      var src   = card.querySelector('.announce-card-footer');
-      var titleText = title ? title.textContent : '';
-      var descText  = desc  ? desc.textContent  : '';
-      var dateText  = date ? date.textContent  : '';
-      var tagText   = tag  ? tag.textContent   : '';
-      var tagClass  = tag  ? tag.className.replace('announce-card-tag', '').trim() : '';
-      var srcText   = src  ? src.textContent.replace(/^\\s*📌\\s*/, '').trim() : '';
+  // -------- 公告数据读取 ---------
+  var hmAnnouncements = [];
+  try {
+    if (_hasData(_hmData.announcements)) {
+      hmAnnouncements = _hmData.announcements;
+    } else {
+      hmAnnouncements = JSON.parse(localStorage.getItem('hm_announcements') || '[]');
+    }
+  } catch(e) {}
 
-      // build overlay
-      var overlay = document.createElement('div');
-      overlay.className = 'announce-modal-overlay';
+  // -------- 公告卡片动态渲染（替换 index.html 静态硬编码）--------
+  function renderFrontAnnouncements() {
+    var grid = document.querySelector('.announcements-grid');
+    if (!grid) return;
+    var catMap = { notice: '通知', event: '活动', hr: '人事', academic: '科研' };
+    // 只显示已发布的，按日期倒序
+    var published = hmAnnouncements.filter(function(a){ return a.published !== false; });
+    published.sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); });
 
-      var box = document.createElement('div');
-      box.className = 'announce-modal-box';
+    var html = '';
+    if (published.length > 0) {
+      // 最多展示6条
+      var display = published.slice(0, 6);
+      display.forEach(function(a, i){
+        var tagText = catMap[a.category] || a.category || '公告';
+        var tagClass = a.category || 'notice';
+        html += '<div class="announce-card fade-in stagger-'+(i+1)+'">'
+          + '<div class="announce-card-top">'
+            + '<span class="announce-card-date">' + (a.date||'') + '</span>'
+            + '<span class="announce-card-tag ' + tagClass + '">' + tagText + '</span>'
+          + '</div>'
+          + '<h4 class="announce-card-title">' + (a.title||'') + '</h4>'
+          + '<p class="announce-card-desc">' + (a.content||'') + '</p>'
+          + '<div class="announce-card-footer"><span aria-hidden="true">📌</span> ' + (a.dept||'') + '</div>'
+        + '</div>';
+      });
+    } else {
+      // 无公告时显示提示（替换所有静态卡片）
+      html = '<div class="announce-card" style="grid-column:1/-1;text-align:center;padding:48px 24px;opacity:0.6;">'
+        + '<div style="font-size:48px;margin-bottom:12px;">📋</div>'
+        + '<p style="color:var(--text-secondary);font-size:14px;">暂无最新公告，敬请关注</p>'
+        + '<p style="color:var(--text-muted);font-size:12px;">请前往 <a href="../admin/index.html" style="color:var(--gold);">后台管理</a> 发布公告</p>'
+        + '</div>';
+    }
+    grid.innerHTML = html;
+  }
+  renderFrontAnnouncements();
 
-      box.innerHTML =
-        '<button class=\"announce-modal-close\" title=\"关闭\">&times;</button>' +
-        '<div class=\"announce-modal-header\">' +
-          '<span class=\"announce-card-tag ' + tagClass + '\">' + tagText + '</span>' +
-          '<span class=\"announce-modal-date\">' + dateText + '</span>' +
-        '</div>' +
-        '<h3 class=\"announce-modal-title\">' + titleText + '</h3>' +
-        '<div class=\"announce-modal-body\">' + descText + '</div>' +
-        '<div class=\"announce-modal-footer\"><span>📌</span> 发布部门：' + srcText + '</div>';
+  // -------- Announcement card modal (vanilla JS event delegation) --------
+  document.addEventListener('click', function(ev) {
+    var card = ev.target.closest('.announce-card');
+    if (!card) return;
+    // don't trigger when clicking internal links
+    if (ev.target.closest('a')) return;
 
-      overlay.appendChild(box);
+    var title = card.querySelector('.announce-card-title');
+    var desc  = card.querySelector('.announce-card-desc');
+    var date  = card.querySelector('.announce-card-date');
+    var tag   = card.querySelector('.announce-card-tag');
+    var src   = card.querySelector('.announce-card-footer');
+    var titleText = title ? title.textContent : '';
+    var descText  = desc  ? desc.textContent  : '';
+    var dateText  = date ? date.textContent  : '';
+    var tagText   = tag  ? tag.textContent   : '';
+    var tagClass  = tag  ? tag.className.replace('announce-card-tag', '').trim() : '';
+    var srcText   = src  ? src.textContent.replace(/^\s*📌\s*/, '').trim() : '';
 
-      function close() {
-        if (overlay.parentNode) {
-          overlay.classList.remove('active');
-          setTimeout(function () {
-            if (overlay.parentNode) document.body.removeChild(overlay);
-          }, 280);
-        }
+    // build overlay
+    var overlay = document.createElement('div');
+    overlay.className = 'announce-modal-overlay';
+
+    var box = document.createElement('div');
+    box.className = 'announce-modal-box';
+
+    box.innerHTML =
+      '<button class="announce-modal-close" title="关闭">&times;</button>' +
+      '<div class="announce-modal-header">' +
+        '<span class="announce-card-tag ' + tagClass + '">' + tagText + '</span>' +
+        '<span class="announce-modal-date">' + dateText + '</span>' +
+      '</div>' +
+      '<h3 class="announce-modal-title">' + titleText + '</h3>' +
+      '<div class="announce-modal-body">' + descText + '</div>' +
+      '<div class="announce-modal-footer"><span>📌</span> 发布部门：' + srcText + '</div>';
+
+    overlay.appendChild(box);
+
+    function close() {
+      if (overlay.parentNode) {
+        overlay.classList.remove('active');
+        setTimeout(function () {
+          if (overlay.parentNode) document.body.removeChild(overlay);
+        }, 280);
       }
+    }
 
-      overlay.addEventListener('click', function (ev) {
-        if (ev.target === overlay) close();
-      });
-      box.querySelector('.announce-modal-close').addEventListener('click', close);
-      document.addEventListener('keydown', function escHandler(ev) {
-        if (ev.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); }
-      });
-
-      document.body.appendChild(overlay);
-      // trigger animation
-      requestAnimationFrame(function () { overlay.classList.add('active'); });
+    overlay.addEventListener('click', function (ev2) {
+      if (ev2.target === overlay) close();
     });
+    box.querySelector('.announce-modal-close').addEventListener('click', close);
+    document.addEventListener('keydown', function escHandler(ev2) {
+      if (ev2.key === 'Escape') { close(); document.removeEventListener('keydown', escHandler); }
+    });
+
+    document.body.appendChild(overlay);
+    // trigger animation
+    requestAnimationFrame(function () { overlay.classList.add('active'); });
   });
 
-  // -------- Gallery lightbox (simple) --------
-  document.querySelectorAll('.gallery-item[data-src]').forEach(function (item) {
-    item.addEventListener('click', function () {
+  // -------- 统一 Lightbox 放大查看 --------
+  function openLightbox(src, caption) {
+    if (!src) return;
+    var overlay = document.createElement('div');
+    overlay.className = 'hm-lightbox-overlay';
+    overlay.style.cssText = [
+      'position:fixed;inset:0;z-index:99999;',
+      'background:rgba(0,0,0,0.92);',
+      'display:flex;flex-direction:column;align-items:center;justify-content:center;',
+      'cursor:zoom-out;',
+      'opacity:0;transition:opacity 0.22s ease;'
+    ].join('');
+
+    var img = document.createElement('img');
+    img.src = src;
+    img.style.cssText = [
+      'max-width:90vw;max-height:82vh;',
+      'border-radius:8px;',
+      'box-shadow:0 24px 80px rgba(0,0,0,0.8);',
+      'object-fit:contain;',
+      'transition:transform 0.22s ease;',
+      'pointer-events:none;'
+    ].join('');
+    overlay.appendChild(img);
+
+    // 底部说明文字
+    if (caption) {
+      var cap = document.createElement('p');
+      cap.textContent = caption;
+      cap.style.cssText = 'margin:16px 0 0;color:rgba(255,255,255,0.7);font-size:13px;max-width:80vw;text-align:center;pointer-events:none;';
+      overlay.appendChild(cap);
+    }
+
+    // 右上关闭按钮
+    var closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕';
+    closeBtn.style.cssText = [
+      'position:fixed;top:20px;right:24px;',
+      'background:rgba(255,255,255,0.12);border:none;',
+      'color:#fff;font-size:20px;cursor:pointer;',
+      'width:40px;height:40px;border-radius:50%;',
+      'display:flex;align-items:center;justify-content:center;',
+      'transition:background 0.15s;',
+      'z-index:100000;'
+    ].join('');
+    closeBtn.addEventListener('mouseenter', function() { closeBtn.style.background = 'rgba(255,255,255,0.28)'; });
+    closeBtn.addEventListener('mouseleave', function() { closeBtn.style.background = 'rgba(255,255,255,0.12)'; });
+    overlay.appendChild(closeBtn);
+
+    function closeLightbox() {
+      overlay.style.opacity = '0';
+      setTimeout(function() { if (overlay.parentNode) document.body.removeChild(overlay); }, 220);
+      document.removeEventListener('keydown', keyHandler);
+    }
+    function keyHandler(ev) {
+      if (ev.key === 'Escape') closeLightbox();
+    }
+
+    overlay.addEventListener('click', function(ev) {
+      if (ev.target === overlay) closeLightbox();
+    });
+    closeBtn.addEventListener('click', function(ev) { ev.stopPropagation(); closeLightbox(); });
+    document.addEventListener('keydown', keyHandler);
+
+    document.body.appendChild(overlay);
+    requestAnimationFrame(function() { overlay.style.opacity = '1'; });
+  }
+
+  // --- gallery-item[data-src] ---
+  document.addEventListener('click', function(ev) {
+    var item = ev.target.closest('.gallery-item[data-src]');
+    if (item) {
       var src = item.getAttribute('data-src');
-      var overlay = document.createElement('div');
-      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
-      var img = document.createElement('img');
-      img.src = src;
-      img.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.7);';
-      overlay.appendChild(img);
-      overlay.addEventListener('click', function () { document.body.removeChild(overlay); });
-      document.body.appendChild(overlay);
-    });
+      var label = item.querySelector('.gallery-item-label');
+      openLightbox(src, label ? label.textContent : '');
+    }
   });
+
+  // --- 所有带 data-lightbox 的图片（统一委托）---
+  document.addEventListener('click', function(ev) {
+    var el = ev.target.closest('[data-lightbox]');
+    if (el) {
+      var src = el.getAttribute('data-lightbox') || el.src || '';
+      var cap = el.getAttribute('data-lightbox-caption') || el.alt || '';
+      openLightbox(src, cap);
+    }
+  });
+
+  // --- 为静态 HTML 中的人物照片绑定 lightbox（动态渲染的在渲染时直接加 data-lightbox）---
+  function bindStaticPhotos() {
+    // 已渲染的真实图片
+    ['.leader-real-img', '.profile-real-img', '.leadership-real-img', '.slot-real-img'].forEach(function(sel) {
+      document.querySelectorAll(sel).forEach(function(img) {
+        if (!img.hasAttribute('data-lightbox')) {
+          img.setAttribute('data-lightbox', img.src);
+          img.setAttribute('data-lightbox-caption', img.alt || '');
+          img.style.cursor = 'zoom-in';
+        }
+      });
+    });
+  }
+  // 页面加载 + 短暂延迟（等待动态渲染完成）
+  bindStaticPhotos();
+  setTimeout(bindStaticPhotos, 800);
 
 })();
