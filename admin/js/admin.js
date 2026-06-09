@@ -1759,15 +1759,42 @@ $(document).ready(function() {
     if (!file) return;
     var reader = new FileReader();
     reader.onload = function(ev) {
-      var text = ev.target.result;
+      var buffer = ev.target.result; // ArrayBuffer
+      var text = decodeCsv(buffer);
       var parsed = parseCSV(text);
       if (!parsed.length) { alert('CSV 文件为空或无法解析'); return; }
       showCsvPreview(parsed);
     };
-    reader.readAsText(file, 'UTF-8');
+    reader.readAsArrayBuffer(file);
     // 重置以便重复选择同一文件
     this.value = '';
   });
+
+  // CSV 编码自动检测（UTF-8 / GBK）
+  function decodeCsv(buffer) {
+    var arr = new Uint8Array(buffer);
+    // 检测 BOM：UTF-8 BOM = EF BB BF
+    var hasUtf8Bom = arr.length >= 3 && arr[0] === 0xEF && arr[1] === 0xBB && arr[2] === 0xBF;
+
+    // 先用 UTF-8 解码
+    var utfText = new TextDecoder('utf-8', { fatal: false }).decode(buffer);
+
+    // 有 BOM 或文本中存在合法中文 → 直接返回 UTF-8
+    if (hasUtf8Bom || /[\u4e00-\u9fff]/.test(utfText)) {
+      return utfText;
+    }
+
+    // UTF-8 无中文 → 尝试 GBK 解码
+    try {
+      var gbkText = new TextDecoder('gbk', { fatal: false }).decode(buffer);
+      if (/[\u4e00-\u9fff]/.test(gbkText)) {
+        return gbkText;
+      }
+    } catch(e) {}
+
+    // 都不行，返回 UTF-8 结果
+    return utfText;
+  }
 
   function parseCSV(text) {
     // 去除 BOM
