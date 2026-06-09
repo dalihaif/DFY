@@ -91,7 +91,8 @@
       '01-history': 'history', '02-people': 'people', '03-disciplines': 'disciplines',
       '04-campus': 'campus', '05-education': 'education', '06-culture': 'culture',
       '07-tech': 'tech', '08-duty': 'duty', '09-honors': 'honors',
-      '10-vision': 'vision', '11-structure': 'structure', '12-leadership': 'leadership'
+      '10-vision': 'vision', '11-structure': 'structure', '12-leadership': 'leadership',
+      '13-staff': 'staff'
     };
     for (var k in map) { if (path.indexOf(k) >= 0) return hmContent[map[k]]; }
     return null;
@@ -760,5 +761,129 @@
   // 页面加载 + 短暂延迟（等待动态渲染完成）
   bindStaticPhotos();
   setTimeout(bindStaticPhotos, 800);
+
+  // ============ 职工名录 专用渲染与搜索 ============
+  (function initStaffPage() {
+    var isStaffPage = window.location.pathname.indexOf('13-staff') >= 0;
+    if (!isStaffPage) return;
+
+    // 读取职工数据（与其余板块一致：data.js → localStorage fallback）
+    var staffData = [];
+    try {
+      var staffSec = hmContent.staff || {};
+      if (Array.isArray(staffSec.profiles)) {
+        staffData = staffSec.profiles;
+      }
+    } catch(e) {}
+
+    if (!staffData.length) return;
+
+    // 按姓名排序
+    staffData.sort(function(a, b) { return (a.name || '').localeCompare(b.name || '', 'zh'); });
+
+    var grid = document.getElementById('staffGrid');
+    var empty = document.getElementById('staffEmpty');
+    var searchInput = document.getElementById('staffSearch');
+    var deptFilter = document.getElementById('staffDeptFilter');
+
+    if (!grid) return;
+
+    // 收集科室列表用于筛选按钮
+    var depts = {};
+    staffData.forEach(function(s) { if (s.dept) depts[s.dept] = true; });
+    var deptList = Object.keys(depts).sort(function(a, b) { return a.localeCompare(b, 'zh'); });
+
+    // 构建筛选按钮
+    if (deptFilter && deptList.length > 1) {
+      deptList.forEach(function(d) {
+        var btn = document.createElement('button');
+        btn.className = 'staff-filter-btn';
+        btn.textContent = d;
+        btn.setAttribute('data-dept', d);
+        deptFilter.appendChild(btn);
+      });
+    }
+
+    // 渲染职工卡片
+    function renderStaffCards(filterText, filterDept) {
+      var html = '';
+      var count = 0;
+      staffData.forEach(function(s) {
+        // 搜索过滤
+        var q = (filterText || '').toLowerCase();
+        if (q) {
+          var match = (s.name || '').indexOf(q) >= 0
+                   || (s.title || '').indexOf(q) >= 0
+                   || (s.dept || '').indexOf(q) >= 0
+                   || (s.position || '').indexOf(q) >= 0
+                   || (s.desc || '').indexOf(q) >= 0;
+          if (!match) return;
+        }
+        // 科室过滤
+        if (filterDept && filterDept !== 'all' && s.dept !== filterDept) return;
+
+        count++;
+        var ph = s.photo || '';
+        var hasPhoto = ph && ph.trim().length > 0;
+        html += '<div class="profile-card staff-card fade-in">';
+        html += '<div class="profile-photo' + (hasPhoto ? ' has-real-img' : '') + '">';
+        if (hasPhoto) {
+          html += '<img class="profile-real-img" src="' + escHtml2(ph) + '" alt="' + escHtml2(s.name || '') + '" loading="lazy" data-lightbox="' + escHtml2(ph) + '" data-lightbox-caption="' + escHtml2(s.name || '') + '">';
+        }
+        html += '<span class="profile-photo-icon">👤</span>';
+        if (!hasPhoto) {
+          html += '<span class="profile-photo-char">' + (s.name ? s.name.charAt(0) : '?') + '</span>';
+        }
+        html += '</div>';
+        html += '<div class="profile-info">';
+        html += '<div class="profile-name">' + escHtml2(s.name || '[待补充]') + '</div>';
+        html += '<div class="profile-title">' + escHtml2(s.title || '') + '</div>';
+        if (s.position) {
+          html += '<span class="staff-position-badge">' + escHtml2(s.position) + '</span>';
+        }
+        html += '<span class="profile-dept">' + escHtml2(s.dept || '') + '</span>';
+        if (s.desc) {
+          html += '<p class="profile-desc">' + escHtml2(s.desc) + '</p>';
+        }
+        html += '</div></div>';
+      });
+
+      grid.innerHTML = html;
+      if (empty) empty.style.display = count === 0 ? '' : 'none';
+
+      // 重新注册 Observer（动态生成的 .fade-in 元素）
+      grid.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+      // 绑定新生成的照片 lightbox
+      setTimeout(bindStaticPhotos, 100);
+    }
+
+    // 辅助：HTML 转义
+    function escHtml2(s) {
+      if (!s) return '';
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // 初始渲染
+    renderStaffCards('', 'all');
+
+    // 搜索事件
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        var activeDept = deptFilter ? deptFilter.querySelector('.staff-filter-btn.active') : null;
+        renderStaffCards(searchInput.value, activeDept ? activeDept.getAttribute('data-dept') : 'all');
+      });
+    }
+
+    // 筛选项点击事件
+    if (deptFilter) {
+      deptFilter.addEventListener('click', function(ev) {
+        var btn = ev.target.closest('.staff-filter-btn');
+        if (!btn) return;
+        deptFilter.querySelectorAll('.staff-filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderStaffCards(searchInput ? searchInput.value : '', btn.getAttribute('data-dept'));
+      });
+    }
+  })();
 
 })();

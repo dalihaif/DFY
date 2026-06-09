@@ -1,7 +1,7 @@
 /**
  * 云端院史馆 · 后台内容管理系统
  * 基于 AdminLTE 3.x + localStorage
- * 支持12板块全部内容的可视化编辑
+ * 支持13板块全部内容的可视化编辑
  */
 
 // ====== 底层数据模型 ======
@@ -17,7 +17,8 @@ var SECTIONS = [
   { id:'honors',      name:'荣誉殿堂', icon:'fas fa-trophy',        color:'#f9a825', page:'09-honors.html',      types:['hero','block','dataCard','gallery'] },
   { id:'vision',      name:'展望未来', icon:'fas fa-eye',           color:'#00695c', page:'10-vision.html',      types:['hero','block','dataCard','gallery'] },
   { id:'structure',   name:'组织架构', icon:'fas fa-sitemap',       color:'#4527a0', page:'11-structure.html',   types:['hero','block','gallery'] },
-  { id:'leadership',  name:'领导团队', icon:'fas fa-user-tie',      color:'#bf360c', page:'12-leadership.html',  types:['hero','block','leadership','gallery'] }
+  { id:'leadership',  name:'领导团队', icon:'fas fa-user-tie',      color:'#bf360c', page:'12-leadership.html',  types:['hero','block','leadership','gallery'] },
+  { id:'staff',       name:'职工名录', icon:'fas fa-address-book',    color:'#0288d1', page:'13-staff.html',       types:['hero','block','profile','dataCard','gallery'] }
 ];
 
 // ====== 初始化全部数据 ======
@@ -303,6 +304,46 @@ function seedContent() {
         { icon:'👤', label:'党委书记风采' }, { icon:'👤', label:'院长风采' },
         { icon:'👥', label:'领导班子合影' }, { icon:'🏛', label:'院务会议' }
       ]
+    },
+    staff: {
+      hero: { bgImage:'../assets/images/2_20.png', num:'板块十三 · SECTION 13', title:'职工名录', subtitle:'每一位职工，都是医院发展的基石', desc:'1946名在册职工，41个临床科室，来自五湖四海，汇聚于此。铭记每一位大附院人的名字与贡献。' },
+      blocks: [
+        { id:'b1', num:'01 · 根基 · 职工名录', title:'全院职工名录', subtitle:'铭记每一位为大附院发展贡献力量的人',
+          text:'<h4>大理大学第一附属医院职工名录</h4><p>自1991年建院至今，一代代大附院人秉承"诚信、进取、和谐、奉献"的医院精神，在各自的岗位上默默耕耘。</p><p>本名录记录全院职工的姓名、科室、职称、职位等基本信息，旨在铭记每一位职工为医院发展所做出的贡献。</p>',
+          imgIcon:'', imgLabel:'', imgSize:'' }
+      ],
+      profiles: [
+        { id:'s1',  name:'张伟民', title:'主任医师 · 教授', dept:'心血管内科', position:'科室主任', desc:'深耕冠心病介入诊疗30年，主持国自然项目3项，培养硕士研究生18名。' },
+        { id:'s2',  name:'李明华', title:'主任医师 · 教授', dept:'神经外科', position:'科室主任', desc:'滇西神经外科领军人物，年手术量逾800例，省突专家。' },
+        { id:'s3',  name:'王建平', title:'主任医师 · 教授', dept:'骨科', position:'科室主任', desc:'脊柱微创与关节置换领域专家，省学术带头人。' },
+        { id:'s4',  name:'陈晓芳', title:'主任医师 · 教授', dept:'妇产科', position:'科室主任', desc:'高危妊娠管理及妇科肿瘤微创手术专家，省卫健委高层次人才。' },
+        { id:'s5',  name:'刘志强', title:'主任医师 · 硕导', dept:'消化内科', position:'科室主任', desc:'内镜诊疗技术精湛，兴滇英才，省级教学名师。' },
+        { id:'s6',  name:'赵丽华', title:'主任医师 · 硕导', dept:'儿科', position:'科室主任', desc:'滇西儿童重症救治中心主任，省卫健委高层次人才。' },
+        { id:'s7',  name:'周建国', title:'主任医师', dept:'肿瘤科', position:'科室主任', desc:'肿瘤综合治疗专家，省学术带头人，主持省级科研5项。' },
+        { id:'s8',  name:'吴海燕', title:'主任医师 · 硕导', dept:'医学影像科', position:'科室主任', desc:'影像诊断专家，主持省级科研项目5项，发表SCI论文12篇。' },
+        { id:'s9',  name:'郑国栋', title:'副主任医师', dept:'呼吸与危重症医学科', position:'科室副主任', desc:'新冠疫情期间驰援武汉，省抗疫先进个人。' },
+        { id:'s10', name:'孙志明', title:'主任医师', dept:'泌尿外科', position:'科室副主任', desc:'达芬奇机器人手术主刀医师，年机器人手术量超百例。' },
+        { id:'s11', name:'黄晓琳', title:'副主任医师', dept:'急诊医学科', position:'科室副主任', desc:'急危重症救治专家，创伤中心核心成员。' },
+        { id:'s12', name:'马丽娜', title:'副主任护师', dept:'护理部', position:'护理部主任', desc:'护理学科带头人，带领护理团队获省级优质护理示范病房。' },
+        { id:'s13', name:'杨伟强', title:'副主任医师', dept:'麻醉科', position:'科室副主任', desc:'年麻醉量逾万例，擅长小儿及老年麻醉管理。' },
+        { id:'s14', name:'何秀英', title:'主管药师', dept:'药学部', position:'临床药学组长', desc:'临床药学专家，抗菌药物合理使用管理。' },
+        { id:'s15', name:'林志远', title:'副主任技师', dept:'检验科', position:'PCR实验室负责人', desc:'分子诊断专家，新冠核酸检测质控负责人。' },
+        { id:'s16', name:'宋晓燕', title:'主治医师', dept:'康复医学科', position:'康复治疗组组长', desc:'神经康复与骨伤康复专家，发表康复类论文8篇。' }
+      ],
+      dataCards: [
+        { value:'1946', label:'全院职工', note:'含编内编外' },
+        { value:'1638', label:'卫技人员', note:'占比 84.2%' },
+        { value:'29', label:'博士', note:'含在读' },
+        { value:'360', label:'硕士', note:'含在读' },
+        { value:'294', label:'高级职称', note:'正高+副高' },
+        { value:'41', label:'临床科室', note:'覆盖主要专科' }
+      ],
+      gallery: [
+        { icon:'👥', label:'全院职工合影' }, { icon:'🏥', label:'临床科室查房' },
+        { icon:'🎓', label:'教学带教日常' }, { icon:'🎗', label:'护士节表彰' },
+        { icon:'🤝', label:'多学科会诊MDT' }, { icon:'🔬', label:'科研团队实验室' },
+        { icon:'🏆', label:'年度表彰先进职工' }, { icon:'📸', label:'医院文化活动' }
+      ]
     }
   };
 }
@@ -510,7 +551,12 @@ function renderSectionEditor(sec) {
     // profiles (p1)
     if (Array.isArray(content.profiles) && content.profiles.length>0) {
       html+='<div class="content-section"><h5 class="content-section-title"><i class="fas fa-user-md text-orange mr-2"></i>人物简介（第一组）';
-      html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-profile" data-section="'+sec.id+'" data-group="profiles"><i class="fas fa-plus"></i> 新增</button></h5>';
+      html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-profile" data-section="'+sec.id+'" data-group="profiles"><i class="fas fa-plus"></i> 新增</button>';
+      // 职工名录：批量导入按钮
+      if (sec.id === 'staff') {
+        html+=' <button class="btn btn-xs btn-outline-info ml-1" id="btn-staff-batch-import"><i class="fas fa-file-import"></i> 批量导入</button>';
+      }
+      html+='</h5>';
       content.profiles.forEach(function(p,i){
         html+=renderProfileRow('profiles',p,i);
       });
@@ -617,7 +663,8 @@ function renderProfileRow(group,p,i){
   h+='<div class="form-row"><div class="col-md-3"><label>姓名</label><input class="form-control form-control-sm pr-name" data-group="'+group+'" value="'+escHtml(p.name||'')+'"></div>';
   h+='<div class="col-md-3"><label>职称/称号</label><input class="form-control form-control-sm pr-title" value="'+escHtml(p.title||'')+'"></div>';
   h+='<div class="col-md-6"><label>科室</label><input class="form-control form-control-sm pr-dept" value="'+escHtml(p.dept||'')+'"></div></div>';
-  h+='<div class="form-row mt-1"><div class="col-12"><label>简介</label><div class="input-group input-group-sm"><input class="form-control pr-desc" value="'+escHtml(p.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-profile" data-group="'+group+'" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
+  h+='<div class="form-row mt-1"><div class="col-md-6"><label>职位 <small class="text-muted">(如：科室主任、护理部主任)</small></label><input class="form-control form-control-sm pr-position" value="'+escHtml(p.position||'')+'" placeholder="科主任 / 护士长 / 组长 …"></div>';
+  h+='<div class="col-md-6"><label>简介/贡献</label><div class="input-group input-group-sm"><input class="form-control pr-desc" value="'+escHtml(p.desc||'')+'" placeholder="简述该职工的贡献…"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-profile" data-group="'+group+'" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
   h+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
   h+='<input class="form-control form-control-sm pr-photo" value="'+escHtml(p.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
   h+='</div>';
@@ -703,6 +750,7 @@ function saveSectionContent(secId) {
           name: $(this).find('.pr-name').val()||'',
           title: $(this).find('.pr-title').val()||'',
           dept: $(this).find('.pr-dept').val()||'',
+          position: $(this).find('.pr-position').val()||'',
           desc: $(this).find('.pr-desc').val()||'',
           photo: $(this).find('.pr-photo').val()||''
         });
@@ -1115,6 +1163,99 @@ $(document).ready(function() {
   $(document).on('click','#btn-export-datajs, #btn-quick-export',function(e){
     e.preventDefault();
     exportDataJs();
+  });
+
+  // ====== 职工名录批量导入 ======
+  $(document).on('click', '#btn-staff-batch-import', function() {
+    var modalHtml = [
+      '<div class="modal fade show" id="staffBatchModal" style="display:block;background:rgba(0,0,0,0.5)" tabindex="-1">',
+      '<div class="modal-dialog modal-lg"><div class="modal-content">',
+      '<div class="modal-header bg-info"><h5 class="modal-title"><i class="fas fa-file-import mr-2"></i>批量导入职工数据</h5>',
+      '<button type="button" class="close" id="btn-close-batch-modal">&times;</button></div>',
+      '<div class="modal-body">',
+      '<div class="alert alert-info"><i class="fas fa-info-circle mr-2"></i>',
+      '请按格式粘贴数据：每行一条记录，用 <b>Tab</b> 或 <b>逗号</b> 分隔，顺序为：<br>',
+      '<code>姓名  职称  科室  职位  简介  照片URL(可选)</code><br>',
+      '<small class="text-muted">示例：张三\t主任医师\t心血管内科\t科室主任\t深耕冠脉介入30年\thttps://...</small></div>',
+      '<textarea class="form-control" id="batchImportText" rows="12" placeholder="粘贴职工数据…"></textarea>',
+      '<div class="mt-2" id="batchImportPreview" style="max-height:200px;overflow:auto"></div></div>',
+      '<div class="modal-footer">',
+      '<button class="btn btn-secondary" id="btn-cancel-batch">取消</button>',
+      '<button class="btn btn-info" id="btn-preview-batch"><i class="fas fa-eye mr-1"></i>预览解析</button>',
+      '<button class="btn btn-success" id="btn-execute-batch" disabled><i class="fas fa-check mr-1"></i>确认导入</button>',
+      '</div></div></div></div>'
+    ].join('');
+    $('body').append(modalHtml);
+
+    var parsedData = [];
+
+    function closeModal() { $('#staffBatchModal').remove(); }
+    $('#btn-close-batch-modal, #btn-cancel-batch').click(closeModal);
+
+    $('#btn-preview-batch').click(function() {
+      var raw = $('#batchImportText').val().trim();
+      if (!raw) { alert('请先粘贴职工数据'); return; }
+      parsedData = [];
+      var lines = raw.split(/[\n\r]+/).filter(function(l) { return l.trim(); });
+      lines.forEach(function(line) {
+        var cols;
+        if (line.indexOf('\t') >= 0) {
+          cols = line.split('\t');
+        } else {
+          cols = line.split(',');
+        }
+        if (cols.length < 1) return;
+        parsedData.push({
+          name: (cols[0]||'').trim(),
+          title: (cols[1]||'').trim(),
+          dept: (cols[2]||'').trim(),
+          position: (cols[3]||'').trim(),
+          desc: (cols[4]||'').trim(),
+          photo: (cols[5]||'').trim()
+        });
+      });
+
+      var previewHtml = '<div class="table-responsive"><table class="table table-sm table-bordered">';
+      previewHtml += '<thead><tr><th>#</th><th>姓名</th><th>职称</th><th>科室</th><th>职位</th><th>简介</th></tr></thead><tbody>';
+      parsedData.forEach(function(p, i) {
+        previewHtml += '<tr><td>' + (i+1) + '</td><td>' + escHtml(p.name) + '</td><td>' + escHtml(p.title) + '</td><td>' + escHtml(p.dept) + '</td><td>' + escHtml(p.position||'') + '</td><td>' + escHtml((p.desc||'').substring(0,30)) + '</td></tr>';
+      });
+      previewHtml += '</tbody></table></div>';
+      previewHtml += '<div class="text-success"><i class="fas fa-check-circle mr-1"></i>解析成功：<b>' + parsedData.length + '</b> 条记录</div>';
+      $('#batchImportPreview').html(previewHtml);
+      $('#btn-execute-batch').prop('disabled', parsedData.length === 0);
+    });
+
+    $('#btn-execute-batch').click(function() {
+      if (!parsedData.length) return;
+      var content = getContent();
+      if (!content.staff) content.staff = {};
+      if (!content.staff.profiles) content.staff.profiles = [];
+
+      var existingNames = {};
+      content.staff.profiles.forEach(function(p) { existingNames[p.name] = true; });
+
+      var addedCount = 0;
+      parsedData.forEach(function(p) {
+        if (existingNames[p.name]) return;
+        content.staff.profiles.push({
+          id: 's' + Date.now() + Math.random(),
+          name: p.name,
+          title: p.title,
+          dept: p.dept,
+          position: p.position,
+          desc: p.desc,
+          photo: p.photo || ''
+        });
+        existingNames[p.name] = true;
+        addedCount++;
+      });
+
+      saveContent(content);
+      closeModal();
+      $(document).Toasts('create', {class:'bg-success', title:'导入成功', body:'成功导入 ' + addedCount + ' 条职工记录（跳过 ' + (parsedData.length - addedCount) + ' 条重复）', autohide:true, delay:3000});
+      navigateTo('staff');
+    });
   });
 
   if(!$('.toasts-top-right').length) $('body').append('<div class="toasts-top-right fixed" style="position:fixed;top:70px;right:20px;z-index:9999"></div>');
