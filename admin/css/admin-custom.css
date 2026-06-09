@@ -400,6 +400,47 @@
 }
 .gallery-row:last-child { border-bottom: none; }
 
+/* URL 输入框防溢出 */
+.bl-imgUrl, .pr-photo, .ga-url, .hero-bg {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* URL 列 label 标签（含说明文字）不换行 */
+.form-row label small.text-muted {
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* 表格中文字防溢出（不影响宽度计算） */
+.table td {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+.table td.no-break {
+  white-space: nowrap;
+  width: 1%;
+}
+
+/* Block 编辑器 URL 行单独显示，增加视觉提示 */
+.block-item-editor .bl-imgUrl-wrap {
+  background: #f0f7ff;
+  border: 1px solid #cce4ff;
+  border-radius: 4px;
+  padding: 6px 8px;
+}
+
+/* 图片预览缩略图行 */
+.gallery-row .preview-thumb {
+  max-height: 64px;
+  max-width: 120px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--admin-border);
+}
+
 /* Form spacing helpers */
 .form-row {
   display: flex;

@@ -9,15 +9,15 @@ var SECTIONS = [
   { id:'history',     name:'历史沿革', icon:'fas fa-history',       color:'#2980b9', page:'01-history.html',     types:['hero','block','timeline','gallery'] },
   { id:'people',      name:'人物风采', icon:'fas fa-users',         color:'#e67e22', page:'02-people.html',      types:['hero','leader','profile','dataCard','gallery'] },
   { id:'disciplines', name:'学科建设', icon:'fas fa-microscope',    color:'#27ae60', page:'03-disciplines.html', types:['hero','block','profile','gallery'] },
-  { id:'campus',      name:'院区建设', icon:'fas fa-building',      color:'#8e44ad', page:'04-campus.html',      types:['hero','block','gallery'] },
+  { id:'campus',      name:'院区建设', icon:'fas fa-building',      color:'#8e44ad', page:'04-campus.html',      types:['hero','block','dataCard','gallery'] },
   { id:'education',   name:'教学人才', icon:'fas fa-graduation-cap',color:'#e91e63', page:'05-education.html',   types:['hero','block','profile','dataCard','gallery'] },
   { id:'culture',     name:'文化建设', icon:'fas fa-heart',         color:'#f57c00', page:'06-culture.html',     types:['hero','block','dataCard','gallery'] },
-  { id:'tech',        name:'科技交流', icon:'fas fa-robot',         color:'#1565c0', page:'07-tech.html',        types:['hero','block','gallery'] },
-  { id:'duty',        name:'责任担当', icon:'fas fa-shield-alt',    color:'#c62828', page:'08-duty.html',        types:['hero','block','gallery'] },
+  { id:'tech',        name:'科技交流', icon:'fas fa-robot',         color:'#1565c0', page:'07-tech.html',        types:['hero','block','dataCard','gallery'] },
+  { id:'duty',        name:'责任担当', icon:'fas fa-shield-alt',    color:'#c62828', page:'08-duty.html',        types:['hero','block','dataCard','gallery'] },
   { id:'honors',      name:'荣誉殿堂', icon:'fas fa-trophy',        color:'#f9a825', page:'09-honors.html',      types:['hero','block','dataCard','gallery'] },
-  { id:'vision',      name:'展望未来', icon:'fas fa-eye',           color:'#00695c', page:'10-vision.html',      types:['hero','block','gallery'] },
-  { id:'structure',   name:'组织架构', icon:'fas fa-sitemap',       color:'#4527a0', page:'11-structure.html',   types:['hero','block'] },
-  { id:'leadership',  name:'领导团队', icon:'fas fa-user-tie',      color:'#bf360c', page:'12-leadership.html',  types:['hero','block','leadership'] }
+  { id:'vision',      name:'展望未来', icon:'fas fa-eye',           color:'#00695c', page:'10-vision.html',      types:['hero','block','dataCard','gallery'] },
+  { id:'structure',   name:'组织架构', icon:'fas fa-sitemap',       color:'#4527a0', page:'11-structure.html',   types:['hero','block','gallery'] },
+  { id:'leadership',  name:'领导团队', icon:'fas fa-user-tie',      color:'#bf360c', page:'12-leadership.html',  types:['hero','block','leadership','gallery'] }
 ];
 
 // ====== 初始化全部数据 ======
@@ -152,6 +152,13 @@ function seedContent() {
           text:'<h4>规划定位</h4><p>凤仪院区是医院高质量发展的重要战略布局，承担医疗、教学、科研综合功能。</p>',
           imgIcon:'🏗', imgLabel:'凤仪院区效果图', imgSize:'16:9' }
       ],
+      dataCards: [
+        { value:'162', label:'总占地面积（亩）', note:'院本部+凤仪院区' },
+        { value:'18万', label:'业务用房面积', note:'m²' },
+        { value:'1500', label:'编制床位（张）', note:'实际开放2013张' },
+        { value:'2', label:'运营院区', note:'院本部+凤仪院区' },
+        { value:'41', label:'临床科室', note:'覆盖主要专科领域' }
+      ],
       gallery: [
         { icon:'🏥', label:'主院区全景' }, { icon:'🏗', label:'凤仪院区规划' },
         { icon:'🛏', label:'病房环境' }, { icon:'🔬', label:'先进设备' }
@@ -202,6 +209,12 @@ function seedContent() {
           text:'<h4>科研平台</h4><p>建有院士工作站1个、省级重点实验室3个、省级医学研究分中心8个。</p>',
           imgIcon:'🔬', imgLabel:'科研平台照片', imgSize:'16:9' }
       ],
+      dataCards: [
+        { value:'193', label:'SCI论文（篇）', note:'累计发表国际期刊' },
+        { value:'102', label:'专利授权（项）', note:'自主知识产权成果' },
+        { value:'8', label:'省研究分中心', note:'省级科研平台集群' },
+        { value:'16', label:'国际留学生来源国', note:'' }
+      ],
       gallery: [
         { icon:'🔬', label:'科研实验' }, { icon:'🌐', label:'国际交流' },
         { icon:'📄', label:'学术论文' }, { icon:'🏆', label:'科技成果' }
@@ -213,6 +226,12 @@ function seedContent() {
         { id:'b1', num:'01 · 抗疫 · 驰援一线', title:'抗疫驰援', subtitle:'157名医护驰援抗疫一线',
           text:'<h4>逆行出征</h4><p>新冠疫情暴发后，医院先后派出157名医护人员驰援武汉、上海、瑞丽等地。</p>',
           imgIcon:'🦸', imgLabel:'抗疫出征照片', imgSize:'16:9' }
+      ],
+      dataCards: [
+        { value:'157', label:'抗疫驰援医护（名）', note:'驰援武汉/上海/瑞丽' },
+        { value:'87', label:'帮扶脱贫（户）', note:'云龙县健康扶贫' },
+        { value:'10+', label:'对口支援医院', note:'滇西基层医疗单位' },
+        { value:'1', label:'代管机构', note:'省第二传染病医院' }
       ],
       gallery: [
         { icon:'🦸', label:'抗疫出征' }, { icon:'🤝', label:'对口帮扶' },
@@ -242,6 +261,12 @@ function seedContent() {
           text:'<h4>核心目标</h4><p>建成集医疗、教学、科研、预防、康复于一体的滇西区域医疗中心。</p>',
           imgIcon:'🎯', imgLabel:'发展愿景图', imgSize:'16:9' }
       ],
+      dataCards: [
+        { value:'区域', label:'医疗中心建设目标', note:'滇西高水平医疗中心' },
+        { value:'9', label:'十四五省级重点专科', note:'在建+新立项' },
+        { value:'AI', label:'智能诊断', note:'智慧医院全面深化' },
+        { value:'16国', label:'国际合作', note:'南亚东南亚拓展' }
+      ],
       gallery: [
         { icon:'🎯', label:'战略规划' }, { icon:'🚀', label:'未来蓝图' },
         { icon:'🌟', label:'远景目标' }, { icon:'📈', label:'发展路径' }
@@ -253,6 +278,10 @@ function seedContent() {
         { id:'b1', num:'01 · 架构 · 组织体系', title:'医院组织架构', subtitle:'党委领导下的院长负责制',
           text:'<h4>管理体系</h4><p>院党委—院行政—党政管理部门—临床医技科室—教研室/实验室，五级管理体系。</p>',
           imgIcon:'🏛', imgLabel:'组织架构图', imgSize:'4:3' }
+      ],
+      gallery: [
+        { icon:'🏛', label:'职代会全景' }, { icon:'🚩', label:'党委会议' },
+        { icon:'👥', label:'党支部活动' }, { icon:'🎉', label:'工会文体活动' }
       ]
     },
     leadership: {
@@ -269,6 +298,10 @@ function seedContent() {
         { id:'ld4', name:'[待补充]', role:'副院长', duty:'分管医疗业务', resume:'分管医务部、护理部、临床科室质量管理等工作。' },
         { id:'ld5', name:'[待补充]', role:'副院长', duty:'分管科研教学', resume:'分管科研科、教学管理科、研究生培养等工作。' },
         { id:'ld6', name:'[待补充]', role:'纪委书记', duty:'分管纪检监察', resume:'主持医院纪委全面工作，分管纪检监察审计。' }
+      ],
+      gallery: [
+        { icon:'👤', label:'党委书记风采' }, { icon:'👤', label:'院长风采' },
+        { icon:'👥', label:'领导班子合影' }, { icon:'🏛', label:'院务会议' }
       ]
     }
   };
@@ -387,7 +420,27 @@ function statCard(col,bg,icon,count,label){
 function renderSectionEditor(sec) {
   var sd=JSON.parse(localStorage.getItem('hm_admin_sections')||'{}');
   var data=sd[sec.id]||{title:sec.name,status:'draft',updatedAt:'',notes:''};
-  var content=getContent()[sec.id]||{};
+  var allContent=getContent();
+  var content=allContent[sec.id]||{};
+
+  // ---- 自动补全缺失字段（兼容旧数据）----
+  var seed=seedContent()[sec.id]||{};
+  var needSave=false;
+  ['gallery','dataCards','blocks','profiles','leaders','leadership','timeline'].forEach(function(field){
+    if(sec.types.indexOf(field.replace('Card',''))<0 &&
+       sec.types.indexOf('dataCard')<0 && field==='dataCards') return; // 跳过不在types中的field
+    // gallery 和 dataCards 需根据 types 判断
+    if(field==='gallery' && sec.types.indexOf('gallery')<0) return;
+    if(field==='dataCards' && sec.types.indexOf('dataCard')<0) return;
+    if(!Array.isArray(content[field]) && Array.isArray(seed[field])) {
+      content[field]=seed[field];
+      needSave=true;
+    }
+  });
+  if(needSave) {
+    allContent[sec.id]=content;
+    saveContent(allContent);
+  }
 
   var html='<div class="container-fluid">';
 
@@ -509,10 +562,22 @@ function renderSectionEditor(sec) {
   if (sec.types.indexOf('gallery')>=0 && Array.isArray(content.gallery)) {
     html+='<div class="content-section"><h5 class="content-section-title"><i class="fas fa-images text-purple mr-2"></i>底部画廊';
     html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-gallery" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 新增</button></h5>';
+    html+='<small class="text-muted d-block mb-2"><i class="fas fa-info-circle mr-1"></i>填写图片/资料URL后，前台画廊将显示真实图片并支持点击放大。留空则显示占位Emoji图标。</small>';
     content.gallery.forEach(function(g,i){
-      html+='<div class="form-row gallery-row"><div class="col-md-2"><label>图标Emoji</label><input class="form-control form-control-sm ga-icon" value="'+escHtml(g.icon||'')+'" maxlength="4"></div>';
-      html+='<div class="col-md-8"><label>标签</label><input class="form-control form-control-sm ga-label" value="'+escHtml(g.label||'')+'"></div>';
-      html+='<div class="col-md-2"><label>&nbsp;</label><button class="btn btn-sm btn-outline-danger btn-block btn-del-gallery" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div>';
+      html+='<div class="gallery-row border rounded p-2 mb-2">';
+      html+='<div class="form-row align-items-end"><div class="col-md-1"><label>图标</label><input class="form-control form-control-sm ga-icon" value="'+escHtml(g.icon||'')+'" maxlength="4" placeholder="📷"></div>';
+      html+='<div class="col-md-10"><label>标签/说明</label><input class="form-control form-control-sm ga-label" value="'+escHtml(g.label||'')+'" placeholder="图片说明文字"></div>';
+      html+='<div class="col-md-1 d-flex align-items-end"><button class="btn btn-sm btn-outline-danger btn-block btn-del-gallery" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div>';
+      html+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-link mr-1 text-primary"></i>图片或资料URL <small class="text-muted">(可填图片URL或文件链接，留空则显示占位Emoji图标)</small></label>';
+      html+='<div class="input-group input-group-sm">';
+      html+='<div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-image"></i></span></div>';
+      html+='<input class="form-control ga-url" value="'+escHtml(g.url||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg">';
+      html+='</div></div></div>';
+      // 预览缩略图（如有URL）
+      if(g.url) {
+        html+='<div class="mt-1"><small class="text-muted">预览：</small> <img src="'+escHtml(g.url)+'" style="max-height:60px;max-width:120px;border-radius:4px;object-fit:cover;" onerror="this.style.display=\'none\'"></div>';
+      }
+      html+='</div>';
     });
     html+='</div>';
   }
@@ -538,9 +603,10 @@ function renderBlockEditor(secId,b,i){
   h+='<div class="col-md-4"><label>副标题</label><div class="input-group input-group-sm"><input class="form-control bl-subtitle" value="'+escHtml(b.subtitle||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-block" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
   h+='<div class="form-row mt-1"><div class="col-12"><label>正文 (HTML)</label><textarea class="form-control form-control-sm bl-text" rows="3">'+escHtml(b.text||'')+'</textarea></div></div>';
   h+='<div class="form-row mt-1"><div class="col-md-2"><label>图片Emoji</label><input class="form-control form-control-sm bl-imgIcon" value="'+escHtml(b.imgIcon||'')+'"></div>';
-  h+='<div class="col-md-5"><label>图片描述</label><input class="form-control form-control-sm bl-imgLabel" value="'+escHtml(b.imgLabel||'')+'"></div>';
-  h+='<div class="col-md-2"><label>尺寸</label><input class="form-control form-control-sm bl-imgSize" value="'+escHtml(b.imgSize||'')+'"></div>';
-  h+='<div class="col-md-3"><label>图片URL</label><input class="form-control form-control-sm bl-imgUrl" value="'+escHtml(b.imgUrl||'')+'" placeholder="直接填入图片URL"></div></div>';
+  h+='<div class="col-md-7"><label>图片描述</label><input class="form-control form-control-sm bl-imgLabel" value="'+escHtml(b.imgLabel||'')+'"></div>';
+  h+='<div class="col-md-3"><label>尺寸比例</label><input class="form-control form-control-sm bl-imgSize" value="'+escHtml(b.imgSize||'')+'"></div></div>';
+  h+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-link text-primary mr-1"></i>图片URL <small class="text-muted">(填入后前台将显示真实图片，留空则显示占位图标)</small></label>';
+  h+='<input class="form-control form-control-sm bl-imgUrl" value="'+escHtml(b.imgUrl||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg" style="word-break:break-all;"></div></div>';
   h+='</div>';
   return h;
 }
@@ -550,9 +616,10 @@ function renderProfileRow(group,p,i){
   var h='<div class="profile-row-editor">';
   h+='<div class="form-row"><div class="col-md-3"><label>姓名</label><input class="form-control form-control-sm pr-name" data-group="'+group+'" value="'+escHtml(p.name||'')+'"></div>';
   h+='<div class="col-md-3"><label>职称/称号</label><input class="form-control form-control-sm pr-title" value="'+escHtml(p.title||'')+'"></div>';
-  h+='<div class="col-md-2"><label>科室</label><input class="form-control form-control-sm pr-dept" value="'+escHtml(p.dept||'')+'"></div>';
-  h+='<div class="col-md-4"><label>简介</label><div class="input-group input-group-sm"><input class="form-control pr-desc" value="'+escHtml(p.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-profile" data-group="'+group+'" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
-  h+='<div class="form-row mt-1"><div class="col-md-3"><label>照片URL</label><input class="form-control form-control-sm pr-photo" value="'+escHtml(p.photo||'')+'" placeholder="留空用占位"></div></div>';
+  h+='<div class="col-md-6"><label>科室</label><input class="form-control form-control-sm pr-dept" value="'+escHtml(p.dept||'')+'"></div></div>';
+  h+='<div class="form-row mt-1"><div class="col-12"><label>简介</label><div class="input-group input-group-sm"><input class="form-control pr-desc" value="'+escHtml(p.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-profile" data-group="'+group+'" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
+  h+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
+  h+='<input class="form-control form-control-sm pr-photo" value="'+escHtml(p.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
   h+='</div>';
   return h;
 }
@@ -688,7 +755,8 @@ function saveSectionContent(secId) {
     $('#section-editor-body .gallery-row').each(function(){
       content[secId].gallery.push({
         icon: $(this).find('.ga-icon').val()||'',
-        label: $(this).find('.ga-label').val()||''
+        label: $(this).find('.ga-label').val()||'',
+        url: $(this).find('.ga-url').val()||''
       });
     });
   }
@@ -867,7 +935,7 @@ $(document).ready(function() {
     var content=getContent();
     if(!content[secId]) content[secId]={};
     if(!content[secId].gallery) content[secId].gallery=[];
-    content[secId].gallery.push({icon:'📷',label:'新图片'});
+    content[secId].gallery.push({icon:'📷',label:'新图片',url:''});
     saveContent(content);
     navigateTo(secId);
   });

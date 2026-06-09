@@ -137,8 +137,20 @@
           if (iconEl && b.imgIcon) iconEl.textContent = b.imgIcon;
           if (labelEl && b.imgLabel) labelEl.innerHTML = b.imgLabel;
           if (sizeEl && b.imgSize) sizeEl.textContent = b.imgSize;
-          if (b.imgUrl && is.tagName === 'IMG') {
-            is.setAttribute('src', b.imgUrl);
+          // 若提供了真实图片URL，替换占位div为实际img
+          if (b.imgUrl) {
+            var existImg = is.querySelector('img.slot-real-img');
+            if (!existImg) {
+              existImg = document.createElement('img');
+              existImg.className = 'slot-real-img';
+              existImg.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;';
+              is.style.position = 'relative';
+              is.appendChild(existImg);
+            }
+            existImg.src = b.imgUrl;
+            existImg.alt = b.imgLabel || '';
+            // 隐藏占位内容（图标/标签/尺寸文字）
+            [iconEl, labelEl, sizeEl].forEach(function(el) { if (el) el.style.display = 'none'; });
           }
         }
       });
@@ -231,9 +243,44 @@
       if (galleryGrid) {
         var gHTML = '';
         sectionContent.gallery.forEach(function(g, i) {
-          gHTML += '<div class="gallery-item fade-in stagger-' + ((i%4)+1) + '"><div class="gallery-item-icon">' + esc(g.icon) + '</div><div class="gallery-item-label">' + esc(g.label) + '</div></div>';
+          var stagger = ((i % 4) + 1);
+          if (g.url) {
+            // 有真实图片/资料URL：渲染为可点击的图片卡片
+            var isImg = /\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?.*)?$/i.test(g.url);
+            if (isImg) {
+              // 图片：显示真实图片缩略图，支持 lightbox 点击放大
+              gHTML += '<div class="gallery-item fade-in stagger-' + stagger + '" data-src="' + esc(g.url) + '" style="cursor:zoom-in;padding:0;overflow:hidden;">' +
+                '<img src="' + esc(g.url) + '" alt="' + esc(g.label) + '" style="width:100%;height:180px;object-fit:cover;border-radius:inherit;" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">' +
+                '<div style="display:none;align-items:center;justify-content:center;height:180px;font-size:2.5rem;">' + esc(g.icon || '📷') + '</div>' +
+                '<div class="gallery-item-label" style="padding:8px 12px;">' + esc(g.label) + '</div></div>';
+            } else {
+              // 文件/资料：显示下载图标，点击跳转
+              gHTML += '<a class="gallery-item fade-in stagger-' + stagger + '" href="' + esc(g.url) + '" target="_blank" rel="noopener" style="text-decoration:none;">' +
+                '<div class="gallery-item-icon" style="font-size:2.5rem;">' + esc(g.icon || '📄') + '</div>' +
+                '<div class="gallery-item-label">' + esc(g.label) + '</div>' +
+                '<div style="font-size:10px;color:var(--text-muted,#888);margin-top:4px;word-break:break-all;padding:0 8px;">🔗 ' + esc(g.url.replace(/^https?:\/\//, '').substring(0, 40)) + (g.url.length > 50 ? '…' : '') + '</div></a>';
+            }
+          } else {
+            // 无URL：显示占位 Emoji（原有逻辑）
+            gHTML += '<div class="gallery-item fade-in stagger-' + stagger + '"><div class="gallery-item-icon">' + esc(g.icon) + '</div><div class="gallery-item-label">' + esc(g.label) + '</div></div>';
+          }
         });
         galleryGrid.innerHTML = gHTML;
+
+        // 重新绑定图片 lightbox 事件
+        galleryGrid.querySelectorAll('.gallery-item[data-src]').forEach(function(item) {
+          item.addEventListener('click', function() {
+            var src = item.getAttribute('data-src');
+            var overlay = document.createElement('div');
+            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:zoom-out;';
+            var img = document.createElement('img');
+            img.src = src;
+            img.style.cssText = 'max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.7);';
+            overlay.appendChild(img);
+            overlay.addEventListener('click', function() { document.body.removeChild(overlay); });
+            document.body.appendChild(overlay);
+          });
+        });
       }
     }
   }
