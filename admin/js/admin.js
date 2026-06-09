@@ -6,6 +6,8 @@
 
 // ====== 底层数据模型 ======
 var SECTIONS = [
+  { id:'index',       name:'网站首页', icon:'fas fa-home',          color:'#1a73e8', page:'index.html',         types:['index-hero','sectionCards','footer'] },
+
   { id:'history',     name:'历史沿革', icon:'fas fa-history',       color:'#2980b9', page:'01-history.html',     types:['hero','block','timeline','gallery'] },
   { id:'people',      name:'人物风采', icon:'fas fa-users',         color:'#e67e22', page:'02-people.html',      types:['hero','leader','profile','dataCard','gallery'] },
   { id:'disciplines', name:'学科建设', icon:'fas fa-microscope',    color:'#27ae60', page:'03-disciplines.html', types:['hero','block','profile','gallery'] },
@@ -305,6 +307,38 @@ function seedContent() {
         { icon:'👥', label:'领导班子合影' }, { icon:'🏛', label:'院务会议' }
       ]
     },
+    index: {
+      hero: {
+        bgImage:'assets/images/2_20.png',
+        title:'大理大学第一附属医院',
+        tag:'云南省卫健委直管 · 非省会三甲综合高校附属医院',
+        flipItems: ['云南省第四人民医院','三级甲等综合医院','国家临床教学示范中心','滇西区域医疗高地'],
+        desc:'1991年始建，坐落于大理市，一院两区运营。编制床位1500张，开放2013张，职工1946人，临床科室41个，集医疗、教学、科研、预防于一体。',
+        cta1Text:'探索院史', cta1Link:'pages/01-history.html',
+        cta2Text:'查看全部板块'
+      },
+      sectionCards: [
+        { num:'板块一', icon:'📜', title:'历史沿革', sub:'医院发展的时光足迹', desc:'从1991年获批成立到2015年三甲评审，7个关键节点完整记录医院从无到有、从弱到强的发展历程。', link:'pages/01-history.html' },
+        { num:'板块二', icon:'👨‍⚕️', title:'人物风采', sub:'医院发展的核心力量', desc:'致敬先驱领导者，礼赞学科带头人，展示1946名职工与803名党员的奋斗风貌与精神风采。', link:'pages/02-people.html' },
+        { num:'板块三', icon:'🏥', title:'学科建设', sub:'医院实力的核心体现', desc:'9个省级重点专科、41个临床科室、8个省医学研究分中心，展现滇西领先的综合学科实力矩阵。', link:'pages/03-disciplines.html' },
+        { num:'板块四', icon:'🏗', title:'院区建设', sub:'医院空间的拓展与升级', desc:'从初创简陋建筑到现代化医疗综合体，162亩双院区协同运营，业务用房18万平方米的壮阔蜕变。', link:'pages/04-campus.html' },
+        { num:'板块五', icon:'🎓', title:'教学与人才', sub:'医院发展的智力支撑', desc:'5个本科专业、977名在读研究生（含22名留学生）、来自全球16个国家的国际化办学生态。', link:'pages/05-education.html' },
+        { num:'板块六', icon:'💎', title:'文化建设', sub:'医院发展的精神灵魂', desc:'"诚信进取，和谐奉献"四字精神凝聚全院文化认同；"仁爱厚德，精诚严谨"八字院训指引医者初心。', link:'pages/06-culture.html' },
+        { num:'板块七', icon:'🤖', title:'科技与交流', sub:'创新引擎与国际视野', desc:'达芬奇手术机器人、智慧医院、193篇SCI论文、16国留学生，科技赋能与国际合作双轮驱动。', link:'pages/07-tech.html' },
+        { num:'板块八', icon:'🚑', title:'责任与担当', sub:'践行使命的生动实践', desc:'157名医护驰援武汉、上海、瑞丽等地；帮扶云龙县87户脱贫；长期对口支援10余家基层医院。', link:'pages/08-duty.html' },
+        { num:'板块九', icon:'🏆', title:'荣誉殿堂', sub:'三十四载荣耀征程', desc:'三甲认证、省科技进步奖、102项专利、9个省级重点专科——每一份荣誉都是奋斗的见证。', link:'pages/09-honors.html' },
+        { num:'板块十', icon:'🔭', title:'展望未来', sub:'砥砺奋进新征程', desc:'区域医疗中心、精准医疗、AI诊断、国际拓展——四大战略引领高质量发展新篇章。', link:'pages/10-vision.html' },
+        { num:'板块十一', icon:'🏛', title:'组织架构', sub:'科学布局 · 高效运转', desc:'党委领导下的院长负责制，41个临床科室、9党总支/55党支部，三级甲等现代医院治理体系。', link:'pages/11-structure.html' },
+        { num:'板块十二', icon:'👥', title:'领导团队', sub:'领航定向 · 掌舵前行', desc:'现任院党政领导班子成员介绍，各临床科室负责人风采展示，凝聚全院1946名职工的力量。', link:'pages/12-leadership.html' },
+        { num:'板块十三', icon:'📋', title:'职工名录', sub:'每一位职工，都是基石', desc:'铭记全院1946名职工的基本信息与贡献，41个临床科室全覆盖，每一位大附院人都值得被铭记。', link:'pages/13-staff.html' }
+      ],
+      footer: {
+        slogan:'诚信 · 进取 · 和谐 · 奉献<br>云南省第四人民医院 · 云端院史馆',
+        addr:'<strong>院本部：</strong>云南省大理市嘉士伯大道32号<br><strong>凤仪院区：</strong>大理经开区凤仪镇工业大道西侧、白塔河以东',
+        phones:'党政办：0872-2201062 | 门诊部：0872-2201150 | 投诉办：0872-2201309 | 体检中心：0872-2201119 | 医务部：0872-2201168',
+        copyright:'© 2025 大理大学第一附属医院（云南省第四人民医院）版权所有 | 云端院史馆 v4.0 | 本网站非官方站点，信息仅供参考'
+      }
+    },
     staff: {
       hero: { bgImage:'../assets/images/2_20.png', num:'板块十三 · SECTION 13', title:'职工名录', subtitle:'每一位职工，都是医院发展的基石', desc:'1946名在册职工，41个临床科室，来自五湖四海，汇聚于此。铭记每一位大附院人的名字与贡献。' },
       blocks: [
@@ -461,6 +495,63 @@ function statCard(col,bg,icon,count,label){
   return '<div class="'+col+'"><div class="small-box '+bg+'"><div class="inner"><h3>'+count+'</h3><p>'+label+'</p></div><div class="icon"><i class="'+icon+'"></i></div></div></div>';
 }
 
+// ====== 首页专属编辑器 ======
+function renderIndexEditor(content) {
+  var hero = content.hero || {};
+  var cards = content.sectionCards || [];
+  var footer = content.footer || {};
+  var h = '';
+
+  // Hero 编辑区
+  h += '<div class="content-section"><h5 class="content-section-title"><i class="fas fa-image text-info mr-2"></i>首页 Hero（轮播+描述）</h5>';
+  h += '<div class="form-row"><div class="col-md-6"><label>背景图</label><input class="form-control form-control-sm hero-bg" value="' + escHtml(hero.bgImage || '') + '"></div>';
+  h += '<div class="col-md-6"><label>医院名称</label><input class="form-control form-control-sm hero-index-title" value="' + escHtml(hero.title || '') + '"></div></div>';
+  h += '<div class="form-row mt-2"><div class="col-md-6"><label>标签</label><input class="form-control form-control-sm hero-index-tag" value="' + escHtml(hero.tag || '') + '"></div>';
+  h += '<div class="col-md-6"><label>描述</label><textarea class="form-control form-control-sm hero-index-desc" rows="2">' + escHtml(hero.desc || '') + '</textarea></div></div>';
+  h += '<div class="form-row mt-2"><div class="col-md-3"><label>按钮1文字</label><input class="form-control form-control-sm hero-index-cta1-text" value="' + escHtml(hero.cta1Text || '') + '"></div>';
+  h += '<div class="col-md-3"><label>按钮1链接</label><input class="form-control form-control-sm hero-index-cta1-link" value="' + escHtml(hero.cta1Link || '') + '"></div>';
+  h += '<div class="col-md-3"><label>按钮2文字</label><input class="form-control form-control-sm hero-index-cta2-text" value="' + escHtml(hero.cta2Text || '') + '"></div></div>';
+
+  // Flip 轮播词
+  var flips = hero.flipItems || [];
+  h += '<label class="mt-2 mb-1"><strong>轮播关键词</strong> <button class="btn btn-xs btn-outline-success ml-2 btn-add-flip"><i class="fas fa-plus"></i> 新增</button></label>';
+  h += '<div id="flip-items-container">';
+  flips.forEach(function(f, i) {
+    h += '<div class="input-group input-group-sm mb-1 flip-item">';
+    h += '<input class="form-control flip-item-val" value="' + escHtml(f) + '" placeholder="例如: 三级甲等综合医院">';
+    h += '<div class="input-group-append"><button class="btn btn-outline-danger btn-del-flip" data-idx="' + i + '"><i class="fas fa-trash"></i></button></div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  h += '</div>'; // content-section
+
+  // Section Cards 编辑区（13个板块卡片）
+  h += '<div class="content-section"><h5 class="content-section-title"><i class="fas fa-th-large text-primary mr-2"></i>板块导航卡片（13张）</h5>';
+  h += '<div class="table-responsive"><table class="table table-sm table-bordered table-striped"><thead><tr>';
+  h += '<th width="60">编号</th><th width="40">图标</th><th width="80">标题</th><th width="90">副标题</th><th>描述</th><th width="120">链接</th></tr></thead><tbody>';
+  cards.forEach(function(c, i) {
+    h += '<tr class="index-card-row">';
+    h += '<td><input class="form-control form-control-sm ic-num" value="' + escHtml(c.num || '') + '" style="width:70px"></td>';
+    h += '<td><input class="form-control form-control-sm ic-icon" value="' + escHtml(c.icon || '') + '" style="width:50px"></td>';
+    h += '<td><input class="form-control form-control-sm ic-title" value="' + escHtml(c.title || '') + '"></td>';
+    h += '<td><input class="form-control form-control-sm ic-sub" value="' + escHtml(c.sub || '') + '"></td>';
+    h += '<td><input class="form-control form-control-sm ic-desc" value="' + escHtml(c.desc || '') + '"></td>';
+    h += '<td><input class="form-control form-control-sm ic-link" value="' + escHtml(c.link || '') + '"></td>';
+    h += '</tr>';
+  });
+  h += '</tbody></table></div></div>'; // content-section
+
+  // Footer 编辑区
+  h += '<div class="content-section"><h5 class="content-section-title"><i class="fas fa-window-maximize text-secondary mr-2"></i>页脚 Footer</h5>';
+  h += '<div class="form-row"><div class="col-md-6"><label>Slogan (支持&lt;br&gt;)</label><textarea class="form-control form-control-sm idx-footer-slogan" rows="2">' + escHtml(footer.slogan || '') + '</textarea></div>';
+  h += '<div class="col-md-6"><label>地址 (支持HTML)</label><textarea class="form-control form-control-sm idx-footer-addr" rows="2">' + escHtml(footer.addr || '') + '</textarea></div></div>';
+  h += '<div class="form-row mt-2"><div class="col-md-6"><label>联系电话 (" | " 分隔)</label><input class="form-control form-control-sm idx-footer-phones" value="' + escHtml(footer.phones || '') + '"></div>';
+  h += '<div class="col-md-6"><label>版权信息</label><input class="form-control form-control-sm idx-footer-copyright" value="' + escHtml(footer.copyright || '') + '"></div></div>';
+  h += '</div>';
+
+  return h;
+}
+
 // ====== 板块内容编辑器（核心） ======
 function renderSectionEditor(sec) {
   var sd=JSON.parse(localStorage.getItem('hm_admin_sections')||'{}');
@@ -493,6 +584,13 @@ function renderSectionEditor(sec) {
   html+='<div class="row"><div class="col-md-8"><div class="card card-primary card-outline"><div class="card-header"><h3 class="card-title"><i class="'+sec.icon+'" style="color:'+sec.color+'"></i> '+sec.name+' — 内容管理</h3>';
   html+='<div class="card-tools"><button class="btn btn-sm btn-accent btn-save-content" data-section="'+sec.id+'"><i class="fas fa-save mr-1"></i>保存全部</button></div>';
   html+='</div><div class="card-body" id="section-editor-body">';
+
+  // ====== index 首页专属编辑器 ======
+  if (sec.id === 'index') {
+    html += renderIndexEditor(content);
+    html += '</div></div></div></div>'; // close card-body, card, col, row
+    return html;
+  }
 
   // ---- Hero 编辑区 ----
   if (sec.types.indexOf('hero')>=0) {
@@ -678,9 +776,60 @@ function renderProfileRow(group,p,i){
   h+='</div>';
   return h;
 }
+// ====== 首页保存逻辑 ======
+function saveIndexContent() {
+  var content = getContent();
+  if (!content.index) content.index = {};
+
+  // Hero
+  content.index.hero = {
+    bgImage: $('#section-editor-body .hero-bg').val() || '',
+    title: $('#section-editor-body .hero-index-title').val() || '',
+    tag: $('#section-editor-body .hero-index-tag').val() || '',
+    desc: $('#section-editor-body .hero-index-desc').val() || '',
+    flipItems: [],
+    cta1Text: $('#section-editor-body .hero-index-cta1-text').val() || '',
+    cta1Link: $('#section-editor-body .hero-index-cta1-link').val() || '',
+    cta2Text: $('#section-editor-body .hero-index-cta2-text').val() || ''
+  };
+  $('#flip-items-container .flip-item-val').each(function() {
+    var v = $(this).val().trim();
+    if (v) content.index.hero.flipItems.push(v);
+  });
+
+  // Section Cards
+  content.index.sectionCards = [];
+  $('#section-editor-body .index-card-row').each(function() {
+    content.index.sectionCards.push({
+      num: $(this).find('.ic-num').val() || '',
+      icon: $(this).find('.ic-icon').val() || '',
+      title: $(this).find('.ic-title').val() || '',
+      sub: $(this).find('.ic-sub').val() || '',
+      desc: $(this).find('.ic-desc').val() || '',
+      link: $(this).find('.ic-link').val() || ''
+    });
+  });
+
+  // Footer
+  content.index.footer = {
+    slogan: $('#section-editor-body .idx-footer-slogan').val() || '',
+    addr: $('#section-editor-body .idx-footer-addr').val() || '',
+    phones: $('#section-editor-body .idx-footer-phones').val() || '',
+    copyright: $('#section-editor-body .idx-footer-copyright').val() || ''
+  };
+
+  saveContent(content);
+  $(document).Toasts('create', { class:'bg-success', title:'保存成功', body:'首页内容已更新，刷新前台即可查看', autohide:true, delay:3000 });
+}
 
 // ====== 保存全部内容 ======
 function saveSectionContent(secId) {
+  // index 首页专属保存逻辑
+  if (secId === 'index') {
+    saveIndexContent();
+    return;
+  }
+
   var content=getContent();
   if(!content[secId]) content[secId]={};
   var sec=SECTIONS.find(function(s){return s.id===secId;});
@@ -1228,6 +1377,18 @@ $(document).ready(function() {
     content[currentPage].leaders.splice(idx,1);
     saveContent(content);
     navigateTo(currentPage);
+  });
+
+  // 首页轮播词 增删
+  $(document).on('click','.btn-add-flip',function(){
+    var h = '<div class="input-group input-group-sm mb-1 flip-item">';
+    h += '<input class="form-control flip-item-val" value="" placeholder="例如: 三级甲等综合医院">';
+    h += '<div class="input-group-append"><button class="btn btn-outline-danger btn-del-flip"><i class="fas fa-trash"></i></button></div>';
+    h += '</div>';
+    $('#flip-items-container').append(h);
+  });
+  $(document).on('click','.btn-del-flip',function(){
+    $(this).closest('.flip-item').remove();
   });
 
   // 新增/删除 Gallery

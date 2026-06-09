@@ -577,6 +577,68 @@
   }
   renderFrontAnnouncements();
 
+  // -------- 首页动态渲染 --------
+  (function renderIndexPage() {
+    var isIndex = window.location.pathname === '/' || window.location.pathname.endsWith('/index.html') || window.location.pathname === '/index.html';
+    if (!isIndex) return;
+
+    var indexData = hmContent.index;
+    if (!indexData) { console.log('[Frontend] hmContent.index 无数据，使用静态 HTML'); return; }
+
+    // Hero
+    if (indexData.hero) {
+      var h = indexData.hero;
+      if (h.bgImage) { var bg = document.querySelector('.hero-bg'); if (bg) bg.src = h.bgImage; }
+      if (h.title) { var t = document.querySelector('.hero-title'); if (t) t.textContent = h.title; }
+      if (h.tag) { var tag = document.querySelector('.hero-tag'); if (tag) tag.innerHTML = '<span>🏛</span><span>' + h.tag + ' · 建院<span class="hospital-age"></span>年</span>'; }
+      if (h.desc) { var d = document.querySelector('.hero-desc'); if (d) d.textContent = h.desc; }
+
+      // Flip items
+      var track = document.getElementById('heroFlipTrack');
+      if (track && Array.isArray(h.flipItems) && h.flipItems.length > 0) {
+        track.innerHTML = h.flipItems.map(function(f) {
+          return '<span class="hero-flip-item">' + f + '</span>';
+        }).join('');
+      }
+
+      // CTA buttons
+      if (h.cta1Text) { var c1 = document.querySelector('.btn-primary'); if (c1) c1.textContent = h.cta1Text; }
+      if (h.cta1Link) { var c1a = document.querySelector('.btn-primary'); if (c1a) c1a.href = h.cta1Link; }
+      if (h.cta2Text) { var c2 = document.querySelector('.btn-outline'); if (c2) c2.textContent = h.cta2Text; }
+    }
+
+    // Section Cards
+    var cards = indexData.sectionCards;
+    if (Array.isArray(cards) && cards.length > 0) {
+      var grid = document.querySelector('.sections-grid');
+      if (grid) {
+        grid.innerHTML = cards.map(function(c, i) {
+          var st = (i % 6) + 1;
+          return '<a href="' + c.link + '" class="section-card fade-in stagger-' + st + '">' +
+            '<span class="section-card-num">' + c.num + '</span>' +
+            '<div class="section-card-icon">' + c.icon + '</div>' +
+            '<div class="section-card-title">' + c.title + '</div>' +
+            '<div class="section-card-sub">' + c.sub + '</div>' +
+            '<p class="section-card-desc">' + c.desc + '</p>' +
+            '<div class="section-card-arrow">进入板块 →</div></a>';
+        }).join('');
+      }
+    }
+
+    // Footer
+    if (indexData.footer) {
+      var f = indexData.footer;
+      if (f.slogan) { var s = document.querySelector('.footer-slogan'); if (s) s.innerHTML = f.slogan.replace(/\n/g,'<br>'); }
+      if (f.addr) { var a = document.querySelector('.footer-addr'); if (a) a.innerHTML = f.addr; }
+      if (f.phones) {
+        var pw = document.querySelector('.footer-phones');
+        if (pw) { pw.innerHTML = f.phones.split('|').map(function(p){ return '<span>' + p.trim() + '</span>'; }).join(''); }
+      }
+      if (f.copyright) { var cr = document.querySelector('.footer-bottom'); if (cr) cr.textContent = f.copyright; }
+    }
+    console.log('[Frontend] 首页已从 CMS 数据动态渲染');
+  })();
+
   // -------- 公告纪实弹出（data-ann-idx 关联后台原始数据）--------
   document.addEventListener('click', function(ev) {
     var card = ev.target.closest('.announce-card');
