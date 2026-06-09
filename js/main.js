@@ -72,25 +72,25 @@
       metaDesc.getAttribute('content').replace(/\d+年/, hospitalAge + '\u5E74'));
   }
 
-  // -------- Content from localStorage or data.js (CMS) --------
-  // localStorage 优先（管理员修改即时可见），data.js 作为首次访问兜底
+  // -------- Content from data.js (主) or localStorage (备) --------
+  // data.js 优先，localStorage 作为兜底缓存，避免跨设备/跨会话数据不同步
   var hmContent = {};
   try {
     var localContent = JSON.parse(localStorage.getItem('hm_content') || 'null');
     var dataJsContent = _hmData && _hmData.content || null;
     var localHasData = localContent && typeof localContent === 'object' && _hasData(localContent);
     var dataJsHasData = _hasData(dataJsContent);
-    console.log('[Frontend] localStorage hm_content: ' + (localHasData ? '存在(' + Object.keys(localContent).length + '个section)' : '无数据'));
     console.log('[Frontend] data.js content: ' + (dataJsHasData ? '存在(' + Object.keys(dataJsContent).length + '个section)' : '无数据'));
-    if (localHasData) {
-      // 管理员已编辑 → 优先使用 localStorage
-      hmContent = localContent;
-      console.log('[Frontend] 数据源: localStorage');
-    } else if (dataJsHasData) {
-      // 首次访问 → 使用 data.js 预置数据，并同步到 localStorage
+    console.log('[Frontend] localStorage hm_content: ' + (localHasData ? '存在(' + Object.keys(localContent).length + '个section)' : '无数据'));
+    if (dataJsHasData) {
+      // data.js 是唯一真相源 → 始终优先使用，并同步到 localStorage 作为备份
       hmContent = dataJsContent;
       try { localStorage.setItem('hm_content', JSON.stringify(hmContent)); } catch(e) {}
-      console.log('[Frontend] 数据源: data.js (已同步到 localStorage)');
+      console.log('[Frontend] 数据源: data.js');
+    } else if (localHasData) {
+      // data.js 无数据 → 降级使用 localStorage（本地编辑未部署场景）
+      hmContent = localContent;
+      console.log('[Frontend] 数据源: localStorage (data.js 无数据)');
     } else {
       console.log('[Frontend] 数据源: 无数据 (hmContent = {})');
     }
@@ -208,21 +208,6 @@
       // ====== 历任院领导 (02-people.html) ======
       var leaderGrid = document.getElementById('leader-grid-all');
       if (leaderGrid) {
-        // 智能同步：若 data.js 中有更多 leaders，优先用 data.js 并回写 localStorage
-        var dataJsPeople = _hmData && _hmData.content && _hmData.content.people;
-        var dataJsLeaders = dataJsPeople && dataJsPeople.leaders || [];
-        if (dataJsLeaders.length > sectionContent.leaders.length) {
-          sectionContent.leaders = dataJsLeaders;
-          // 回写 localStorage 使其同步
-          try {
-            var local = JSON.parse(localStorage.getItem('hm_content') || 'null') || {};
-            if (!local.people) local.people = {};
-            local.people.leaders = dataJsLeaders;
-            localStorage.setItem('hm_content', JSON.stringify(local));
-            console.log('[Frontend] 从 data.js 同步了 ' + dataJsLeaders.length + ' 条领导数据到 localStorage');
-          } catch(e) {}
-        }
-
         // 兼容旧 category 分组（院长/书记）和新 position 直接标注
         var deans = sectionContent.leaders.filter(function(l) { return l.category === '院长'; });
         var secretaries = sectionContent.leaders.filter(function(l) { return l.category === '书记'; });
