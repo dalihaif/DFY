@@ -424,6 +424,57 @@
   width: 1%;
 }
 
+/* ============ 职工名录后台：分页列表 ============ */
+.staff-admin-bar {
+  display: flex;
+  align-items: center;
+  padding: 6px 0 10px;
+  font-size: 13px;
+}
+.staff-admin-table {
+  font-size: 13px;
+  margin-bottom: 0;
+}
+.staff-admin-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  white-space: nowrap;
+  font-size: 12px;
+  color: #6c757d;
+  text-transform: none;
+}
+.staff-admin-table td {
+  vertical-align: middle;
+}
+.staff-admin-table .badge-light {
+  background: #e9ecef;
+  color: #495057;
+  font-weight: 500;
+}
+
+/* 分页器 */
+.staff-admin-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 16px 0 4px;
+}
+.staff-admin-pager .btn-staff-page {
+  min-width: 30px;
+}
+.staff-admin-pager .btn-staff-page.active {
+  background: #0288d1;
+  color: #fff;
+  border-color: #0288d1;
+  font-weight: 600;
+}
+.staff-pager-ellipsis {
+  padding: 0 4px;
+  color: #adb5bd;
+  user-select: none;
+}
+
 /* Block 编辑器 URL 行单独显示，增加视觉提示 */
 .block-item-editor .bl-imgUrl-wrap {
   background: #f0f7ff;

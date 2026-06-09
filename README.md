@@ -27,15 +27,38 @@ git push -u origin main
 
 ## ✏️ 更新内容流程
 
+### ⚠️ 关键：本地编辑必须用 HTTP 服务器
+
+**Chrome 的 `file://` 协议下，不同目录的页面 localStorage 相互隔离！**  
+管理后台 (`admin/`) 和前台页面 (`pages/`) 的 localStorage 不共享，导致数据不同步。
+
+**正确做法：始终通过本地服务器访问**
+
+```bash
+# 在项目根目录启动
+cd E:\my-web\hospital-museum
+python serve.py
+```
+
+然后通过以下地址访问（共享同一份 localStorage）：
+
+| 页面 | 地址 |
+|------|------|
+| 🖥️ 管理后台 | `http://localhost:8000/admin/` |
+| 🏠 前台首页 | `http://localhost:8000/` |
+| 👥 职工名录 | `http://localhost:8000/pages/13-staff.html` |
+| 🔍 数据诊断 | `http://localhost:8000/diagnostic.html` |
+
 ### 日常内容更新（推荐）
 
 ```
-① 打开后台管理     → hospital-museum/admin/index.html
-② 编辑各板块内容   → 点「保存」
-③ 导出数据         → 顶部导航「导出数据」按钮 → 下载 data.js
-④ 替换文件         → 将下载的 data.js 覆盖 js/data.js
-⑤ 提交并 push      → git add js/data.js && git commit -m "update: 更新内容" && git push
-⑥ 等待自动部署    → GitHub Actions 约 1 分钟完成
+① 启动本地服务器   → python serve.py
+② 打开管理后台     → http://localhost:8000/admin/
+③ 编辑各板块内容   → 点「保存」
+④ 导出数据         → 顶部导航「导出数据」按钮 → 下载 data.js
+⑤ 替换文件         → 将下载的 data.js 覆盖 js/data.js
+⑥ 提交并 push      → git add js/data.js && git commit -m "update: 更新内容" && git push
+⑦ 等待自动部署    → GitHub Actions 约 1 分钟完成
 ```
 
 ### 一键命令（Windows）
@@ -51,14 +74,19 @@ git push
 
 ## 📦 数据持久化说明
 
-| 存储方式 | 可见范围 | 是否持久 |
-|---------|---------|---------|
-| `localStorage` | 仅当前浏览器/设备 | ❌ 清缓存即丢失 |
-| `js/data.js`（本方案） | **所有访客** | ✅ 永久保存在代码中 |
+| 存储方式 | 可见范围 | 是否持久 | 使用场景 |
+|---------|---------|---------|---------|
+| `localStorage` | 当前浏览器/当前 origin | ❌ 清缓存即丢失 | 本地编辑预览（需同源） |
+| `js/data.js`（导出部署） | **所有访客** | ✅ 永久保存在代码中 | 正式部署 |
 
 **工作原理：**
-- 前台 `main.js` 优先读取 `js/data.js` 中注入的 `window.HM_DATA`
-- 若 `data.js` 为空，自动回退到 `localStorage`（适合本地预览时使用）
+- 前台 `main.js` **优先级 localStorage > data.js**：
+  1. 若 `localStorage.hm_content` 有数据 → 优先使用（管理后台编辑即时反映）
+  2. 否则使用 `js/data.js` 中的 `window.HM_DATA`
+- 管理后台的「保存」按钮写入 `localStorage.hm_content`
+- 「导出数据」按钮将 localStorage 数据固化为 `data.js` 文件
+
+**⚠️ 重要**：管理后台和前台必须在同一 origin（同域名同端口）下访问，否则 localStorage 不共享。使用 `python serve.py` 启动本地服务器即可保证同源。
 
 ---
 
@@ -86,7 +114,17 @@ hospital-museum/
 
 ## 🛠️ 本地预览
 
-直接用浏览器打开 `index.html` 即可，无需服务器。
+### 方式一：本地 HTTP 服务器（推荐）
+```bash
+cd E:\my-web\hospital-museum
+python serve.py
+# 访问 http://localhost:8000
+```
+管理后台和前台共享 localStorage，编辑即时生效。
+
+### 方式二：直接打开文件（仅浏览）
+双击 `index.html` 在浏览器打开。  
+⚠️ 此方式下管理后台的编辑不会同步到前台（localStorage 隔离），仅适合快速浏览。
 
 ---
 

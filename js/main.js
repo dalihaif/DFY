@@ -72,16 +72,34 @@
       metaDesc.getAttribute('content').replace(/\d+年/, hospitalAge + '\u5E74'));
   }
 
-  // -------- Content from data.js or localStorage (CMS) --------
+  // -------- Content from localStorage or data.js (CMS) --------
+  // localStorage 优先（管理员修改即时可见），data.js 作为首次访问兜底
   var hmContent = {};
   try {
-    if (_hasData(_hmData.content)) {
-      // 优先使用 data.js 导出的持久化数据
-      hmContent = _hmData.content;
+    var localContent = JSON.parse(localStorage.getItem('hm_content') || 'null');
+    var dataJsContent = _hmData && _hmData.content || null;
+    var localHasData = localContent && typeof localContent === 'object' && _hasData(localContent);
+    var dataJsHasData = _hasData(dataJsContent);
+    console.log('[Frontend] localStorage hm_content: ' + (localHasData ? '存在(' + Object.keys(localContent).length + '个section)' : '无数据'));
+    console.log('[Frontend] data.js content: ' + (dataJsHasData ? '存在(' + Object.keys(dataJsContent).length + '个section)' : '无数据'));
+    if (localHasData) {
+      // 管理员已编辑 → 优先使用 localStorage
+      hmContent = localContent;
+      console.log('[Frontend] 数据源: localStorage');
+    } else if (dataJsHasData) {
+      // 首次访问 → 使用 data.js 预置数据，并同步到 localStorage
+      hmContent = dataJsContent;
+      try { localStorage.setItem('hm_content', JSON.stringify(hmContent)); } catch(e) {}
+      console.log('[Frontend] 数据源: data.js (已同步到 localStorage)');
     } else {
-      // fallback：本地预览时从 localStorage 读取
-      hmContent = JSON.parse(localStorage.getItem('hm_content') || '{}');
+      console.log('[Frontend] 数据源: 无数据 (hmContent = {})');
     }
+  } catch(e) { console.error('[Frontend] 数据读取异常:', e); }
+
+  // 打印 staff 数据
+  try {
+    var _sc = hmContent.staff && Array.isArray(hmContent.staff.profiles) ? hmContent.staff.profiles.length : 0;
+    console.log('[Frontend] staff.profiles 数量: ' + _sc);
   } catch(e) {}
 
   // Detect current page section
@@ -185,129 +203,83 @@
       });
     }
 
-    // ---- Leaders (院长/书记) ----
+    // ---- Leaders (院长/书记)  + Leadership (领导团队) 动态渲染 ----
     if (Array.isArray(sectionContent.leaders) && sectionContent.leaders.length > 0) {
-      // Only for people section — match leader-card elements
-      var leaderCards = document.querySelectorAll('.leader-card');
-      if (leaderCards.length > 0) {
-        // 兼容旧 category 分组 和 新 position 直接标注
+      // ====== 历任院领导 (02-people.html) ======
+      var leaderGrid = document.getElementById('leader-grid-all');
+      if (leaderGrid) {
+        // 兼容旧 category 分组（院长/书记）和新 position 直接标注
         var deans = sectionContent.leaders.filter(function(l) { return l.category === '院长'; });
         var secretaries = sectionContent.leaders.filter(function(l) { return l.category === '书记'; });
-        // 新模式：无 category 或 category 不是院长/书记，直接按顺序排列
         var hasOldCategory = deans.length > 0 || secretaries.length > 0;
         var allLeaders = hasOldCategory ? deans.concat(secretaries) : sectionContent.leaders;
-        leaderCards.forEach(function(card, i) {
-          if (allLeaders[i]) {
-            var l = allLeaders[i];
-            var nameEl = card.querySelector('.leader-name');
-            var yearsEl = card.querySelector('.leader-years');
-            var eraEl = card.querySelector('.leader-era');
-            var descEl = card.querySelector('.leader-desc');
-            var posEl = card.querySelector('.leader-position');
-            var photoEl = card.querySelector('.leader-photo');
-            if (nameEl) nameEl.textContent = l.name;
-            if (yearsEl) yearsEl.textContent = l.years;
-            if (eraEl) eraEl.textContent = l.era;
-            if (descEl) descEl.textContent = l.desc;
-            // 职位
-            if (posEl) posEl.textContent = l.position || l.category || '';
-            // 照片URL：有则显示真实图片，无则保留占位首字
-            if (photoEl) {
-              var existingImg = photoEl.querySelector('.leader-real-img');
-              if (l.photo && l.photo.trim()) {
-                photoEl.classList.add('has-real-img');
-                if (!existingImg) {
-                  var img = document.createElement('img');
-                  img.className = 'leader-real-img';
-                  img.src = l.photo.trim();
-                  img.alt = l.name || '';
-                  img.setAttribute('data-lightbox', l.photo.trim());
-                  img.setAttribute('data-lightbox-caption', l.name || '');
-                  img.style.cursor = 'zoom-in';
-                  photoEl.appendChild(img);
-                } else {
-                  existingImg.src = l.photo.trim();
-                  existingImg.alt = l.name || '';
-                  existingImg.setAttribute('data-lightbox', l.photo.trim());
-                  existingImg.setAttribute('data-lightbox-caption', l.name || '');
-                  existingImg.style.cursor = 'zoom-in';
-                }
-              } else {
-                photoEl.classList.remove('has-real-img');
-                if (existingImg) existingImg.remove();
-                // 首字占位：替换占位图标为姓名首字
-                var iconEl = photoEl.querySelector('.leader-photo-icon');
-                if (iconEl && l.name && l.name !== '[待补充]') {
-                  iconEl.textContent = l.name.charAt(0);
-                  iconEl.style.fontSize = '36px';
-                  iconEl.style.opacity = '0.85';
-                }
-              }
-            }
+
+        var lh = '';
+        allLeaders.forEach(function(l, i) {
+          var staggerN = (i % 5) + 1;
+          var hasPhoto = !!(l.photo && l.photo.trim());
+          var hasName = !!(l.name && l.name !== '[待补充]');
+          lh += '<div class="leader-card fade-in stagger-' + staggerN + '">';
+          // 照片区
+          lh += '<div class="leader-photo' + (hasPhoto ? ' has-real-img' : '') + '" style="position:relative;overflow:hidden;">';
+          if (hasPhoto) {
+            lh += '<img class="leader-real-img" src="' + esc(l.photo.trim()) + '" alt="' + esc(l.name || '') + '" data-lightbox="' + esc(l.photo.trim()) + '" data-lightbox-caption="' + esc(l.name || '') + '" style="cursor:zoom-in;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;">';
           }
+          lh += '<span class="leader-photo-icon"' + (hasName && !hasPhoto ? ' style="font-size:36px;opacity:0.85"' : '') + '>' + (hasName && !hasPhoto ? l.name.charAt(0) : '👤') + '</span>';
+          if (!hasPhoto) {
+            lh += '<span class="leader-photo-hint">院领导照片</span>';
+          }
+          lh += '</div>';
+          // 信息
+          lh += '<div class="leader-name">' + esc(l.name || '[待补充]') + '</div>';
+          lh += '<div class="leader-position">' + esc(l.position || l.category || '') + '</div>';
+          lh += '<div class="leader-years">' + esc(l.years || '') + '</div>';
+          if (l.era) {
+            lh += '<span class="leader-era"' + (l.years && l.years.indexOf('至今')>=0 ? ' style="color:var(--gold-light);"' : '') + '>' + esc(l.era) + '</span>';
+          }
+          lh += '<p class="leader-desc">' + esc(l.desc || '') + '</p>';
+          lh += '</div>';
         });
+        leaderGrid.innerHTML = lh;
       }
-      // For 12-leadership section — match leadership-card elements
-      var lshipCards = document.querySelectorAll('.leadership-card');
-      if (lshipCards.length > 0) {
-        lshipCards.forEach(function(card, i) {
-          if (sectionContent.leaders[i]) {
-            var l = sectionContent.leaders[i];
-            var nameEl = card.querySelector('.leadership-name');
-            var roleEl = card.querySelector('.leadership-role');
-            var dutyEl = card.querySelector('.leadership-responsibility');
-            var resumeEl = card.querySelector('.leadership-resume');
-            var photoEl = card.querySelector('.leadership-photo');
-            if (nameEl) nameEl.textContent = l.name;
-            if (roleEl) roleEl.textContent = l.role;
-            if (dutyEl) dutyEl.textContent = l.duty;
-            if (resumeEl) resumeEl.textContent = l.resume;
-            // 照片URL：有则显示真实图片，无则显示姓名首字占位
-            if (photoEl) {
-              var existingImg = photoEl.querySelector('.leadership-real-img');
-              var charEl = photoEl.querySelector('.leadership-photo-char');
-              if (l.photo && l.photo.trim()) {
-                // 有照片URL → 显示真实图片
-                photoEl.classList.add('has-real-img');
-                if (!existingImg) {
-                  var img = document.createElement('img');
-                  img.className = 'leadership-real-img';
-                  img.src = l.photo.trim();
-                  img.alt = l.name || '';
-                  img.setAttribute('data-lightbox', l.photo.trim());
-                  img.setAttribute('data-lightbox-caption', l.name + (l.role ? ' · ' + l.role : ''));
-                  img.style.cursor = 'zoom-in';
-                  photoEl.appendChild(img);
-                } else {
-                  existingImg.src = l.photo.trim();
-                  existingImg.alt = l.name || '';
-                  existingImg.setAttribute('data-lightbox', l.photo.trim());
-                  existingImg.setAttribute('data-lightbox-caption', l.name + (l.role ? ' · ' + l.role : ''));
-                  existingImg.style.cursor = 'zoom-in';
-                }
-                if (charEl) charEl.remove();
-              } else {
-                // 无照片URL → 姓名首字占位
-                photoEl.classList.remove('has-real-img');
-                if (existingImg) existingImg.remove();
-                var iconEl = photoEl.querySelector('.leadership-photo-icon');
-                var hintEl = photoEl.querySelector('.leadership-photo-hint');
-                if (l.name && l.name !== '[待补充]') {
-                  if (!charEl) {
-                    charEl = document.createElement('span');
-                    charEl.className = 'leadership-photo-char';
-                    photoEl.insertBefore(charEl, iconEl);
-                  }
-                  charEl.textContent = l.name.charAt(0);
-                  if (iconEl) iconEl.style.display = 'none';
-                  if (hintEl) hintEl.style.display = 'none';
-                } else {
-                  if (charEl) charEl.remove();
-                }
-              }
+
+      // ====== 领导团队 (12-leadership.html) ======
+      var lshipGrid = document.querySelector('.leadership-grid');
+      if (lshipGrid) {
+        // 只渲染有 role 的数据（leadership 模式），跳过 category 模式的数据
+        var lshipLeaders = sectionContent.leaders.filter(function(l) { return l.role; });
+        if (lshipLeaders.length === 0) {
+          // 如果没有 role 字段的数据，就用全部（可能是老数据升级）
+          lshipLeaders = sectionContent.leaders;
+        }
+        var lsh = '';
+        lshipLeaders.forEach(function(l, i) {
+          var staggerN = i < 4 ? (i + 1) : ((i - 4) % 4 + 1);
+          var hasPhoto = !!(l.photo && l.photo.trim());
+          var hasName = !!(l.name && l.name !== '[待补充]');
+          lsh += '<div class="leadership-card fade-in stagger-' + staggerN + '">';
+          lsh += '<div class="leadership-photo' + (hasPhoto ? ' has-real-img' : '') + '" style="position:relative;overflow:hidden;">';
+          if (hasPhoto) {
+            lsh += '<img class="leadership-real-img" src="' + esc(l.photo.trim()) + '" alt="' + esc(l.name || '') + '" data-lightbox="' + esc(l.photo.trim()) + '" data-lightbox-caption="' + esc(l.name + (l.role ? ' · ' + l.role : '')) + '" style="cursor:zoom-in;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;">';
+          }
+          if (hasName && !hasPhoto) {
+            lsh += '<span class="leadership-photo-char">' + l.name.charAt(0) + '</span>';
+          } else {
+            lsh += '<span class="leadership-photo-icon">👨‍⚕️</span>';
+            if (!hasPhoto) {
+              lsh += '<span class="leadership-photo-hint">照片 4:5 竖版</span>';
             }
           }
+          lsh += '</div>';
+          lsh += '<div class="leadership-info">';
+          lsh += '<div class="leadership-name">' + esc(l.name || '[待补充]') + '</div>';
+          lsh += '<div class="leadership-role">' + esc(l.role || '') + '</div>';
+          lsh += '<div class="leadership-responsibility">' + esc(l.duty || '') + '</div>';
+          lsh += '<div class="leadership-resume">' + esc(l.resume || '') + '</div>';
+          lsh += '</div>';
+          lsh += '</div>';
         });
+        lshipGrid.innerHTML = lsh;
       }
     }
 
@@ -762,24 +734,40 @@
   bindStaticPhotos();
   setTimeout(bindStaticPhotos, 800);
 
-  // ============ 职工名录 专用渲染与搜索 ============
+  // ============ 职工名录 专用渲染与搜索（分页版，3000+人无误）============
   (function initStaffPage() {
     var isStaffPage = window.location.pathname.indexOf('13-staff') >= 0;
     if (!isStaffPage) return;
+    console.log('[StaffPage] 初始化开始, pathname=' + window.location.pathname);
 
-    // 读取职工数据（与其余板块一致：data.js → localStorage fallback）
+    // 读取职工数据
     var staffData = [];
     try {
       var staffSec = hmContent.staff || {};
       if (Array.isArray(staffSec.profiles)) {
         staffData = staffSec.profiles;
       }
-    } catch(e) {}
+    } catch(e) { console.error('[StaffPage] 读取 staff 数据异常:', e); }
 
-    if (!staffData.length) return;
+    console.log('[StaffPage] staffData.length=' + staffData.length);
+
+    if (!staffData.length) {
+      console.log('[StaffPage] 无职工数据，渲染空状态');
+      // 显示空状态
+      var eGrid = document.getElementById('staffGrid');
+      var eEmpty = document.getElementById('staffEmpty');
+      if (eGrid) eGrid.innerHTML = '';
+      if (eEmpty) eEmpty.style.display = 'block';
+      return;
+    }
 
     // 按姓名排序
     staffData.sort(function(a, b) { return (a.name || '').localeCompare(b.name || '', 'zh'); });
+
+    var PAGE_SIZE = 60;         // 每页数量：10行 × 6列（桌面端）
+    var currentPage = 1;
+    var currentFilterText = '';
+    var currentFilterDept = 'all';
 
     var grid = document.getElementById('staffGrid');
     var empty = document.getElementById('staffEmpty');
@@ -788,12 +776,24 @@
 
     if (!grid) return;
 
-    // 收集科室列表用于筛选按钮
+    // ▸ 分页区域（插入 grid 后面）
+    var pageWrap = document.createElement('div');
+    pageWrap.className = 'staff-page-wrap';
+    pageWrap.innerHTML =
+      '<div class="staff-page-top">' +
+        '<span class="staff-page-summary" id="staffPageSummary"></span>' +
+        '<div class="staff-page-nav" id="staffPageNav"></div>' +
+      '</div>';
+    grid.parentNode.insertBefore(pageWrap, grid.nextSibling);
+
+    var pageSummaryEl = document.getElementById('staffPageSummary');
+    var pageNavEl = document.getElementById('staffPageNav');
+
+    // 收集科室列表
     var depts = {};
     staffData.forEach(function(s) { if (s.dept) depts[s.dept] = true; });
     var deptList = Object.keys(depts).sort(function(a, b) { return a.localeCompare(b, 'zh'); });
 
-    // 构建筛选按钮
     if (deptFilter && deptList.length > 1) {
       deptList.forEach(function(d) {
         var btn = document.createElement('button');
@@ -804,86 +804,171 @@
       });
     }
 
-    // 渲染职工卡片
-    function renderStaffCards(filterText, filterDept) {
-      var html = '';
-      var count = 0;
-      staffData.forEach(function(s) {
-        // 搜索过滤
-        var q = (filterText || '').toLowerCase();
+    // 过滤后数据集
+    function getFiltered() {
+      var q = (currentFilterText || '').toLowerCase();
+      var dept = currentFilterDept;
+      return staffData.filter(function(s) {
         if (q) {
           var match = (s.name || '').indexOf(q) >= 0
                    || (s.title || '').indexOf(q) >= 0
                    || (s.dept || '').indexOf(q) >= 0
                    || (s.position || '').indexOf(q) >= 0
                    || (s.desc || '').indexOf(q) >= 0;
-          if (!match) return;
+          if (!match) return false;
         }
-        // 科室过滤
-        if (filterDept && filterDept !== 'all' && s.dept !== filterDept) return;
-
-        count++;
-        var ph = s.photo || '';
-        var hasPhoto = ph && ph.trim().length > 0;
-        html += '<div class="profile-card staff-card fade-in">';
-        html += '<div class="profile-photo' + (hasPhoto ? ' has-real-img' : '') + '">';
-        if (hasPhoto) {
-          html += '<img class="profile-real-img" src="' + escHtml2(ph) + '" alt="' + escHtml2(s.name || '') + '" loading="lazy" data-lightbox="' + escHtml2(ph) + '" data-lightbox-caption="' + escHtml2(s.name || '') + '">';
-        }
-        html += '<span class="profile-photo-icon">👤</span>';
-        if (!hasPhoto) {
-          html += '<span class="profile-photo-char">' + (s.name ? s.name.charAt(0) : '?') + '</span>';
-        }
-        html += '</div>';
-        html += '<div class="profile-info">';
-        html += '<div class="profile-name">' + escHtml2(s.name || '[待补充]') + '</div>';
-        html += '<div class="profile-title">' + escHtml2(s.title || '') + '</div>';
-        if (s.position) {
-          html += '<span class="staff-position-badge">' + escHtml2(s.position) + '</span>';
-        }
-        html += '<span class="profile-dept">' + escHtml2(s.dept || '') + '</span>';
-        if (s.desc) {
-          html += '<p class="profile-desc">' + escHtml2(s.desc) + '</p>';
-        }
-        html += '</div></div>';
+        if (dept && dept !== 'all' && s.dept !== dept) return false;
+        return true;
       });
-
-      grid.innerHTML = html;
-      if (empty) empty.style.display = count === 0 ? '' : 'none';
-
-      // 重新注册 Observer（动态生成的 .fade-in 元素）
-      grid.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
-      // 绑定新生成的照片 lightbox
-      setTimeout(bindStaticPhotos, 100);
     }
 
-    // 辅助：HTML 转义
     function escHtml2(s) {
       if (!s) return '';
       return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    // 初始渲染
-    renderStaffCards('', 'all');
+    // 渲染单张卡片 HTML
+    function cardHtml(s) {
+      var ph = s.photo || '';
+      var hasPhoto = ph && ph.trim().length > 0;
+      var h = '<div class="profile-card staff-card fade-in">';
+      h += '<div class="profile-photo' + (hasPhoto ? ' has-real-img' : '') + '">';
+      if (hasPhoto) {
+        h += '<img class="profile-real-img" src="' + escHtml2(ph) + '" alt="' + escHtml2(s.name || '') + '" loading="lazy" data-lightbox="' + escHtml2(ph) + '" data-lightbox-caption="' + escHtml2(s.name || '') + '">';
+      }
+      h += '<span class="profile-photo-icon">👤</span>';
+      if (!hasPhoto) {
+        h += '<span class="profile-photo-char">' + (s.name ? s.name.charAt(0) : '?') + '</span>';
+      }
+      h += '</div><div class="profile-info">';
+      h += '<div class="profile-name">' + escHtml2(s.name || '[待补充]') + '</div>';
+      h += '<div class="profile-title">' + escHtml2(s.title || '') + '</div>';
+      if (s.position) {
+        h += '<span class="staff-position-badge">' + escHtml2(s.position) + '</span>';
+      }
+      h += '<span class="profile-dept">' + escHtml2(s.dept || '') + '</span>';
+      if (s.desc) {
+        h += '<p class="profile-desc">' + escHtml2(s.desc) + '</p>';
+      }
+      h += '</div></div>';
+      return h;
+    }
 
-    // 搜索事件
+    // 生成页码按钮 HTML
+    function paginationHtml(totalPages, cur) {
+      if (totalPages <= 1) return '';
+      var h = '';
+      // 上一页
+      h += '<button class="sp-btn sp-prev" data-page="' + (cur - 1) + '"' + (cur <= 1 ? ' disabled' : '') + '>‹</button>';
+
+      // 页码按钮（最多显示 7 个）
+      var pages = [];
+      if (totalPages <= 7) {
+        for (var i = 1; i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        if (cur > 3) pages.push('...');
+        var start = Math.max(2, cur - 1);
+        var end = Math.min(totalPages - 1, cur + 1);
+        for (var i = start; i <= end; i++) pages.push(i);
+        if (cur < totalPages - 2) pages.push('...');
+        pages.push(totalPages);
+      }
+
+      pages.forEach(function(p) {
+        if (p === '...') {
+          h += '<span class="sp-ellipsis">…</span>';
+        } else {
+          h += '<button class="sp-btn sp-num' + (p === cur ? ' active' : '') + '" data-page="' + p + '">' + p + '</button>';
+        }
+      });
+
+      // 下一页
+      h += '<button class="sp-btn sp-next" data-page="' + (cur + 1) + '"' + (cur >= totalPages ? ' disabled' : '') + '>›</button>';
+      return h;
+    }
+
+    // 核心渲染：仅渲染当前页
+    function renderPage() {
+      var filtered = getFiltered();
+      var total = filtered.length;
+      var totalPages = Math.ceil(total / PAGE_SIZE);
+      if (totalPages === 0) totalPages = 1;
+
+      // 修正当前页越界
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      var startIdx = (currentPage - 1) * PAGE_SIZE;
+      var batch = filtered.slice(startIdx, startIdx + PAGE_SIZE);
+
+      // 渲染卡片（仅当前页）
+      var html = '';
+      batch.forEach(function(s) { html += cardHtml(s); });
+      grid.innerHTML = html;
+
+      // 空状态
+      if (empty) empty.style.display = total === 0 ? '' : 'none';
+
+      // 摘要：共 X 人 · 第 Y/Z 页
+      pageSummaryEl.textContent = '共 ' + total + ' 人 · 第 ' + currentPage + '/' + totalPages + ' 页';
+
+      // 页码
+      pageNavEl.innerHTML = paginationHtml(totalPages, currentPage);
+
+      // Observer + lightbox
+      grid.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+      setTimeout(bindStaticPhotos, 100);
+    }
+
+    // 切换到指定页
+    function goToPage(p) {
+      var filtered = getFiltered();
+      var totalPages = Math.ceil(filtered.length / PAGE_SIZE) || 1;
+      var target = Math.max(1, Math.min(p, totalPages));
+      if (target === currentPage) return;
+      currentPage = target;
+      renderPage();
+      // 滚动到 grid 顶部
+      grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // 筛选/搜索变化 → 重置到第1页
+    function resetAndRender() {
+      currentPage = 1;
+      renderPage();
+    }
+
+    // 分页按钮点击（事件委托）
+    pageNavEl.addEventListener('click', function(ev) {
+      var btn = ev.target.closest('.sp-btn');
+      if (!btn || btn.disabled) return;
+      var p = parseInt(btn.getAttribute('data-page'), 10);
+      if (!isNaN(p)) goToPage(p);
+    });
+
+    // 搜索
     if (searchInput) {
       searchInput.addEventListener('input', function() {
-        var activeDept = deptFilter ? deptFilter.querySelector('.staff-filter-btn.active') : null;
-        renderStaffCards(searchInput.value, activeDept ? activeDept.getAttribute('data-dept') : 'all');
+        currentFilterText = searchInput.value;
+        resetAndRender();
       });
     }
 
-    // 筛选项点击事件
+    // 科室筛选
     if (deptFilter) {
       deptFilter.addEventListener('click', function(ev) {
         var btn = ev.target.closest('.staff-filter-btn');
         if (!btn) return;
         deptFilter.querySelectorAll('.staff-filter-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
-        renderStaffCards(searchInput ? searchInput.value : '', btn.getAttribute('data-dept'));
+        currentFilterDept = btn.getAttribute('data-dept');
+        resetAndRender();
       });
     }
+
+    // 初始渲染
+    renderPage();
   })();
 
 })();
