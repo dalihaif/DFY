@@ -876,17 +876,30 @@ function exportDataJs() {
   var sections     = localStorage.getItem('hm_admin_sections')|| '{}';
   var now          = new Date().toLocaleString('zh-CN');
 
+  // 使用 JSON.stringify 保证输出合法 JSON（属性名带引号）
+  var data;
+  try { data = JSON.parse(content); } catch(e) { data = {}; }
+  var setObj;
+  try { setObj = JSON.parse(settings); } catch(e) { setObj = {}; }
+  var annArr;
+  try { annArr = JSON.parse(announcements); } catch(e) { annArr = []; }
+  var secObj;
+  try { secObj = JSON.parse(sections); } catch(e) { secObj = {}; }
+
+  // 构建合法 JSON 字符串（属性名带引号）
+  var jsonStr = JSON.stringify({
+    content: data,
+    settings: setObj,
+    announcements: annArr,
+    sections: secObj
+  }, null, '  ');
+
   var code = '/**\n'
     + ' * 云端院史馆 · 持久化数据文件\n'
     + ' * 自动生成于: ' + now + '\n'
     + ' * 请勿手动编辑，由后台「导出数据」功能生成\n'
     + ' */\n'
-    + 'window.HM_DATA = {\n'
-    + '  content: ' + content + ',\n'
-    + '  settings: ' + settings + ',\n'
-    + '  announcements: ' + announcements + ',\n'
-    + '  sections: ' + sections + '\n'
-    + '};\n';
+    + 'window.HM_DATA = ' + jsonStr + ';\n';
 
   var blob = new Blob([code], { type: 'text/javascript;charset=utf-8' });
   var url  = URL.createObjectURL(blob);
@@ -908,17 +921,61 @@ function importDataJs(file) {
   var reader = new FileReader();
   reader.onload = function(e) {
     var text = e.target.result;
-    // 提取 window.HM_DATA = {...} 中的 JSON
-    var match = text.match(/window\.HM_DATA\s*=\s*(\{[\s\S]*?\})\s*;?\s*$/m);
-    if (!match) {
+    // 提取 window.HM_DATA = {...} 中的 JSON（括号计数法，兼容各种格式）
+    var startIdx = text.indexOf('window.HM_DATA');
+    if (startIdx === -1) {
       $(document).Toasts('create', { class:'bg-danger', title:'格式错误', body:'文件不是有效的 data.js，未找到 window.HM_DATA 定义', autohide:true, delay:5000 });
       return;
     }
 
-    var data;
-    try { data = JSON.parse(match[1]); } catch(err) {
-      $(document).Toasts('create', { class:'bg-danger', title:'JSON 解析失败', body:err.message, autohide:true, delay:5000 });
+    var assignIdx = text.indexOf('=', startIdx);
+    if (assignIdx === -1) {
+      $(document).Toasts('create', { class:'bg-danger', title:'格式错误', body:'文件中 window.HM_DATA 后缺少赋值符号 =', autohide:true, delay:5000 });
       return;
+    }
+
+    // 从 = 之后找第一个 {
+    var jsonStart = -1;
+    for (var i = assignIdx + 1; i < text.length; i++) {
+      if (text[i] === '{') { jsonStart = i; break; }
+    }
+    if (jsonStart === -1) {
+      $(document).Toasts('create', { class:'bg-danger', title:'格式错误', body:'未找到 JSON 数据起始位置', autohide:true, delay:5000 });
+      return;
+    }
+
+    // 括号计数法：精确匹配最外层 {...}
+    var braceCount = 0;
+    var inString = false;
+    var escapeNext = false;
+    var jsonEnd = -1;
+    for (var i = jsonStart; i < text.length; i++) {
+      var ch = text[i];
+      if (escapeNext) { escapeNext = false; continue; }
+      if (ch === '\\') { escapeNext = true; continue; }
+      if (ch === '"' && !escapeNext) { inString = !inString; continue; }
+      if (inString) continue;
+      if (ch === '{') braceCount++;
+      if (ch === '}') {
+        braceCount--;
+        if (braceCount === 0) { jsonEnd = i; break; }
+      }
+    }
+    if (jsonEnd === -1) {
+      $(document).Toasts('create', { class:'bg-danger', title:'格式错误', body:'JSON 数据结构不完整，括号未闭合', autohide:true, delay:5000 });
+      return;
+    }
+
+    var jsonStr = text.substring(jsonStart, jsonEnd + 1);
+    var data;
+    try { data = JSON.parse(jsonStr); } catch(err1) {
+      // 回退：尝试 JavaScript 对象字面量解析（兼容旧版未带引号的 key）
+      try {
+        data = (new Function('return ' + jsonStr))();
+      } catch(err2) {
+        $(document).Toasts('create', { class:'bg-danger', title:'数据解析失败', body:'文件格式无法识别：' + err1.message, autohide:true, delay:8000 });
+        return;
+      }
     }
 
     if (!data.content || typeof data.content !== 'object') {
