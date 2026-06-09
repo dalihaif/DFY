@@ -334,11 +334,12 @@ function navigateTo(pageId) {
   switch(pageId) {
     case 'dashboard': html=renderDashboard(); break;
     case 'announcements': html=renderAnnouncements(); break;
+    case 'data-manager': html=renderDataManager(); break;
     case 'settings': html=renderSettings(); break;
     default: html=currentSection ? renderSectionEditor(currentSection) : renderDashboard();
   }
 
-  var titleMap={dashboard:'控制台',announcements:'公告管理',settings:'网站设置'};
+  var titleMap={dashboard:'控制台',announcements:'公告管理',settings:'网站设置','data-manager':'数据管理'};
   var pageTitle=titleMap[pageId]||(currentSection?currentSection.name:'控制台');
   $('#page-title').text(pageTitle);
 
@@ -821,6 +822,104 @@ function renderSettings() {
   return html;
 }
 
+// ====== 导出数据为 data.js ======
+function exportDataJs() {
+  var content      = localStorage.getItem('hm_content')      || '{}';
+  var settings     = localStorage.getItem('hm_settings')     || '{}';
+  var announcements= localStorage.getItem('hm_announcements')|| '[]';
+  var sections     = localStorage.getItem('hm_admin_sections')|| '{}';
+  var now          = new Date().toLocaleString('zh-CN');
+
+  var code = '/**\n'
+    + ' * 云端院史馆 · 持久化数据文件\n'
+    + ' * 自动生成于: ' + now + '\n'
+    + ' * 请勿手动编辑，由后台「导出数据」功能生成\n'
+    + ' */\n'
+    + 'window.HM_DATA = {\n'
+    + '  content: ' + content + ',\n'
+    + '  settings: ' + settings + ',\n'
+    + '  announcements: ' + announcements + ',\n'
+    + '  sections: ' + sections + '\n'
+    + '};\n';
+
+  var blob = new Blob([code], { type: 'text/javascript;charset=utf-8' });
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href   = url;
+  a.download = 'data.js';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  $(document).Toasts('create', { class:'bg-success', title:'导出成功', body:'data.js 已下载，请替换网站 js/data.js 并重新部署', autohide:true, delay:4000 });
+}
+
+// 渲染"数据管理"页
+function renderDataManager() {
+  var content      = getContent();
+  var settings     = JSON.parse(localStorage.getItem('hm_settings')||'{}');
+  var announcements= JSON.parse(localStorage.getItem('hm_announcements')||'[]');
+
+  // 统计各板块数据量
+  var rows = '';
+  SECTIONS.forEach(function(sec) {
+    var c = content[sec.id] || {};
+    var counts = [];
+    if (c.blocks)     counts.push('块×' + c.blocks.length);
+    if (c.gallery)    counts.push('画廊×' + c.gallery.length);
+    if (c.dataCards)  counts.push('数据×' + c.dataCards.length);
+    if (c.timeline)   counts.push('时间线×' + c.timeline.length);
+    if (c.leaders)    counts.push('领导×' + c.leaders.length);
+    if (c.profiles)   counts.push('人物×' + c.profiles.length);
+    rows += '<tr><td><i class="' + sec.icon + ' mr-1" style="color:' + sec.color + '"></i>' + sec.name + '</td>'
+          + '<td>' + (c.hero && c.hero.title ? escHtml(c.hero.title) : '<span class="text-muted">-</span>') + '</td>'
+          + '<td>' + (counts.length ? counts.join(', ') : '<span class="text-muted">无数据</span>') + '</td></tr>';
+  });
+
+  var html = '<div class="container-fluid">';
+  html += '<div class="row"><div class="col-12"><div class="callout callout-info">';
+  html += '<h5><i class="fas fa-info-circle mr-1"></i>数据持久化说明</h5>';
+  html += '<p class="mb-1">当前所有内容编辑后保存在 <strong>浏览器 localStorage</strong> 中（仅本机可见）。</p>';
+  html += '<p class="mb-1">点击下方「<strong>⬇ 下载 data.js</strong>」将所有数据固化为文件 → 替换网站 <code>js/data.js</code> → 重新部署后 <strong>所有访客</strong> 均可看到最新内容。</p>';
+  html += '<p class="mb-0 text-muted">提示：若网站部署在 GitHub Pages，push 更新后即可自动同步。</p>';
+  html += '</div></div></div>';
+
+  html += '<div class="row mb-3"><div class="col-md-4">';
+  html += '<div class="card card-primary card-outline"><div class="card-body text-center">';
+  html += '<div class="info-box-icon"><i class="fas fa-database fa-3x text-primary mb-2"></i></div>';
+  html += '<p class="mb-2">将当前全部 CMS 数据导出为 <code>data.js</code></p>';
+  html += '<button class="btn btn-primary btn-lg btn-block" id="btn-export-datajs"><i class="fas fa-download mr-1"></i>⬇ 下载 data.js</button>';
+  html += '<small class="text-muted mt-2 d-block">下载后替换网站 <code>js/data.js</code>，并重新部署/push</small>';
+  html += '</div></div></div>';
+
+  html += '<div class="col-md-4">';
+  html += '<div class="card card-success card-outline"><div class="card-body text-center">';
+  html += '<i class="fab fa-github fa-3x text-success mb-2"></i>';
+  html += '<p class="mb-2">推送至 GitHub Pages 后全网访问</p>';
+  html += '<div class="bg-dark text-light rounded p-2 text-left" style="font-size:12px;font-family:monospace;">';
+  html += 'git add js/data.js<br>git commit -m "update: 更新展馆内容"<br>git push';
+  html += '</div>';
+  html += '</div></div></div>';
+
+  html += '<div class="col-md-4">';
+  html += '<div class="card card-warning card-outline"><div class="card-body">';
+  html += '<h6 class="card-title"><i class="fas fa-shield-alt mr-1 text-warning"></i>数据统计</h6>';
+  html += '<ul class="list-unstyled mb-0">';
+  html += '<li><i class="fas fa-cube mr-1 text-primary"></i>' + SECTIONS.length + ' 个板块</li>';
+  html += '<li><i class="fas fa-bullhorn mr-1 text-danger"></i>' + announcements.length + ' 条公告</li>';
+  html += '<li><i class="fas fa-cog mr-1 text-info"></i>网站标题：' + escHtml(settings.siteTitle || '-') + '</li>';
+  var total = JSON.stringify(getContent()).length + JSON.stringify(settings).length;
+  html += '<li><i class="fas fa-hdd mr-1 text-success"></i>数据大小：' + (total/1024).toFixed(1) + ' KB</li>';
+  html += '</ul></div></div></div></div>';
+
+  // 各板块数据概览表
+  html += '<div class="row"><div class="col-12"><div class="card"><div class="card-header"><h3 class="card-title">各板块数据概览</h3></div>';
+  html += '<div class="card-body p-0"><table class="table table-sm table-hover mb-0"><thead><tr><th>板块</th><th>主标题</th><th>内容概况</th></tr></thead><tbody>' + rows + '</tbody></table></div></div></div></div>';
+  html += '</div>';
+  return html;
+}
+
 // ====== 事件绑定 ======
 $(document).ready(function() {
   initAllData();
@@ -1022,6 +1121,12 @@ $(document).ready(function() {
     var settings={siteTitle:$('#set-title').val(),siteSubtitle:$('#set-subtitle').val(),officialUrl:$('#set-url').val(),contactEmail:$('#set-email').val(),contactPhone:$('#set-phone').val(),foundedYear:parseInt($('#set-founded-year').val())||1991};
     localStorage.setItem('hm_settings',JSON.stringify(settings));
     $(document).Toasts('create',{class:'bg-success',title:'已保存',body:'网站设置已更新',autohide:true,delay:2000});
+  });
+
+  // 导出数据为 data.js（页面内按钮 + 顶部快捷按钮）
+  $(document).on('click','#btn-export-datajs, #btn-quick-export',function(e){
+    e.preventDefault();
+    exportDataJs();
   });
 
   if(!$('.toasts-top-right').length) $('body').append('<div class="toasts-top-right fixed" style="position:fixed;top:70px;right:20px;z-index:9999"></div>');

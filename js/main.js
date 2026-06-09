@@ -30,10 +30,27 @@
   // expose
   window.toggleTheme = toggleTheme;
 
+  // -------- 数据读取（优先 data.js，fallback localStorage）--------
+  // data.js 注入 window.HM_DATA，包含 content/settings/announcements/sections
+  // 若 data.js 字段为空对象/空数组，则回退到 localStorage（本地编辑预览）
+  var _hmData = (window.HM_DATA && typeof window.HM_DATA === 'object') ? window.HM_DATA : {};
+
+  function _hasData(obj) {
+    if (!obj) return false;
+    if (Array.isArray(obj)) return obj.length > 0;
+    return Object.keys(obj).length > 0;
+  }
+
   // -------- Hospital age auto-calc --------
   // Read founding year from admin settings if available, else default 1991
   var hmSettings = {};
-  try { hmSettings = JSON.parse(localStorage.getItem('hm_settings') || '{}'); } catch(e) {}
+  try {
+    if (_hasData(_hmData.settings)) {
+      hmSettings = _hmData.settings;
+    } else {
+      hmSettings = JSON.parse(localStorage.getItem('hm_settings') || '{}');
+    }
+  } catch(e) {}
   var FOUNDED_YEAR = hmSettings.foundedYear || 1991;
   var nowYear = new Date().getFullYear();
   var hospitalAge = nowYear - FOUNDED_YEAR;
@@ -55,9 +72,17 @@
       metaDesc.getAttribute('content').replace(/\d+年/, hospitalAge + '\u5E74'));
   }
 
-  // -------- Content from localStorage (CMS) --------
+  // -------- Content from data.js or localStorage (CMS) --------
   var hmContent = {};
-  try { hmContent = JSON.parse(localStorage.getItem('hm_content') || '{}'); } catch(e) {}
+  try {
+    if (_hasData(_hmData.content)) {
+      // 优先使用 data.js 导出的持久化数据
+      hmContent = _hmData.content;
+    } else {
+      // fallback：本地预览时从 localStorage 读取
+      hmContent = JSON.parse(localStorage.getItem('hm_content') || '{}');
+    }
+  } catch(e) {}
 
   // Detect current page section
   function getCurrentSection() {
