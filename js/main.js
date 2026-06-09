@@ -186,9 +186,12 @@
       // Only for people section — match leader-card elements
       var leaderCards = document.querySelectorAll('.leader-card');
       if (leaderCards.length > 0) {
+        // 兼容旧 category 分组 和 新 position 直接标注
         var deans = sectionContent.leaders.filter(function(l) { return l.category === '院长'; });
         var secretaries = sectionContent.leaders.filter(function(l) { return l.category === '书记'; });
-        var allLeaders = deans.concat(secretaries);
+        // 新模式：无 category 或 category 不是院长/书记，直接按顺序排列
+        var hasOldCategory = deans.length > 0 || secretaries.length > 0;
+        var allLeaders = hasOldCategory ? deans.concat(secretaries) : sectionContent.leaders;
         leaderCards.forEach(function(card, i) {
           if (allLeaders[i]) {
             var l = allLeaders[i];
@@ -196,10 +199,41 @@
             var yearsEl = card.querySelector('.leader-years');
             var eraEl = card.querySelector('.leader-era');
             var descEl = card.querySelector('.leader-desc');
+            var posEl = card.querySelector('.leader-position');
+            var photoEl = card.querySelector('.leader-photo');
             if (nameEl) nameEl.textContent = l.name;
             if (yearsEl) yearsEl.textContent = l.years;
             if (eraEl) eraEl.textContent = l.era;
             if (descEl) descEl.textContent = l.desc;
+            // 职位
+            if (posEl) posEl.textContent = l.position || l.category || '';
+            // 照片URL：有则显示真实图片，无则保留占位首字
+            if (photoEl) {
+              var existingImg = photoEl.querySelector('.leader-real-img');
+              if (l.photo && l.photo.trim()) {
+                photoEl.classList.add('has-real-img');
+                if (!existingImg) {
+                  var img = document.createElement('img');
+                  img.className = 'leader-real-img';
+                  img.src = l.photo.trim();
+                  img.alt = l.name || '';
+                  photoEl.appendChild(img);
+                } else {
+                  existingImg.src = l.photo.trim();
+                  existingImg.alt = l.name || '';
+                }
+              } else {
+                photoEl.classList.remove('has-real-img');
+                if (existingImg) existingImg.remove();
+                // 首字占位：替换占位图标为姓名首字
+                var iconEl = photoEl.querySelector('.leader-photo-icon');
+                if (iconEl && l.name && l.name !== '[待补充]') {
+                  iconEl.textContent = l.name.charAt(0);
+                  iconEl.style.fontSize = '36px';
+                  iconEl.style.opacity = '0.85';
+                }
+              }
+            }
           }
         });
       }

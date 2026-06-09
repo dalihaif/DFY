@@ -79,16 +79,16 @@ function seedContent() {
     people: {
       hero: { bgImage:'../assets/images/2_20.png', num:'板块二 · SECTION 02', title:'人物风采', subtitle:'医院发展的核心力量', desc:'历任院长、党委书记、学科带头人、医学名家……每一位为医院发展倾注心血的人都值得被铭记。' },
       leaders: [
-        { id:'l1', category:'院长', name:'[待补充]', years:'1992 – 2000', era:'建院奠基', eraColor:'', desc:'主持建院筹备工作，从零起步搭建医院基本架构。' },
-        { id:'l2', category:'院长', name:'[待补充]', years:'2000 – 2008', era:'规模拓展', eraColor:'', desc:'推动医院规模化发展，扩充临床科室。' },
-        { id:'l3', category:'院长', name:'[待补充]', years:'2008 – 2015', era:'三甲创建', eraColor:'', desc:'带领全院奋力冲刺三级甲等评审。' },
-        { id:'l4', category:'院长', name:'[待补充]', years:'2015 – 2022', era:'跨越发展', eraColor:'', desc:'推进凤仪院区建设，实现一院两区格局。' },
-        { id:'l5', category:'院长', name:'[待补充]', years:'2022 – 至今', era:'现任 · 高质量发展', eraColor:'', desc:'深化医教研协同，推动智慧医院建设。' },
-        { id:'l6', category:'书记', name:'[待补充]', years:'1992 – 2000', era:'建院初期', eraColor:'', desc:'在建院最艰难时期，以党建凝聚人心。' },
-        { id:'l7', category:'书记', name:'[待补充]', years:'2000 – 2008', era:'党建规范', eraColor:'', desc:'推进党建工作规范化制度化建设。' },
-        { id:'l8', category:'书记', name:'[待补充]', years:'2008 – 2015', era:'思政引领', eraColor:'', desc:'强化思想政治引领，推动党建与业务融合。' },
-        { id:'l9', category:'书记', name:'[待补充]', years:'2015 – 2022', era:'全面从严', eraColor:'', desc:'落实全面从严治党，打造清廉医院。' },
-        { id:'l10', category:'书记', name:'[待补充]', years:'2022 – 至今', era:'现任 · 党建引领', eraColor:'', desc:'以高质量党建引领高质量发展。' }
+        { id:'l1', position:'院长', category:'院长', name:'[待补充]', years:'1992 – 2000', era:'建院奠基', eraColor:'', desc:'主持建院筹备工作，从零起步搭建医院基本架构。', photo:'' },
+        { id:'l2', position:'院长', category:'院长', name:'[待补充]', years:'2000 – 2008', era:'规模拓展', eraColor:'', desc:'推动医院规模化发展，扩充临床科室。', photo:'' },
+        { id:'l3', position:'院长', category:'院长', name:'[待补充]', years:'2008 – 2015', era:'三甲创建', eraColor:'', desc:'带领全院奋力冲刺三级甲等评审。', photo:'' },
+        { id:'l4', position:'院长', category:'院长', name:'[待补充]', years:'2015 – 2022', era:'跨越发展', eraColor:'', desc:'推进凤仪院区建设，实现一院两区格局。', photo:'' },
+        { id:'l5', position:'院长', category:'院长', name:'[待补充]', years:'2022 – 至今', era:'现任 · 高质量发展', eraColor:'', desc:'深化医教研协同，推动智慧医院建设。', photo:'' },
+        { id:'l6', position:'党委书记', category:'书记', name:'[待补充]', years:'1992 – 2000', era:'建院初期', eraColor:'', desc:'在建院最艰难时期，以党建凝聚人心。', photo:'' },
+        { id:'l7', position:'党委书记', category:'书记', name:'[待补充]', years:'2000 – 2008', era:'党建规范', eraColor:'', desc:'推进党建工作规范化制度化建设。', photo:'' },
+        { id:'l8', position:'党委书记', category:'书记', name:'[待补充]', years:'2008 – 2015', era:'思政引领', eraColor:'', desc:'强化思想政治引领，推动党建与业务融合。', photo:'' },
+        { id:'l9', position:'党委书记', category:'书记', name:'[待补充]', years:'2015 – 2022', era:'全面从严', eraColor:'', desc:'落实全面从严治党，打造清廉医院。', photo:'' },
+        { id:'l10', position:'党委书记', category:'书记', name:'[待补充]', years:'2022 – 至今', era:'现任 · 党建引领', eraColor:'', desc:'以高质量党建引领高质量发展。', photo:'' }
       ],
       profiles: [
         { id:'p1', name:'[待补充]', title:'省突专家 · 二级教授 · 博导', dept:'心血管内科', desc:'深耕冠心病介入治疗30年，主持国自然3项。' },
@@ -489,21 +489,18 @@ function renderSectionEditor(sec) {
 
   // ---- Leaders 编辑区 (02-people院长/书记) ----
   if (sec.types.indexOf('leader')>=0 && Array.isArray(content.leaders)) {
-    html+='<div class="content-section" id="leaders-section"><h5 class="content-section-title"><i class="fas fa-user-tie text-warning mr-2"></i>历任领导';
+    html+='<div class="content-section" id="leaders-section"><h5 class="content-section-title"><i class="fas fa-user-tie text-warning mr-2"></i>历任院领导';
     html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-leader" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 新增</button></h5>';
-    var cats=['院长','书记'];
-    cats.forEach(function(cat){
-      var items=content.leaders.filter(function(l){return l.category===cat;});
-      html+='<h6 class="text-muted mb-2"><strong>'+cat+' ('+items.length+'人)</strong></h6>';
-      items.forEach(function(l,i){
-        var globalIdx=content.leaders.indexOf(l);
-        html+='<div class="leader-item-editor">';
-        html+='<div class="form-row"><div class="col-md-3"><label>姓名</label><input class="form-control form-control-sm ld-name" value="'+escHtml(l.name||'')+'"></div>';
-        html+='<div class="col-md-3"><label>任期</label><input class="form-control form-control-sm ld-years" value="'+escHtml(l.years||'')+'"></div>';
-        html+='<div class="col-md-2"><label>治院标签</label><input class="form-control form-control-sm ld-era" value="'+escHtml(l.era||'')+'"></div>';
-        html+='<div class="col-md-4"><label>简介</label><div class="input-group input-group-sm"><input class="form-control ld-desc" value="'+escHtml(l.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-leader" data-gidx="'+globalIdx+'"><i class="fas fa-trash"></i></button></div></div></div>';
-        html+='</div></div>';
-      });
+    content.leaders.forEach(function(l,i){
+      html+='<div class="leader-item-editor border rounded p-2 mb-2">';
+      html+='<div class="form-row"><div class="col-md-3"><label>姓名</label><input class="form-control form-control-sm ld-name" value="'+escHtml(l.name||'')+'"></div>';
+      html+='<div class="col-md-3"><label>职位</label><input class="form-control form-control-sm ld-position" value="'+escHtml(l.position||l.category||'')+'" placeholder="院长 / 党委书记 / 副院长…"></div>';
+      html+='<div class="col-md-2"><label>任期</label><input class="form-control form-control-sm ld-years" value="'+escHtml(l.years||'')+'"></div>';
+      html+='<div class="col-md-2"><label>治院标签</label><input class="form-control form-control-sm ld-era" value="'+escHtml(l.era||'')+'"></div>';
+      html+='<div class="col-md-2"><label>简介</label><div class="input-group input-group-sm"><input class="form-control ld-desc" value="'+escHtml(l.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-leader" data-gidx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
+      html+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
+      html+='<input class="form-control form-control-sm ld-photo" value="'+escHtml(l.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
+      html+='</div>';
     });
     html+='</div>';
   }
@@ -540,7 +537,9 @@ function renderSectionEditor(sec) {
       html+='<div class="col-md-3"><label>职务</label><input class="form-control form-control-sm lsh-role" value="'+escHtml(l.role||'')+'"></div>';
       html+='<div class="col-md-6"><label>职责</label><input class="form-control form-control-sm lsh-duty" value="'+escHtml(l.duty||'')+'"></div></div>';
       html+='<div class="form-row mt-1"><div class="col-md-10"><label>简历</label><div class="input-group input-group-sm"><textarea class="form-control lsh-resume" rows="2">'+escHtml(l.resume||'')+'</textarea><div class="input-group-append"><button class="btn btn-outline-danger btn-del-leadership" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div>';
-      html+='<div class="col-md-2"><label>照片URL</label><input class="form-control form-control-sm lsh-photo" value="'+escHtml(l.photo||'')+'" placeholder="留空用占位"></div></div>';
+      html+='<div class="col-md-2 d-flex flex-column justify-content-end"><label>&nbsp;</label></div></div>';
+      html+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
+      html+='<input class="form-control form-control-sm lsh-photo" value="'+escHtml(l.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
       html+='</div>';
     });
     html+='</div>';
@@ -676,29 +675,18 @@ function saveSectionContent(secId) {
   // Leaders (院长/书记)
   if(sec.types.indexOf('leader')>=0) {
     content[secId].leaders=[];
-    var catOrder=['院长','书记'];
-    catOrder.forEach(function(cat){
-      // We need to rebuild from the leader items that were there before, since we don't have cat data from the DOM
-      // Use the existing data but update names/desc
-    });
-    // Actually we need to rebuild from DOM editors
     var allLeaderEditors=$('#section-editor-body .leader-item-editor');
-    var oldLeaders=content[secId].leaders||[];
-    content[secId].leaders=[];
-    // count by category first
-    var deanCount=oldLeaders.filter(function(l){return l.category==='院长';}).length;
-    var partyCount=oldLeaders.filter(function(l){return l.category==='书记';}).length;
-
     allLeaderEditors.each(function(i){
-      var cat=i<deanCount?'院长':'书记';
       content[secId].leaders.push({
-        id: oldLeaders[i]?oldLeaders[i].id:('l'+Date.now()+i),
-        category: cat,
+        id: 'l'+Date.now()+i,
+        position: $(this).find('.ld-position').val()||'',
+        category: $(this).find('.ld-position').val()||'',  // 兼容旧字段
         name: $(this).find('.ld-name').val()||'',
         years: $(this).find('.ld-years').val()||'',
         era: $(this).find('.ld-era').val()||'',
         eraColor: '',
-        desc: $(this).find('.ld-desc').val()||''
+        desc: $(this).find('.ld-desc').val()||'',
+        photo: $(this).find('.ld-photo').val()||''
       });
     });
   }
@@ -978,7 +966,7 @@ $(document).ready(function() {
     var content=getContent();
     if(!content[secId]) content[secId]={};
     if(!content[secId].leaders) content[secId].leaders=[];
-    content[secId].leaders.push({id:'l'+Date.now(),category:'院长',name:'新姓名',years:'2000–2005',era:'标签',eraColor:'',desc:'简介'});
+    content[secId].leaders.push({id:'l'+Date.now(),position:'院长',category:'院长',name:'新姓名',years:'2000–2005',era:'标签',eraColor:'',desc:'简介',photo:''});
     saveContent(content);
     navigateTo(secId);
   });

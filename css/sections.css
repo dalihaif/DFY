@@ -60,6 +60,19 @@
   font-size:11px; color:var(--text-footer); letter-spacing:1px;
   text-transform:uppercase;
 }
+/* 职位标签 */
+.leader-position {
+  font-size:12px; font-weight:600; color:var(--text-secondary);
+  background:rgba(255,255,255,0.07); border:1px solid var(--border);
+  padding:2px 12px; border-radius:9999px; letter-spacing:0.5px;
+}
+/* 真实照片覆盖占位图 */
+.leader-photo .leader-real-img {
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  object-fit:cover; border-radius:50%;
+}
+.leader-photo.has-real-img .leader-photo-icon,
+.leader-photo.has-real-img .leader-photo-hint { display:none; }
 
 /* -------- 医学人才风采卡片 -------- */
 .profile-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin:32px 0; }
