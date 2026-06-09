@@ -644,15 +644,18 @@
       if (galleryGrid) {
         galleryGrid.innerHTML = gallery.map(function(g, i) {
           var staggerN = (i % 4) + 1;
+          var cleanLabel = g.label.replace(/<[^>]+>/g, '');
           if (g.url && g.url.trim()) {
-            return '<div class="gallery-item fade-in stagger-' + staggerN + '" data-lightbox="' + g.url.trim() + '" data-lightbox-caption="' + g.label.replace(/<[^>]+>/g,'') + '"><img src="' + g.url.trim() + '" alt="' + g.label.replace(/<[^>]+>/g,'') + '" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;cursor:zoom-in" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'<div class=\\\'gallery-item-icon\\\'>' + g.icon + '</div><div class=\\\'gallery-item-label\\\'>' + g.label.replace(/\\\'/g,'&apos;') + '</div>\'"></div>';
+            // 有图片URL → 显示缩略图+底部标签+点击放大
+            return '<div class="gallery-item fade-in stagger-' + staggerN + '" data-lightbox="' + g.url.trim() + '" data-lightbox-caption="' + cleanLabel + '">' +
+              '<img src="' + g.url.trim() + '" alt="' + cleanLabel + '">' +
+              '<div class="gallery-item-label" style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;padding:6px 10px;z-index:2">' + cleanLabel + '</div></div>';
           }
-          return '<div class="gallery-item fade-in stagger-' + staggerN + '"><div class="gallery-item-icon">' + g.icon + '</div><div class="gallery-item-label">' + g.label + '</div></div>';
+          // 无图片 → 图标+文字占位
+          return '<div class="gallery-item fade-in stagger-' + staggerN + '">' +
+            '<div class="gallery-item-icon">' + g.icon + '</div>' +
+            '<div class="gallery-item-label">' + g.label + '</div></div>';
         }).join('');
-        // 为图片项绑定 lightbox 事件
-        galleryGrid.querySelectorAll('[data-lightbox]').forEach(function(el) {
-          el.style.cursor = 'zoom-in';
-        });
       }
     }
     console.log('[Frontend] 首页已从 CMS 数据动态渲染');
