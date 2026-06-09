@@ -6,7 +6,7 @@
 
 // ====== 底层数据模型 ======
 var SECTIONS = [
-  { id:'index',       name:'网站首页', icon:'fas fa-home',          color:'#1a73e8', page:'index.html',         types:['index-hero','sectionCards','footer'] },
+  { id:'index',       name:'网站首页', icon:'fas fa-home',          color:'#1a73e8', page:'index.html',         types:['index-hero','sectionCards','gallery','footer'] },
 
   { id:'history',     name:'历史沿革', icon:'fas fa-history',       color:'#2980b9', page:'01-history.html',     types:['hero','block','timeline','gallery'] },
   { id:'people',      name:'人物风采', icon:'fas fa-users',         color:'#e67e22', page:'02-people.html',      types:['hero','leader','profile','dataCard','gallery'] },
@@ -337,7 +337,13 @@ function seedContent() {
         addr:'<strong>院本部：</strong>云南省大理市嘉士伯大道32号<br><strong>凤仪院区：</strong>大理经开区凤仪镇工业大道西侧、白塔河以东',
         phones:'党政办：0872-2201062 | 门诊部：0872-2201150 | 投诉办：0872-2201309 | 体检中心：0872-2201119 | 医务部：0872-2201168',
         copyright:'© 2025 大理大学第一附属医院（云南省第四人民医院）版权所有 | 云端院史馆 v4.0 | 本网站非官方站点，信息仅供参考'
-      }
+      },
+      gallery: [
+        { icon:'📷', label:'1992年奠基典礼<br><small>历史影像</small>', url:'' },
+        { icon:'📷', label:'1997年正式开诊<br><small>珍贵历史</small>', url:'' },
+        { icon:'📷', label:'2015年三甲评审<br><small>里程碑时刻</small>', url:'' },
+        { icon:'📷', label:'2020年抗疫驰援<br><small>逆行英雄</small>', url:'' }
+      ]
     },
     staff: {
       hero: { bgImage:'../assets/images/2_20.png', num:'板块十三 · SECTION 13', title:'职工名录', subtitle:'每一位职工，都是医院发展的基石', desc:'1946名在册职工，41个临床科室，来自五湖四海，汇聚于此。铭记每一位大附院人的名字与贡献。' },
@@ -548,6 +554,21 @@ function renderIndexEditor(content) {
   h += '<div class="form-row mt-2"><div class="col-md-6"><label>联系电话 (" | " 分隔)</label><input class="form-control form-control-sm idx-footer-phones" value="' + escHtml(footer.phones || '') + '"></div>';
   h += '<div class="col-md-6"><label>版权信息</label><input class="form-control form-control-sm idx-footer-copyright" value="' + escHtml(footer.copyright || '') + '"></div></div>';
   h += '</div>';
+
+  // Gallery 编辑区
+  var gallery = content.gallery || [];
+  h += '<div class="content-section"><h5 class="content-section-title"><i class="fas fa-images text-purple mr-2"></i>首页画廊';
+  h += ' <button class="btn btn-xs btn-outline-success ml-2 btn-add-idx-gallery"><i class="fas fa-plus"></i> 新增</button></h5>';
+  h += '<div id="idx-gallery-container">';
+  gallery.forEach(function(g, i) {
+    h += '<div class="idx-gallery-item border rounded p-2 mb-2">';
+    h += '<div class="form-row"><div class="col-md-1"><label>图标</label><input class="form-control form-control-sm ig-icon" value="' + escHtml(g.icon || '') + '" style="font-size:18px"></div>';
+    h += '<div class="col-md-4"><label>标签 (支持&lt;br&gt;)</label><input class="form-control form-control-sm ig-label" value="' + escHtml(g.label || '') + '"></div>';
+    h += '<div class="col-md-5"><label>图片URL</label><input class="form-control form-control-sm ig-url" value="' + escHtml(g.url || '') + '" placeholder="https://... 或 ../assets/images/xxx.jpg"></div>';
+    h += '<div class="col-md-2"><label>&nbsp;</label><button class="btn btn-outline-danger btn-sm btn-del-idx-gallery"><i class="fas fa-trash"></i> 删除</button></div></div>';
+    h += '</div>';
+  });
+  h += '</div></div>';
 
   return h;
 }
@@ -817,6 +838,16 @@ function saveIndexContent() {
     phones: $('#section-editor-body .idx-footer-phones').val() || '',
     copyright: $('#section-editor-body .idx-footer-copyright').val() || ''
   };
+
+  // Gallery
+  content.index.gallery = [];
+  $('#idx-gallery-container .idx-gallery-item').each(function() {
+    content.index.gallery.push({
+      icon: $(this).find('.ig-icon').val() || '',
+      label: $(this).find('.ig-label').val() || '',
+      url: $(this).find('.ig-url').val() || ''
+    });
+  });
 
   saveContent(content);
   $(document).Toasts('create', { class:'bg-success', title:'保存成功', body:'首页内容已更新，刷新前台即可查看', autohide:true, delay:3000 });
@@ -1389,6 +1420,20 @@ $(document).ready(function() {
   });
   $(document).on('click','.btn-del-flip',function(){
     $(this).closest('.flip-item').remove();
+  });
+
+  // 首页画廊 增删
+  $(document).on('click','.btn-add-idx-gallery',function(){
+    var h = '<div class="idx-gallery-item border rounded p-2 mb-2">';
+    h += '<div class="form-row"><div class="col-md-1"><label>图标</label><input class="form-control form-control-sm ig-icon" value="📷" style="font-size:18px"></div>';
+    h += '<div class="col-md-4"><label>标签 (支持&lt;br&gt;)</label><input class="form-control form-control-sm ig-label" value="" placeholder="例如: 1992年奠基典礼<small>历史影像</small>"></div>';
+    h += '<div class="col-md-5"><label>图片URL</label><input class="form-control form-control-sm ig-url" value="" placeholder="https://... 或 ../assets/images/xxx.jpg"></div>';
+    h += '<div class="col-md-2"><label>&nbsp;</label><button class="btn btn-outline-danger btn-sm btn-del-idx-gallery"><i class="fas fa-trash"></i> 删除</button></div></div>';
+    h += '</div>';
+    $('#idx-gallery-container').append(h);
+  });
+  $(document).on('click','.btn-del-idx-gallery',function(){
+    $(this).closest('.idx-gallery-item').remove();
   });
 
   // 新增/删除 Gallery

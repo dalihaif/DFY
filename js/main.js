@@ -636,6 +636,25 @@
       }
       if (f.copyright) { var cr = document.querySelector('.footer-bottom'); if (cr) cr.textContent = f.copyright; }
     }
+
+    // Gallery
+    var gallery = indexData.gallery;
+    if (Array.isArray(gallery) && gallery.length > 0) {
+      var galleryGrid = document.querySelector('.gallery-grid');
+      if (galleryGrid) {
+        galleryGrid.innerHTML = gallery.map(function(g, i) {
+          var staggerN = (i % 4) + 1;
+          if (g.url && g.url.trim()) {
+            return '<div class="gallery-item fade-in stagger-' + staggerN + '" data-lightbox="' + g.url.trim() + '" data-lightbox-caption="' + g.label.replace(/<[^>]+>/g,'') + '"><img src="' + g.url.trim() + '" alt="' + g.label.replace(/<[^>]+>/g,'') + '" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;cursor:zoom-in" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'<div class=\\\'gallery-item-icon\\\'>' + g.icon + '</div><div class=\\\'gallery-item-label\\\'>' + g.label.replace(/\\\'/g,'&apos;') + '</div>\'"></div>';
+          }
+          return '<div class="gallery-item fade-in stagger-' + staggerN + '"><div class="gallery-item-icon">' + g.icon + '</div><div class="gallery-item-label">' + g.label + '</div></div>';
+        }).join('');
+        // 为图片项绑定 lightbox 事件
+        galleryGrid.querySelectorAll('[data-lightbox]').forEach(function(el) {
+          el.style.cursor = 'zoom-in';
+        });
+      }
+    }
     console.log('[Frontend] 首页已从 CMS 数据动态渲染');
   })();
 
