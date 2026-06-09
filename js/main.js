@@ -528,12 +528,20 @@
   }
 
   // -------- 公告数据读取 ---------
+  // 优先级: localStorage（后台管理实时数据） > data.js（持久化导出数据）
+  // 公告属于动态内容，后台管理修改后应立即在前端可见，无需重新导出 data.js
+  // 首次访问时自动将 data.js 数据同步到 localStorage
   var hmAnnouncements = [];
   try {
-    if (_hasData(_hmData.announcements)) {
+    var localAnn = JSON.parse(localStorage.getItem('hm_announcements') || 'null');
+    if (localAnn && Array.isArray(localAnn) && localAnn.length > 0) {
+      hmAnnouncements = localAnn;
+    } else if (_hasData(_hmData.announcements)) {
+      // data.js 有数据但 localStorage 为空 → 首次同步
       hmAnnouncements = _hmData.announcements;
+      try { localStorage.setItem('hm_announcements', JSON.stringify(hmAnnouncements)); } catch(e) {}
     } else {
-      hmAnnouncements = JSON.parse(localStorage.getItem('hm_announcements') || '[]');
+      hmAnnouncements = [];
     }
   } catch(e) {}
 
@@ -553,7 +561,8 @@
       display.forEach(function(a, i){
         var tagText = catMap[a.category] || a.category || '公告';
         var tagClass = a.category || 'notice';
-        html += '<div class="announce-card fade-in stagger-'+(i+1)+'">'
+        // data-ann-idx 关联到 published 数组索引，modal 用于从 hmAnnouncements 查找原始数据
+        html += '<div class="announce-card fade-in stagger-'+(i+1)+'" data-ann-idx="'+i+'">'
           + '<div class="announce-card-top">'
             + '<span class="announce-card-date">' + (a.date||'') + '</span>'
             + '<span class="announce-card-tag ' + tagClass + '">' + tagText + '</span>'
@@ -572,27 +581,40 @@
         + '</div>';
     }
     grid.innerHTML = html;
+    // 将新生成的公告卡片注册到 IntersectionObserver
+    // （因为卡片是动态替换的，需要在渲染后重新观察）
+    grid.querySelectorAll('.fade-in').forEach(function (el) {
+      observer.observe(el);
+    });
   }
   renderFrontAnnouncements();
 
-  // -------- Announcement card modal (vanilla JS event delegation) --------
+  // -------- 公告纪实弹出（data-ann-idx 关联后台原始数据）--------
   document.addEventListener('click', function(ev) {
     var card = ev.target.closest('.announce-card');
     if (!card) return;
-    // don't trigger when clicking internal links
-    if (ev.target.closest('a')) return;
+    if (ev.target.closest('a')) return; // 不拦截链接点击
 
-    var title = card.querySelector('.announce-card-title');
-    var desc  = card.querySelector('.announce-card-desc');
-    var date  = card.querySelector('.announce-card-date');
-    var tag   = card.querySelector('.announce-card-tag');
-    var src   = card.querySelector('.announce-card-footer');
-    var titleText = title ? title.textContent : '';
-    var descText  = desc  ? desc.textContent  : '';
-    var dateText  = date ? date.textContent  : '';
-    var tagText   = tag  ? tag.textContent   : '';
-    var tagClass  = tag  ? tag.className.replace('announce-card-tag', '').trim() : '';
-    var srcText   = src  ? src.textContent.replace(/^\s*📌\s*/, '').trim() : '';
+    // 从 data-ann-idx 查后台原始数据（避免读截断的 DOM textContent）
+    var idx = parseInt(card.getAttribute('data-ann-idx'), 10);
+    var a = null;
+    if (!isNaN(idx)) {
+      var published = hmAnnouncements.filter(function(x){ return x.published !== false; });
+      published.sort(function(x,y){ return (y.date||'').localeCompare(x.date||''); });
+      a = published[idx] || null;
+    }
+    // fallback：如果索引失效则从 DOM 读取
+    var catMap = { notice: '通知', event: '活动', hr: '人事', academic: '科研' };
+    var titleText = a ? a.title : (card.querySelector('.announce-card-title')||{}).textContent||'';
+    var descText  = a ? (a.content||'') : (card.querySelector('.announce-card-desc')||{}).textContent||'';
+    var dateText  = a ? (a.date||'') : (card.querySelector('.announce-card-date')||{}).textContent||'';
+    var tagText   = a ? (catMap[a.category]||a.category||'公告') : ((card.querySelector('.announce-card-tag')||{}).textContent||'');
+    var tagClass  = a ? (a.category||'notice') : ((card.querySelector('.announce-card-tag')||{}).className||'').replace('announce-card-tag','').trim();
+    var srcText   = a ? (a.dept||'') : '';
+    if (!srcText) {
+      var footer = card.querySelector('.announce-card-footer');
+      srcText = footer ? footer.textContent.replace(/^\s*📌\s*/, '').trim() : '';
+    }
 
     // build overlay
     var overlay = document.createElement('div');
@@ -631,7 +653,6 @@
     });
 
     document.body.appendChild(overlay);
-    // trigger animation
     requestAnimationFrame(function () { overlay.classList.add('active'); });
   });
 
