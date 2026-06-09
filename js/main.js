@@ -208,6 +208,21 @@
       // ====== 历任院领导 (02-people.html) ======
       var leaderGrid = document.getElementById('leader-grid-all');
       if (leaderGrid) {
+        // 智能同步：若 data.js 中有更多 leaders，优先用 data.js 并回写 localStorage
+        var dataJsPeople = _hmData && _hmData.content && _hmData.content.people;
+        var dataJsLeaders = dataJsPeople && dataJsPeople.leaders || [];
+        if (dataJsLeaders.length > sectionContent.leaders.length) {
+          sectionContent.leaders = dataJsLeaders;
+          // 回写 localStorage 使其同步
+          try {
+            var local = JSON.parse(localStorage.getItem('hm_content') || 'null') || {};
+            if (!local.people) local.people = {};
+            local.people.leaders = dataJsLeaders;
+            localStorage.setItem('hm_content', JSON.stringify(local));
+            console.log('[Frontend] 从 data.js 同步了 ' + dataJsLeaders.length + ' 条领导数据到 localStorage');
+          } catch(e) {}
+        }
+
         // 兼容旧 category 分组（院长/书记）和新 position 直接标注
         var deans = sectionContent.leaders.filter(function(l) { return l.category === '院长'; });
         var secretaries = sectionContent.leaders.filter(function(l) { return l.category === '书记'; });
