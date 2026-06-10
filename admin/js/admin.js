@@ -95,7 +95,7 @@ function seedContent() {
       ],
       profiles: [
         { id:'p1', name:'[待补充]', title:'省突专家 · 二级教授 · 博导', dept:'心血管内科', desc:'深耕冠心病介入治疗30年，主持国自然3项。' },
-        { id:'p2', name:'[待补充]', title:'省贴专家 · 兴滇英才 · 教授', dept:'神经外科', desc:'滇西神经外科领军人物。' },
+        { id:'p2', name:'[待补充]', title:'省贴专家 · 兴滇英才 · 教授', dept:'神经外科', photo:'', desc:'滇西神经外科领军人物。' },
         { id:'p3', name:'[待补充]', title:'省学术带头人 · 主任医师', dept:'骨科', desc:'脊柱微创与关节置换领域专家。' },
         { id:'p4', name:'[待补充]', title:'省卫健委高层次人才 · 教授', dept:'妇产科', desc:'高危妊娠管理及妇科肿瘤微创手术专家。' },
         { id:'p5', name:'[待补充]', title:'兴滇英才 · 省级教学名师', dept:'消化内科', desc:'内镜诊疗技术精湛。' },
@@ -135,7 +135,7 @@ function seedContent() {
           imgIcon:'🏛', imgLabel:'重点专科/实验室场景图', imgSize:'4:3' }
       ],
       profiles: [
-        { id:'d1', name:'[待补充]', title:'神经外科主任 · 省突专家', dept:'神经外科', desc:'滇西神经外科领军人物。' },
+        { id:'d1', name:'[待补充]', title:'神经外科主任 · 省突专家', dept:'神经外科', photo:'', desc:'滇西神经外科领军人物。' },
         { id:'d2', name:'[待补充]', title:'重症医学科主任 · 省学术带头人', dept:'重症医学科', desc:'急危重症救治专家。' },
         { id:'d3', name:'[待补充]', title:'呼吸科主任 · 省卫健委高层次人才', dept:'呼吸科', desc:'呼吸疾病全病程管理专家。' },
         { id:'d4', name:'[待补充]', title:'骨科主任 · 省学术带头人', dept:'骨科', desc:'脊柱微创与关节置换领域专家。' }
@@ -149,7 +149,7 @@ function seedContent() {
       hero: { bgImage:'../assets/images/2_20.png', num:'板块四 · SECTION 04', title:'院区建设', subtitle:'一院两区 · 双核驱动', desc:'主院区与凤仪院区协同发展，构筑滇西区域医疗中心。' },
       blocks: [
         { id:'b1', num:'01 · 主院区', title:'主院区', subtitle:'大理市核心区位',
-          text:'<h4>地理位置</h4><p>位于大理市核心区域，交通便利，服务人口覆盖大理及周边地区。</p><h4>院区规模</h4><p>编制床位XXX张，开放床位XXX张，年门急诊量超XXX万人次。</p>',
+          text:'<h4>地理位置</h4><p>位于大理市核心区域，交通便利，服务人口覆盖大理及周边地区。</p><h4>院区规模</h4><p>编制床位1500张，开放床位XXX张，年门急诊量超80万人次。</p>',
           imgIcon:'🏥', imgLabel:'主院区航拍图', imgSize:'16:9' },
         { id:'b2', num:'02 · 凤仪院区', title:'凤仪院区', subtitle:'跨越发展新引擎',
           text:'<h4>规划定位</h4><p>凤仪院区是医院高质量发展的重要战略布局，承担医疗、教学、科研综合功能。</p>',

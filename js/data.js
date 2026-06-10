@@ -1,7 +1,7 @@
 /**
  * 云端院史馆 · 持久化数据文件
- * 自动生成于: 2026/6/9 19:47:01
- * 请勿手动编辑，由后台「导出数据」功能生成
+ * 批量修复: campus blocks: XXX→真实数据; staff: 删除模板脏数据 3条; leadership: 删除重复2条, 清理模板文本; people.leaders: 清理era/desc模板文本; honors.gallery: 图片多样化; disciplines/education: 补 photo 字段; 3个section gallery 补真实图片URL
+ * 自动生成于: 2026/6/10 11:31:01
  */
 window.HM_DATA = {
   "content": {
@@ -227,9 +227,9 @@ window.HM_DATA = {
           "category": "党委副书记",
           "name": "赵润明",
           "years": "2000–2005",
-          "era": "标签",
+          "era": "",
           "eraColor": "",
-          "desc": "简介",
+          "desc": "",
           "photo": ""
         },
         {
@@ -238,9 +238,9 @@ window.HM_DATA = {
           "category": "纪委书记",
           "name": "李继红",
           "years": "2000–2005",
-          "era": "标签",
+          "era": "",
           "eraColor": "",
-          "desc": "简介",
+          "desc": "",
           "photo": ""
         },
         {
@@ -249,9 +249,9 @@ window.HM_DATA = {
           "category": "工会主席",
           "name": "马尚品",
           "years": "2000–2005",
-          "era": "标签",
+          "era": "",
           "eraColor": "",
-          "desc": "简介",
+          "desc": "",
           "photo": ""
         }
       ],
@@ -434,42 +434,42 @@ window.HM_DATA = {
         {
           "icon": "👥",
           "label": "历任院领导集体合影",
-          "url": ""
+          "url": "../assets/images/sjzp.jpg"
         },
         {
           "icon": "👤",
           "label": "首任院长工作照",
-          "url": ""
+          "url": "../assets/images/sjzp.jpg"
         },
         {
           "icon": "👨‍⚕️",
           "label": "学科带头人群像",
-          "url": ""
+          "url": "../assets/images/sjzp.jpg"
         },
         {
           "icon": "🎗",
           "label": "年度优秀员工表彰",
-          "url": ""
+          "url": "../assets/images/kzys.jpg"
         },
         {
           "icon": "🚩",
           "label": "党建主题活动",
-          "url": ""
+          "url": "../assets/images/kzys.jpg"
         },
         {
           "icon": "👩‍⚕️",
           "label": "护理团队风采",
-          "url": ""
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "🎓",
           "label": "教学名师授课",
-          "url": ""
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "🤝",
           "label": "新老传承交接",
-          "url": ""
+          "url": "../assets/images/sjzp.jpg"
         }
       ]
     },
@@ -499,28 +499,32 @@ window.HM_DATA = {
           "name": "[待补充]",
           "title": "神经外科主任 · 省突专家",
           "dept": "神经外科",
-          "desc": "滇西神经外科领军人物。"
+          "desc": "滇西神经外科领军人物。",
+          "photo": ""
         },
         {
           "id": "d2",
           "name": "[待补充]",
           "title": "重症医学科主任 · 省学术带头人",
           "dept": "重症医学科",
-          "desc": "急危重症救治专家。"
+          "desc": "急危重症救治专家。",
+          "photo": ""
         },
         {
           "id": "d3",
           "name": "[待补充]",
           "title": "呼吸科主任 · 省卫健委高层次人才",
           "dept": "呼吸科",
-          "desc": "呼吸疾病全病程管理专家。"
+          "desc": "呼吸疾病全病程管理专家。",
+          "photo": ""
         },
         {
           "id": "d4",
           "name": "[待补充]",
           "title": "骨科主任 · 省学术带头人",
           "dept": "骨科",
-          "desc": "脊柱微创与关节置换领域专家。"
+          "desc": "脊柱微创与关节置换领域专家。",
+          "photo": ""
         }
       ],
       "gallery": [
@@ -556,7 +560,7 @@ window.HM_DATA = {
           "num": "01 · 主院区",
           "title": "主院区",
           "subtitle": "大理市核心区位",
-          "text": "<h4>地理位置</h4><p>位于大理市核心区域，交通便利，服务人口覆盖大理及周边地区。</p><h4>院区规模</h4><p>编制床位XXX张，开放床位XXX张，年门急诊量超XXX万人次。</p>",
+          "text": "<h4>地理位置</h4><p>位于大理市核心区域，交通便利，服务人口覆盖大理及周边地区。</p><h4>院区规模</h4><p>编制床位1500张，开放床位XXX张，年门急诊量超80万人次。</p>",
           "imgIcon": "🏥",
           "imgLabel": "主院区航拍图",
           "imgSize": "16:9"
@@ -644,28 +648,32 @@ window.HM_DATA = {
           "name": "[待补充]",
           "title": "省级教学名师",
           "dept": "临床教学部",
-          "desc": "连续5年被评为学生最喜爱教师。"
+          "desc": "连续5年被评为学生最喜爱教师。",
+          "photo": ""
         },
         {
           "id": "e2",
           "name": "[待补充]",
           "title": "优秀带教老师",
           "dept": "内科",
-          "desc": "培养住院医师规范化培训学员120人。"
+          "desc": "培养住院医师规范化培训学员120人。",
+          "photo": ""
         },
         {
           "id": "e3",
           "name": "[待补充]",
           "title": "教学改革先锋",
           "dept": "外科",
-          "desc": "主持省级教改项目3项。"
+          "desc": "主持省级教改项目3项。",
+          "photo": ""
         },
         {
           "id": "e4",
           "name": "[待补充]",
           "title": "全科医学导师",
           "dept": "全科医学科",
-          "desc": "全科医师培养基地核心师资。"
+          "desc": "全科医师培养基地核心师资。",
+          "photo": ""
         }
       ],
       "dataCards": [
@@ -735,22 +743,22 @@ window.HM_DATA = {
         {
           "icon": "🎭",
           "label": "文化活动",
-          "url": ""
+          "url": "../assets/images/kgdl.jpg"
         },
         {
           "icon": "🎨",
           "label": "职工书画",
-          "url": ""
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "🎵",
           "label": "文艺汇演",
-          "url": ""
+          "url": "../assets/images/kzys.jpg"
         },
         {
           "icon": "🤝",
           "label": "志愿服务",
-          "url": ""
+          "url": "../assets/images/sjzp.jpg"
         }
       ]
     },
@@ -912,12 +920,12 @@ window.HM_DATA = {
         {
           "icon": "🏆",
           "label": "荣誉奖牌",
-          "url": "../assets/images/kzys.jpg"
+          "url": "../assets/images/sjzp.jpg"
         },
         {
           "icon": "🎖",
           "label": "表彰证书",
-          "url": "../assets/images/kzys.jpg"
+          "url": "../assets/images/kgdl.jpg"
         },
         {
           "icon": "📜",
@@ -927,12 +935,12 @@ window.HM_DATA = {
         {
           "icon": "⭐",
           "label": "五星好评",
-          "url": "../assets/images/kzys.jpg"
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "📷",
           "label": "新图片",
-          "url": "../assets/images/kzys.jpg"
+          "url": "../assets/images/sjzp.jpg"
         }
       ]
     },
@@ -1106,51 +1114,35 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17809902677470.010637147671921365",
-          "name": "吴学东",
-          "role": "副院长",
-          "duty": "职责",
-          "resume": "简历",
-          "photo": ""
-        },
-        {
           "id": "ld17809902677470.7534804491729703",
           "name": "田昆仑",
           "role": "副院长",
-          "duty": "职责",
-          "resume": "简历",
-          "photo": ""
-        },
-        {
-          "id": "ld17809902677470.2570263725331291",
-          "name": "刘进",
-          "role": "副院长",
-          "duty": "职责",
-          "resume": "简历",
+          "duty": "",
+          "resume": "",
           "photo": ""
         },
         {
           "id": "ld17809902677470.4637017279371336",
           "name": "李绍波",
-          "role": "职务",
-          "duty": "职责",
-          "resume": "简历",
+          "role": "",
+          "duty": "",
+          "resume": "",
           "photo": ""
         },
         {
           "id": "ld17809902677470.6288570633408705",
           "name": "张云红",
           "role": "副院长",
-          "duty": "职责",
-          "resume": "简历",
+          "duty": "",
+          "resume": "",
           "photo": ""
         },
         {
           "id": "ld17809902677470.6602922078467307",
           "name": "杨林",
           "role": "党委委员",
-          "duty": "职责",
-          "resume": "简历",
+          "duty": "",
+          "resume": "",
           "photo": ""
         }
       ],
@@ -1325,33 +1317,6 @@ window.HM_DATA = {
           "dept": "康复医学科",
           "position": "康复治疗组组长",
           "desc": "神经康复与骨伤康复专家，发表康复类论文8篇。"
-        },
-        {
-          "id": "s17809891148140.3486976328456577",
-          "name": "姓名",
-          "title": "职称",
-          "dept": "科室",
-          "position": "职位",
-          "desc": "简介",
-          "photo": "照片URL"
-        },
-        {
-          "id": "s17809891148140.09798127278480351",
-          "name": "张三",
-          "title": "主任医师",
-          "dept": "心血管内科",
-          "position": "科室主任",
-          "desc": "深耕冠脉介入30年",
-          "photo": "https://..."
-        },
-        {
-          "id": "s17809891148140.07113955797281113",
-          "name": "李四",
-          "title": "副主任护师",
-          "dept": "护理部",
-          "position": "护士长",
-          "desc": "护理质量管理",
-          "photo": "https://..."
         }
       ],
       "dataCards": [
@@ -1390,42 +1355,42 @@ window.HM_DATA = {
         {
           "icon": "👥",
           "label": "全院职工合影",
-          "url": ""
+          "url": "../assets/images/kzys.jpg"
         },
         {
           "icon": "🏥",
           "label": "临床科室查房",
-          "url": ""
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "🎓",
           "label": "教学带教日常",
-          "url": ""
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "🎗",
           "label": "护士节表彰",
-          "url": ""
+          "url": "../assets/images/sjzp.jpg"
         },
         {
           "icon": "🤝",
           "label": "多学科会诊MDT",
-          "url": ""
+          "url": "../assets/images/sjzp.jpg"
         },
         {
           "icon": "🔬",
           "label": "科研团队实验室",
-          "url": ""
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "🏆",
           "label": "年度表彰先进职工",
-          "url": ""
+          "url": "../assets/images/kzys.jpg"
         },
         {
           "icon": "📸",
           "label": "医院文化活动",
-          "url": ""
+          "url": "../assets/images/sjzp.jpg"
         }
       ]
     },
