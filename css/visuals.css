@@ -33,14 +33,12 @@ body::after {
 .card-tag { position:relative; }
 
 /* card hover gold top line */
-.section-card::before,
 .card::after {
   content:''; position:absolute; top:0; left:0; right:0; height:2px;
   background:linear-gradient(90deg, transparent, var(--gold-soft), transparent);
   opacity:0; transition:opacity 0.3s; border-radius:var(--radius-md) var(--radius-md) 0 0;
   pointer-events:none;
 }
-.section-card:hover::before,
 .card:hover::after { opacity:1; }
 .card { position:relative; overflow:hidden; }
 

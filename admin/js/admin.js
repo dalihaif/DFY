@@ -6,7 +6,7 @@
 
 // ====== 底层数据模型 ======
 var SECTIONS = [
-  { id:'index',       name:'网站首页', icon:'fas fa-home',          color:'#1a73e8', page:'index.html',         types:['index-hero','sectionCards','gallery','footer'] },
+  { id:'index',       name:'网站首页', icon:'fas fa-home',          color:'#1a73e8', page:'index.html',         types:['index-hero','sectionCards','stats-bar','gallery','footer'] },
 
   { id:'history',     name:'历史沿革', icon:'fas fa-history',       color:'#2980b9', page:'01-history.html',     types:['hero','block','timeline','gallery'] },
   { id:'people',      name:'人物风采', icon:'fas fa-users',         color:'#e67e22', page:'02-people.html',      types:['hero','leader','profile','dataCard','gallery'] },
@@ -17,7 +17,7 @@ var SECTIONS = [
   { id:'tech',        name:'科技交流', icon:'fas fa-robot',         color:'#1565c0', page:'07-tech.html',        types:['hero','block','dataCard','gallery'] },
   { id:'duty',        name:'责任担当', icon:'fas fa-shield-alt',    color:'#c62828', page:'08-duty.html',        types:['hero','block','dataCard','gallery'] },
   { id:'honors',      name:'荣誉殿堂', icon:'fas fa-trophy',        color:'#f9a825', page:'09-honors.html',      types:['hero','block','dataCard','gallery'] },
-  { id:'vision',      name:'展望未来', icon:'fas fa-eye',           color:'#00695c', page:'10-vision.html',      types:['hero','block','dataCard','gallery'] },
+  { id:'vision',      name:'展望未来', icon:'fas fa-eye',           color:'#00695c', page:'10-vision.html',      types:['hero','block','timeline','dataCard','gallery'] },
   { id:'structure',   name:'组织架构', icon:'fas fa-sitemap',       color:'#4527a0', page:'11-structure.html',   types:['hero','block','gallery'] },
   { id:'leadership',  name:'领导团队', icon:'fas fa-user-tie',      color:'#bf360c', page:'12-leadership.html',  types:['hero','block','leadership','gallery'] },
   { id:'staff',       name:'职工名录', icon:'fas fa-address-book',    color:'#0288d1', page:'13-staff.html',       types:['hero','block','profile','dataCard','gallery'] }
@@ -270,6 +270,12 @@ function seedContent() {
         { value:'AI', label:'智能诊断', note:'智慧医院全面深化' },
         { value:'16国', label:'国际合作', note:'南亚东南亚拓展' }
       ],
+      timeline: [
+        { year:'1991', title:'奠基起步', desc:'大理医学院附属医院获批成立，开启奋斗征程。', dot:'起' },
+        { year:'2015', title:'三甲跨越', desc:'获评三级甲等综合医院，跻身高水平医院行列。', dot:'甲' },
+        { year:'2020', title:'抗疫担当', desc:'157名医护驰援一线，展现大附院人责任担当。', dot:'战' },
+        { year:'未来', title:'愿景展望', desc:'建成滇西区域医疗中心，辐射南亚东南亚。', dot:'梦' }
+      ],
       gallery: [
         { icon:'🎯', label:'战略规划' }, { icon:'🚀', label:'未来蓝图' },
         { icon:'🌟', label:'远景目标' }, { icon:'📈', label:'发展路径' }
@@ -331,6 +337,13 @@ function seedContent() {
         { num:'板块十一', icon:'🏛', title:'组织架构', sub:'科学布局 · 高效运转', desc:'党委领导下的院长负责制，41个临床科室、9党总支/55党支部，三级甲等现代医院治理体系。', link:'pages/11-structure.html' },
         { num:'板块十二', icon:'👥', title:'领导团队', sub:'领航定向 · 掌舵前行', desc:'现任院党政领导班子成员介绍，各临床科室负责人风采展示，凝聚全院1946名职工的力量。', link:'pages/12-leadership.html' },
         { num:'板块十三', icon:'📋', title:'职工名录', sub:'每一位职工，都是基石', desc:'铭记全院1946名职工的基本信息与贡献，41个临床科室全覆盖，每一位大附院人都值得被铭记。', link:'pages/13-staff.html' }
+      ],
+      statsBar: [
+        { value:'162', unit:'亩', label:'总占地面积' },
+        { value:'1946', unit:'人', label:'全院职工' },
+        { value:'1500', unit:'张', label:'编制床位' },
+        { value:'11.15', unit:'亿', label:'资产总额' },
+        { value:'41', unit:'个', label:'临床科室' }
       ],
       footer: {
         slogan:'诚信 · 进取 · 和谐 · 奉献<br>云南省第四人民医院 · 云端院史馆',
@@ -544,6 +557,17 @@ function renderIndexEditor(content) {
     h += '<td><input class="form-control form-control-sm ic-desc" value="' + escHtml(c.desc || '') + '"></td>';
     h += '<td><input class="form-control form-control-sm ic-link" value="' + escHtml(c.link || '') + '"></td>';
     h += '</tr>';
+  });
+  h += '</tbody></table></div></div>'; // content-section
+
+  // Stats-bar 编辑区
+  var statsBar = content.statsBar || [];
+  h += '<div class="content-section"><h5 class="content-section-title"><i class="fas fa-chart-bar text-success mr-2"></i>首页统计条</h5>';
+  h += '<div class="table-responsive"><table class="table table-sm table-bordered"><thead><tr><th>数值</th><th>单位</th><th>标签</th></tr></thead><tbody>';
+  statsBar.forEach(function(s, i) {
+    h += '<tr class="idx-stat-row"><td><input class="form-control form-control-sm is-val" value="' + escHtml(s.value || '') + '" style="width:100px"></td>';
+    h += '<td><input class="form-control form-control-sm is-unit" value="' + escHtml(s.unit || '') + '" style="width:80px"></td>';
+    h += '<td><input class="form-control form-control-sm is-label" value="' + escHtml(s.label || '') + '"></td></tr>';
   });
   h += '</tbody></table></div></div>'; // content-section
 
@@ -838,6 +862,17 @@ function saveIndexContent() {
     phones: $('#section-editor-body .idx-footer-phones').val() || '',
     copyright: $('#section-editor-body .idx-footer-copyright').val() || ''
   };
+
+  // Stats-bar
+  content.index.statsBar = [];
+  $('#section-editor-body .idx-stat-row').each(function() {
+    var v = $(this).find('.is-val').val();
+    if (v) content.index.statsBar.push({
+      value: v,
+      unit: $(this).find('.is-unit').val() || '',
+      label: $(this).find('.is-label').val() || ''
+    });
+  });
 
   // Gallery
   content.index.gallery = [];

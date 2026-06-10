@@ -1,7 +1,6 @@
 /**
  * 云端院史馆 · 持久化数据文件
- * 批量修复: campus blocks: XXX→真实数据; staff: 删除模板脏数据 3条; leadership: 删除重复2条, 清理模板文本; people.leaders: 清理era/desc模板文本; honors.gallery: 图片多样化; disciplines/education: 补 photo 字段; 3个section gallery 补真实图片URL
- * 自动生成于: 2026/6/10 11:31:01
+ * 自动生成于: 2026/6/10 11:33:27
  */
 window.HM_DATA = {
   "content": {
@@ -1003,6 +1002,32 @@ window.HM_DATA = {
           "icon": "📈",
           "label": "发展路径"
         }
+      ],
+      "timeline": [
+        {
+          "year": "1991",
+          "title": "奠基起步",
+          "desc": "大理医学院附属医院获批成立，开启奋斗征程。",
+          "dot": "起"
+        },
+        {
+          "year": "2015",
+          "title": "三甲跨越",
+          "desc": "获评三级甲等综合医院，跻身高水平医院行列。",
+          "dot": "甲"
+        },
+        {
+          "year": "2020",
+          "title": "抗疫担当",
+          "desc": "157名医护驰援一线，展现大附院人责任担当。",
+          "dot": "战"
+        },
+        {
+          "year": "未来",
+          "title": "愿景展望",
+          "desc": "建成滇西区域医疗中心，辐射南亚东南亚。",
+          "dot": "梦"
+        }
       ]
     },
     "structure": {
@@ -1433,7 +1458,34 @@ window.HM_DATA = {
         "addr": "",
         "phones": "",
         "copyright": ""
-      }
+      },
+      "statsBar": [
+        {
+          "value": "162",
+          "unit": "亩",
+          "label": "总占地面积"
+        },
+        {
+          "value": "1946",
+          "unit": "人",
+          "label": "全院职工"
+        },
+        {
+          "value": "1500",
+          "unit": "张",
+          "label": "编制床位"
+        },
+        {
+          "value": "11.15",
+          "unit": "亿",
+          "label": "资产总额"
+        },
+        {
+          "value": "41",
+          "unit": "个",
+          "label": "临床科室"
+        }
+      ]
     }
   },
   "settings": {

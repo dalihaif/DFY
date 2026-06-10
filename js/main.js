@@ -622,6 +622,17 @@
       if (f.copyright) { var cr = document.querySelector('.footer-bottom'); if (cr) cr.textContent = f.copyright; }
     }
 
+    // Stats-bar
+    var statsBar = indexData.statsBar;
+    if (Array.isArray(statsBar) && statsBar.length > 0) {
+      var statsContainer = document.querySelector('.stats-bar .container');
+      if (statsContainer) {
+        statsContainer.innerHTML = statsBar.map(function(s) {
+          return '<div class="stat-item"><span class="stat-value">' + s.value + '<small>' + s.unit + '</small></span><span class="stat-label">' + s.label + '</span></div>';
+        }).join('');
+      }
+    }
+
     // Gallery
     var gallery = indexData.gallery;
     if (Array.isArray(gallery) && gallery.length > 0) {
