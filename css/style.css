@@ -878,6 +878,8 @@ button { font-family: inherit; }
 .announce-card-title {
   font-family: var(--font-display); font-size: 16px; font-weight: 700;
   color: var(--text-primary); line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .announce-card-desc {
   font-size: 13px; color: var(--text-muted); line-height: 1.7;

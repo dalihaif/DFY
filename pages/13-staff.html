@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>职工名录 — 大理大学第一附属医院 · 云端院史馆</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
@@ -10,15 +11,14 @@
   <link rel="stylesheet" href="../css/sections.css">
   <link rel="stylesheet" href="../css/visuals.css">
 </head>
-<body data-section="staff">
+<body>
 
-  <!-- ====== 导航栏 ====== -->
   <nav class="navbar">
     <div class="container">
       <a href="../index.html" class="nav-logo">
         <img src="../assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="nav-logo-img">
       </a>
-      <button class="nav-toggle" onclick="toggleMenu()" aria-label="菜单"><span></span><span></span><span></span></button>
+      <button class="nav-toggle" aria-label="菜单" onclick="toggleMenu()"><span></span><span></span><span></span></button>
       <ul class="nav-menu" id="navMenu">
         <li><a href="01-history.html">历史<br>沿革</a></li>
         <li><a href="02-people.html">人物<br>风采</a></li>
@@ -43,171 +43,134 @@
     </div>
   </nav>
 
-  <!-- ====== Page Hero ====== -->
+  <!-- Page Hero -->
   <section class="page-hero">
     <img class="page-hero-bg" src="../assets/images/2_20.png" alt="大理大学第一附属医院" onerror="this.style.display='none'">
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
-      <div class="page-breadcrumb"><a href="../index.html">云端院史馆</a><span class="page-breadcrumb-sep">/</span><span>职工名录</span></div>
+      <div class="page-breadcrumb">
+        <a href="../index.html">云端院史馆</a>
+        <span class="page-breadcrumb-sep">/</span>
+        <span>职工名录</span>
+      </div>
       <div class="page-hero-num">板块十三 · SECTION 13</div>
       <h1 class="page-hero-title">职工名录</h1>
-      <div class="page-hero-sub">铭记每一位职工的贡献</div>
-      <p class="page-hero-desc">医院的发展历程中，每一位职工都是不可或缺的参与者。这里记录着曾经在医院工作过的每一位职工姓名与基本信息，铭记他们的付出与奉献。</p>
+      <div class="page-hero-sub">每一位职工，都是医院发展的基石</div>
+      <p class="page-hero-desc">自医院建院伊始，每位来自五湖四海的同仁相聚于此。每一位大附院人都不该被忘却，每一份耕耘，都为医院的发展筑牢根基、注入前行力量。</p>
     </div>
   </section>
 
-  
+  <!-- ====== 内容区 ====== -->
+  <div class="section-body">
 
-    <!-- ====== 搜索与筛选 ====== -->
+    <!-- 01 职工名录说明 -->
     <div class="section-block fade-in">
-      <div class="staff-search-bar">
-        <div class="staff-search-input-wrap">
-          <i class="fas fa-search staff-search-icon"></i>
-          <input type="text" class="staff-search-input" id="staff-search" placeholder="搜索职工姓名...">
-        </div>
-        <div class="staff-filter-row">
-          <select class="staff-filter-select" id="filter-dept">
-            <option value="">全部科室</option>
-            <!-- 科室选项由JS动态生成 -->
-          </select>
-          <select class="staff-filter-select" id="filter-title">
-            <option value="">全部职称</option>
-            <!-- 职称选项由JS动态生成 -->
-          </select>
-          <select class="staff-filter-select" id="filter-status">
-            <option value="">全部状态</option>
-            <option value="在职">在职</option>
-            <option value="退休">退休</option>
-            <option value="离职">离职</option>
-          </select>
-          <button class="staff-filter-btn" id="btn-staff-search"><i class="fas fa-search mr-1"></i>搜索</button>
-          <button class="staff-filter-btn staff-filter-reset" id="btn-staff-reset">重置筛选</button>
-        </div>
+      <div class="block-header">
+        <div class="block-num">01 · 根基 · 职工名录</div>
+        <h2 class="block-title">全院职工名录</h2>
+        <p class="block-sub">铭记每一位为大附院发展贡献力量的人</p>
       </div>
     </div>
 
-    <!-- ====== 职工统计 ====== -->
-    <div class="staff-stats fade-in">
-      <div class="staff-stat-item">
-        <span class="staff-stat-num" id="stat-total">0</span>
-        <span class="staff-stat-label">职工总数</span>
+    <div class="divider"></div>
+
+    <!-- 02 职工搜索/筛选栏 -->
+    <div class="staff-toolbar fade-in">
+      <div class="staff-search">
+        <input type="text" class="staff-search-input" id="staffSearch" placeholder="搜索姓名、科室、职称…">
       </div>
-      <div class="staff-stat-item">
-        <span class="staff-stat-num" id="stat-online">0</span>
-        <span class="staff-stat-label">在职人数</span>
-      </div>
-      <div class="staff-stat-item">
-        <span class="staff-stat-num" id="stat-retired">0</span>
-        <span class="staff-stat-label">退休人数</span>
-      </div>
-      <div class="staff-stat-item">
-        <span class="staff-stat-num" id="stat-departments">0</span>
-        <span class="staff-stat-label">科室数量</span>
+      <div class="staff-filter" id="staffDeptFilter">
+        <button class="staff-filter-btn active" data-dept="all">全部</button>
       </div>
     </div>
 
-    <!-- ====== 职工卡片网格 ====== -->
-    <div class="staff-grid" id="staff-grid">
-      <!-- 职工卡片由JS动态生成 -->
-      <div class="staff-card fade-in stagger-1">
-        <div class="staff-photo">
-          <span class="staff-photo-icon">👤</span>
-          <span class="staff-photo-hint">职工照片</span>
-        </div>
-        <div class="staff-name">[待补充]</div>
-        <div class="staff-dept">[科室]</div>
-        <div class="staff-title">[职称]</div>
-        <div class="staff-years">[任职时间]</div>
-      </div>
-
-      <div class="staff-card fade-in stagger-2">
-        <div class="staff-photo">
-          <span class="staff-photo-icon">👤</span>
-          <span class="staff-photo-hint">职工照片</span>
-        </div>
-        <div class="staff-name">[待补充]</div>
-        <div class="staff-dept">[科室]</div>
-        <div class="staff-title">[职称]</div>
-        <div class="staff-years">[任职时间]</div>
-      </div>
-
-      <div class="staff-card fade-in stagger-3">
-        <div class="staff-photo">
-          <span class="staff-photo-icon">👤</span>
-          <span class="staff-photo-hint">职工照片</span>
-        </div>
-        <div class="staff-name">[待补充]</div>
-        <div class="staff-dept">[科室]</div>
-        <div class="staff-title">[职称]</div>
-        <div class="staff-years">[任职时间]</div>
-      </div>
+    <!-- 03 职工卡片网格 -->
+    <div class="profile-grid staff-grid" id="staffGrid">
+      <!-- 动态渲染 -->
     </div>
 
-    <!-- ====== 加载更多 ====== -->
-    <div class="staff-load-more" id="staff-load-more" style="display:none;">
-      <button class="staff-load-btn" id="btn-load-more">加载更多</button>
+    <div id="staffEmpty" style="display:none;text-align:center;padding:60px 20px;color:var(--text-muted);">
+      <div style="font-size:48px;margin-bottom:16px;">📭</div>
+      <p>未找到匹配的职工信息，请尝试其他关键词</p>
     </div>
 
-    <!-- ====== 无结果提示 ====== -->
-    <div class="staff-no-result" id="staff-no-result" style="display:none;">
-      <div class="staff-no-result-icon">🔍</div>
-      <div class="staff-no-result-text">未找到符合条件的职工</div>
-      <div class="staff-no-result-hint">请尝试修改筛选条件</div>
+    <div class="divider"></div>
+
+    <!-- 04 数据统计 -->
+    <div class="section-block fade-in">
+      <div class="block-header">
+        <div class="block-num">02 · 统计 · 人员概览</div>
+        <h2 class="block-title">职工数据总览</h2>
+        <p class="block-sub">以数据见证医院人才队伍建设成果</p>
+      </div>
+      <div class="data-grid">
+        <div class="data-card fade-in stagger-1">
+          <div class="data-card-value">1946</div>
+          <div class="data-card-label">全院职工</div>
+          <div class="data-card-note">含编内编外</div>
+        </div>
+        <div class="data-card fade-in stagger-2">
+          <div class="data-card-value">1638</div>
+          <div class="data-card-label">卫技人员</div>
+          <div class="data-card-note">占比 84.2%</div>
+        </div>
+        <div class="data-card fade-in stagger-3">
+          <div class="data-card-value">29</div>
+          <div class="data-card-label">博士</div>
+          <div class="data-card-note">含在读</div>
+        </div>
+        <div class="data-card fade-in stagger-4">
+          <div class="data-card-value">360</div>
+          <div class="data-card-label">硕士</div>
+          <div class="data-card-note">含在读</div>
+        </div>
+        <div class="data-card fade-in stagger-1">
+          <div class="data-card-value">294</div>
+          <div class="data-card-label">高级职称</div>
+          <div class="data-card-note">正高+副高</div>
+        </div>
+        <div class="data-card fade-in stagger-2">
+          <div class="data-card-value">41</div>
+          <div class="data-card-label">临床科室</div>
+          <div class="data-card-note">覆盖主要专科</div>
+        </div>
+      </div>
     </div>
 
   </div>
 
-  <!-- ====== 页脚 ====== -->          
-      <div class="footer-bottom">
-        <span>© 2024 大理大学第一附属医院 · 云端院史馆 v1.0</span>
-        <span>滇ICP备XXXXXXXX号</span>
-      </div>
+  <!-- ====== 图片画廊 ====== -->
+  <section class="gallery-section">
+    <div class="gallery-header">
+      <h3 class="gallery-title">职工风采 · 奋斗记忆</h3>
+      <span class="gallery-hint">可替换为实际职工合影/工作照</span>
     </div>
-  </footer>  
+    <div class="gallery-grid">
+      <div class="gallery-item fade-in stagger-1"><div class="gallery-item-icon">👥</div><div class="gallery-item-label">全院职工大会 合影</div></div>
+      <div class="gallery-item fade-in stagger-2"><div class="gallery-item-icon">🏥</div><div class="gallery-item-label">临床科室 查房</div></div>
+      <div class="gallery-item fade-in stagger-3"><div class="gallery-item-icon">🎓</div><div class="gallery-item-label">教学带教 日常</div></div>
+      <div class="gallery-item fade-in stagger-4"><div class="gallery-item-icon">🎗</div><div class="gallery-item-label">护士节 表彰</div></div>
+      <div class="gallery-item fade-in stagger-1"><div class="gallery-item-icon">🤝</div><div class="gallery-item-label">多学科会诊 MDT</div></div>
+      <div class="gallery-item fade-in stagger-2"><div class="gallery-item-icon">🔬</div><div class="gallery-item-label">科研团队 实验室</div></div>
+      <div class="gallery-item fade-in stagger-3"><div class="gallery-item-icon">🏆</div><div class="gallery-item-label">年度表彰 先进职工</div></div>
+      <div class="gallery-item fade-in stagger-4"><div class="gallery-item-icon">📸</div><div class="gallery-item-label">医院文化 活动</div></div>
+    </div>
+  </section>
 
-  <!-- ====== 职工详情弹窗 ====== -->
-  <div class="staff-detail-overlay" id="staff-detail-overlay" onclick="closeStaffDetail()" style="display:none;">
-    <div class="staff-detail-modal" onclick="event.stopPropagation()">
-      <div class="staff-detail-header">
-        <div class="staff-detail-photo" id="staff-detail-photo">👤</div>
-        <div class="staff-detail-info">
-          <h3 class="staff-detail-name" id="staff-detail-name">姓名</h3>
-          <div class="staff-detail-meta">
-            <span class="staff-detail-gender" id="staff-detail-gender"></span>
-            <span class="staff-detail-title" id="staff-detail-title"></span>
-          </div>
-          <div class="staff-detail-dept" id="staff-detail-dept"></div>
-        </div>
-        <button class="staff-detail-close" onclick="closeStaffDetail()">×</button>
-      </div>
-      <div class="staff-detail-body">
-        <div class="staff-detail-section">
-          <h4><i class="fas fa-calendar-alt"></i> 任职信息</h4>
-          <div class="staff-detail-row">
-            <label>入职时间：</label>
-            <span id="staff-detail-hire"></span>
-          </div>
-          <div class="staff-detail-row">
-            <label>状态：</label>
-            <span id="staff-detail-status"></span>
-          </div>
-          <div class="staff-detail-row" id="staff-detail-leave-row" style="display:none;">
-            <label>离职时间：</label>
-            <span id="staff-detail-leave"></span>
-          </div>
-        </div>
-        <div class="staff-detail-section" id="staff-detail-remark-section" style="display:none;">
-          <h4><i class="fas fa-sticky-note"></i> 备注信息</h4>
-          <p id="staff-detail-remark"></p>
-        </div>
-      </div>
-    </div>
+  <!-- ====== 翻页导航 ====== -->
+  <div class="page-nav">
+    <a href="12-leadership.html" class="page-nav-btn">← 领导团队</a>
+    <a href="../index.html" class="page-nav-btn home">🏛 院史馆首页</a>
+    <a href="01-history.html" class="page-nav-btn">历史沿革 →</a>
   </div>
 
-  <!-- ====== JS ====== -->
-    <!-- ====== 数据同步脚本（自动同步 localStorage 到服务器）====== -->
-  <script src="../js/localStorage-sync.js"></script>
-  <script src="../js/page-renderer.js"></script>
-<script src="../js/main.js"></script>
+  <footer class="footer">
+    <div class="footer-bottom" style="margin-top:0;border-top:1px solid var(--border);">
+      © 2025 大理大学第一附属医院（云南省第四人民医院）| 云端院史馆 · 职工名录
+    </div>
+  </footer>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
 </body>
 </html>

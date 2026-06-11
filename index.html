@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="大理大学第一附属医院（云南省第四人民医院）云端院史馆。立足大理、辐射滇西，三级甲等综合医院，建院34年以来的发展历程与辉煌成就。">
+  <meta name="description" content="大理大学第一附属医院（云南省第四人民医院）云端院史馆。立足大理、辐射滇西，三级甲等综合医院，建院<span class="hospital-age"></span>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
@@ -173,7 +173,7 @@
           <span class="sections-grid-eyebrow-line" style="transform:scaleX(-1)"></span>
         </div>
         <h2 class="sections-grid-title">探索医院发展的每一个维度</h2>
-        <p class="sections-grid-desc">从建院历史到未来展望，十二个主题板块完整呈现大附院<span class="hospital-age"></span>年的奋进历程与辉煌成就。</p>
+        <p class="sections-grid-desc">从建院历史到未来展望，十三个主题板块完整呈现大附院<span class="hospital-age"></span>年的奋进历程与辉煌成就。</p>
       </div>
 
       <div class="sections-grid">
@@ -228,7 +228,7 @@
           <div class="section-card-icon">💎</div>
           <div class="section-card-title">文化建设</div>
           <div class="section-card-sub">医院发展的精神灵魂</div>
-          <p class="section-card-desc">使命、愿景、价值观三核心构筑精神根基；"厚德精医，博学笃行"院训凝聚全院上下的文化认同。</p>
+          <p class="section-card-desc">使命、愿景、价值观三核心构筑精神根基；"诚信进取，和谐奉献"四字精神凝聚全院上下的文化认同。</p>
           <div class="section-card-arrow">进入板块 →</div>
         </a>
 
@@ -288,10 +288,10 @@
 
         <a href="pages/13-staff.html" class="section-card fade-in stagger-3">
           <span class="section-card-num">板块十三</span>
-          <div class="section-card-icon">📇</div>
+          <div class="section-card-icon">📋</div>
           <div class="section-card-title">职工名录</div>
-          <div class="section-card-sub">铭记每一份力量</div>
-          <p class="section-card-desc">1946名职工完整名录，记录每一位职工的姓名、科室、职称与任职经历，铭感每一位奋斗者。</p>
+          <div class="section-card-sub">每一位职工，都是基石</div>
+          <p class="section-card-desc">铭记全院1946名职工的基本信息与贡献，41个临床科室全覆盖，每一位大附院人都值得被铭记。</p>
           <div class="section-card-arrow">进入板块 →</div>
         </a>
 
@@ -332,7 +332,7 @@
         <div class="footer-logo">
           <img src="assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="footer-logo-img">
         </div>
-        <p class="footer-slogan">厚德精医 · 博学笃行<br>云南省第四人民医院 · 云端院史馆</p>
+        <p class="footer-slogan">诚信 · 进取 · 和谐 · 奉献<br>云南省第四人民医院 · 云端院史馆</p>
         <div class="footer-addr">
           <strong>院本部：</strong>云南省大理市嘉士伯大道32号<br>
           <strong>凤仪院区：</strong>大理经开区凤仪镇工业大道西侧、白塔河以东
@@ -383,25 +383,7 @@
     </div>
   </footer>
 
-  <!-- ====== 公告详情弹窗 ====== -->
-  <div class="announce-modal-overlay" id="announce-modal-overlay" style="display:none;" onclick="closeAnnounceModal()">
-    <div class="announce-modal-box" onclick="event.stopPropagation()">
-      <button class="announce-modal-close" onclick="closeAnnounceModal()">×</button>
-      <div class="announce-modal-header">
-        <h3 class="announce-modal-title" id="announce-modal-title">公告标题</h3>
-        <span class="announce-modal-date" id="announce-modal-time">发布时间</span>
-      </div>
-      <div class="announce-modal-body" id="announce-modal-body">
-        <p>公告正文内容</p>
-      </div>
-      <div class="announce-modal-footer">
-        <button class="btn btn-primary" onclick="closeAnnounceModal()">关闭</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== 数据同步脚本（自动同步 localStorage 到服务器） ====== -->
-  <script src="js/localStorage-sync.js"></script>
+  <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

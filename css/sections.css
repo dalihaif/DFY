@@ -59,6 +59,19 @@
   font-size:11px; color:var(--text-footer); letter-spacing:1px;
   text-transform:uppercase;
 }
+/* 职位标签 */
+.leader-position {
+  font-size:12px; font-weight:600; color:var(--text-secondary);
+  background:rgba(255,255,255,0.07); border:1px solid var(--border);
+  padding:2px 12px; border-radius:9999px; letter-spacing:0.5px;
+}
+/* 真实照片覆盖占位图 */
+.leader-photo .leader-real-img {
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  object-fit:cover; border-radius:50%;
+}
+.leader-photo.has-real-img .leader-photo-icon,
+.leader-photo.has-real-img .leader-photo-hint { display:none; }
 
 /* -------- 医学人才风采卡片 -------- */
 .profile-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin:32px 0; }
@@ -75,9 +88,22 @@
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:6px; color:var(--placeholder-text); font-size:12px;
   transition:border-color 0.3s;
+  position:relative; overflow:hidden;
 }
 .profile-photo-icon { font-size:40px; opacity:0.5; }
 .profile-photo-hint { font-size:11px; opacity:0.4; }
+/* 真实照片覆盖占位 */
+.profile-photo .profile-real-img {
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  object-fit:cover;
+}
+.profile-photo.has-real-img .profile-photo-icon,
+.profile-photo.has-real-img .profile-photo-hint { display:none; }
+/* 姓名首字占位（无照片时） */
+.profile-photo .profile-photo-char {
+  font-family:var(--font-display); font-size:52px; font-weight:700;
+  color:var(--gold-light); opacity:0.75; line-height:1;
+}
 .profile-info { padding:22px 20px; display:flex; flex-direction:column; gap:8px; flex:1; }
 .profile-name {
   font-family:var(--font-display); font-size:17px; font-weight:700;
@@ -396,9 +422,22 @@
   background:var(--placeholder-bg); border-bottom:1px solid var(--border);
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:6px; color:var(--placeholder-text); font-size:12px;
+  position:relative; overflow:hidden;
 }
 .leadership-photo-icon { font-size:44px; opacity:0.5; }
 .leadership-photo-hint { font-size:11px; opacity:0.4; }
+/* 真实照片覆盖占位 */
+.leadership-photo .leadership-real-img {
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  object-fit:cover;
+}
+.leadership-photo.has-real-img .leadership-photo-icon,
+.leadership-photo.has-real-img .leadership-photo-hint { display:none; }
+/* 姓名首字占位（无照片时） */
+.leadership-photo .leadership-photo-char {
+  font-family:var(--font-display); font-size:60px; font-weight:700;
+  color:var(--gold-light); opacity:0.75; line-height:1;
+}
 .leadership-info { padding:22px 20px; display:flex; flex-direction:column; gap:8px; flex:1; }
 .leadership-name { font-family:var(--font-display); font-size:18px; font-weight:700; color:var(--text-primary); }
 .leadership-role { font-size:14px; color:var(--gold-soft); font-weight:600; }
@@ -438,4 +477,208 @@
   .org-department-grid { grid-template-columns:1fr; }
   .leadership-grid { grid-template-columns:1fr; }
   .org-level { flex-direction:column; align-items:center; }
+}
+
+/* ============ 职工名录 专用样式 ============ */
+
+/* 工具栏 */
+.staff-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  padding: 0 var(--pad-x) 40px;
+  justify-content: center;
+}
+.staff-search {
+  flex: 1 1 300px;
+  max-width: 480px;
+}
+.staff-search-input {
+  width: 100%;
+  padding: 12px 20px;
+  border: 2px solid var(--border);
+  border-radius: 28px;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.staff-search-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+.staff-search-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* 科室筛选 */
+.staff-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.staff-filter-btn {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.staff-filter-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.staff-filter-btn.active {
+  background: var(--gold);
+  color: #1a1a1a;
+  border-color: var(--gold);
+  font-weight: 600;
+}
+
+/* 职工职位标签 */
+.staff-position-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  margin: 2px 0 6px;
+  border-radius: 12px;
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.staff-id-badge {
+  display: inline-block;
+  padding: 1px 8px;
+  margin: 0 0 2px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+}
+
+/* 职工卡片增强 — 紧凑版：缩小至 4→7 列，减少内边距/字号 */
+.staff-card {
+  border-radius: 8px;
+}
+.staff-card .profile-photo {
+  aspect-ratio: 1/1;
+}
+.staff-card .profile-photo .profile-photo-char {
+  font-size: 32px;
+}
+.staff-card .profile-photo .profile-photo-icon {
+  font-size: 28px;
+}
+.staff-card .profile-info {
+  padding: 10px 10px 12px;
+  gap: 4px;
+}
+.staff-card .profile-name {
+  font-size: 14px;
+}
+.staff-card .profile-title {
+  font-size: 11px;
+}
+.staff-card .profile-dept {
+  font-size: 10px;
+  padding: 2px 8px;
+}
+.staff-card .profile-desc {
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 2px;
+}
+.staff-card .staff-position-badge {
+  font-size: 10px;
+  padding: 1px 7px;
+  margin: 0 0 4px;
+}
+
+/* 职工卡片网格 — 更密集 */
+.staff-grid {
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+}
+
+/* 职工分页 */
+.staff-page-wrap {
+  padding: 0 var(--pad-x) 48px;
+}
+.staff-page-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.staff-page-summary {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.staff-page-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.sp-btn {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.sp-btn:hover:not(:disabled):not(.active) {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.sp-btn.active {
+  background: var(--gold);
+  color: #1a1a1a;
+  border-color: var(--gold);
+  font-weight: 600;
+}
+.sp-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.sp-prev, .sp-next {
+  font-size: 18px;
+  font-weight: 600;
+}
+.sp-ellipsis {
+  padding: 0 4px;
+  color: var(--text-muted);
+  font-size: 13px;
+  user-select: none;
+}
+
+@media (max-width: 1200px) {
+  .staff-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 768px) {
+  .staff-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+}
+@media (max-width: 480px) {
+  .staff-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 }

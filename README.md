@@ -1,116 +1,134 @@
-# 大理大学第一附属医院 · 云端院史馆
+# 云端院史馆 · 大理大学第一附属医院
 
-> 大理大学第一附属医院（云南省第四人民医院）官方数字院史展览网站
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+> 基于纯静态网页的医院数字院史展馆，支持后台 CMS 编辑，数据固化部署到 GitHub Pages。
 
 ---
 
-## 项目简介
+## 🚀 快速部署（GitHub Pages）
 
-本项目为大理大学第一附属医院云端院史馆，采用纯静态 HTML / CSS / JavaScript 构建，无需后端服务，可直接部署于任意静态托管平台（GitHub Pages、Nginx、CDN 等）。
+### 第一次部署
 
-网站以沉浸式视觉风格呈现医院从 1991 年建院至今的发展历程，涵盖十二个主题板块，供全院职工、在校师生及社会各界了解医院文化与建设成就。
-
----
-
-## 功能板块
-
-| 序号 | 板块名称 | 路径 |
-|------|----------|------|
-| 01 | 历史沿革 | `pages/01-history.html` |
-| 02 | 人物风采 | `pages/02-people.html` |
-| 03 | 学科建设 | `pages/03-disciplines.html` |
-| 04 | 院区建设 | `pages/04-campus.html` |
-| 05 | 教学人才 | `pages/05-education.html` |
-| 06 | 文化建设 | `pages/06-culture.html` |
-| 07 | 科技交流 | `pages/07-tech.html` |
-| 08 | 责任担当 | `pages/08-duty.html` |
-| 09 | 荣誉殿堂 | `pages/09-honors.html` |
-| 10 | 展望未来 | `pages/10-vision.html` |
-| 11 | 组织架构 | `pages/11-structure.html` |
-| 12 | 领导团队 | `pages/12-leadership.html` |
-
----
-
-## 技术栈
-
-- **前端**：纯原生 HTML5 + CSS3 + Vanilla JavaScript（无框架依赖）
-- **字体**：Google Fonts（Noto Sans TC / Noto Serif TC）
-- **图标与素材**：本地 SVG + 医院官方视觉资源
-- **主题切换**：支持深色 / 浅色双主题，使用 `data-theme` 属性动态切换
-- **响应式**：适配桌面、平板、移动端多尺寸设备
-
----
-
-## 目录结构
-
-```
-DFY/
-├── index.html          # 首页（含导航、公告、板块入口、统计栏）
-├── pages/              # 十二个主题页面
-│   ├── 01-history.html
-│   ├── 02-people.html
-│   └── ...
-├── modules/            # 功能模块（文化详情、部门介绍等）
-│   ├── culture.html
-│   ├── departments.html
-│   └── ...
-├── css/
-│   ├── style.css       # 全局样式与 CSS 变量
-│   ├── sections.css    # 板块专属样式
-│   └── visuals.css     # 动效与视觉增强
-├── js/
-│   └── main.js         # 全局脚本（主题切换、导航交互等）
-├── assets/
-│   ├── images/         # 医院图片资源
-│   └── svg/            # 矢量图形资源
-└── admin/              # 后台管理界面（AdminLTE）
-```
-
----
-
-## 快速预览
-
-直接用浏览器打开 `index.html` 即可本地预览，无需任何构建步骤。
+1. **Fork 或 Push 到 GitHub**
 
 ```bash
-# 克隆仓库
-git clone https://github.com/dalihaif/DFY.git
-cd DFY
+git remote add origin https://github.com/<你的用户名>/hospital-museum.git
+git push -u origin main
+```
 
-# 直接用浏览器打开（或启动一个简单的本地服务器）
-# macOS / Linux
-open index.html
+2. **开启 GitHub Pages**
+   - 打开仓库 → Settings → Pages
+   - Source 选择 **GitHub Actions**
+   - 保存后等待约 1 分钟，自动部署完成
 
-# Windows
-start index.html
+3. **访问网站**
+   - 地址：`https://<你的用户名>.github.io/hospital-museum/`
+
+---
+
+## ✏️ 更新内容流程
+
+### ⚠️ 关键：本地编辑必须用 HTTP 服务器
+
+**Chrome 的 `file://` 协议下，不同目录的页面 localStorage 相互隔离！**  
+管理后台 (`admin/`) 和前台页面 (`pages/`) 的 localStorage 不共享，导致数据不同步。
+
+**正确做法：始终通过本地服务器访问**
+
+```bash
+# 在项目根目录启动
+cd E:\my-web\hospital-museum
+python serve.py
+```
+
+然后通过以下地址访问（共享同一份 localStorage）：
+
+| 页面 | 地址 |
+|------|------|
+| 🖥️ 管理后台 | `http://localhost:8000/admin/` |
+| 🏠 前台首页 | `http://localhost:8000/` |
+| 👥 职工名录 | `http://localhost:8000/pages/13-staff.html` |
+| 🔍 数据诊断 | `http://localhost:8000/diagnostic.html` |
+
+### 日常内容更新（推荐）
+
+```
+① 启动本地服务器   → python serve.py
+② 打开管理后台     → http://localhost:8000/admin/
+③ 编辑各板块内容   → 点「保存」
+④ 导出数据         → 顶部导航「导出数据」按钮 → 下载 data.js
+⑤ 替换文件         → 将下载的 data.js 覆盖 js/data.js
+⑥ 提交并 push      → git add js/data.js && git commit -m "update: 更新内容" && git push
+⑦ 等待自动部署    → GitHub Actions 约 1 分钟完成
+```
+
+### 一键命令（Windows）
+
+```cmd
+cd C:\path\to\hospital-museum
+git add js/data.js
+git commit -m "update: 更新展馆内容 %date%"
+git push
 ```
 
 ---
 
-## 医院简介
+## 📦 数据持久化说明
 
-**大理大学第一附属医院**（云南省第四人民医院）建于 1991 年，坐落于云南省大理市，是云南省卫生健康委员会直属管理的三级甲等综合性医院，也是国家临床教学示范中心。医院一院两区运营，编制床位 1500 张，开放床位 2013 张，全院职工 1946 人，临床科室 41 个，集医疗、教学、科研、预防于一体，是滇西区域医疗高地的核心支撑力量。
+| 存储方式 | 可见范围 | 是否持久 | 使用场景 |
+|---------|---------|---------|---------|
+| `localStorage` | 当前浏览器/当前 origin | ❌ 清缓存即丢失 | 本地编辑预览（需同源） |
+| `js/data.js`（导出部署） | **所有访客** | ✅ 永久保存在代码中 | 正式部署 |
 
-- 🌐 官方网站：[www.dfy.dali.edu.cn](https://www.dfy.dali.edu.cn)
-- 📍 地址：云南省大理市
+**工作原理：**
+- 前台 `main.js` **优先级 localStorage > data.js**：
+  1. 若 `localStorage.hm_content` 有数据 → 优先使用（管理后台编辑即时反映）
+  2. 否则使用 `js/data.js` 中的 `window.HM_DATA`
+- 管理后台的「保存」按钮写入 `localStorage.hm_content`
+- 「导出数据」按钮将 localStorage 数据固化为 `data.js` 文件
 
----
-
-## 开发者
-
-| 信息 | 详情 |
-|------|------|
-| 作者 | 李海峰 |
-| 单位 | 大理大学第一附属医院 党政办综合档案室 |
-| 邮箱 | dalihaif@qq.com |
-| GitHub | [@dalihaif](https://github.com/dalihaif) |
+**⚠️ 重要**：管理后台和前台必须在同一 origin（同域名同端口）下访问，否则 localStorage 不共享。使用 `python serve.py` 启动本地服务器即可保证同源。
 
 ---
 
-## License
+## 🗂️ 目录结构
 
-[MIT](LICENSE) © 2026 李海峰 / 大理大学第一附属医院
+```
+hospital-museum/
+├── index.html              # 网站首页
+├── pages/
+│   ├── 01-history.html     # 历史沿革
+│   ├── 02-people.html      # 人物风采
+│   └── ... (共12个板块)
+├── js/
+│   ├── main.js             # 前台渲染引擎
+│   └── data.js             # ← 持久化数据（由后台导出生成）
+├── admin/
+│   ├── index.html          # 后台管理界面
+│   └── js/admin.js         # 后台 CMS 逻辑
+└── .github/
+    └── workflows/
+        └── pages.yml       # GitHub Pages 自动部署配置
+```
+
+---
+
+## 🛠️ 本地预览
+
+### 方式一：本地 HTTP 服务器（推荐）
+```bash
+cd E:\my-web\hospital-museum
+python serve.py
+# 访问 http://localhost:8000
+```
+管理后台和前台共享 localStorage，编辑即时生效。
+
+### 方式二：直接打开文件（仅浏览）
+双击 `index.html` 在浏览器打开。  
+⚠️ 此方式下管理后台的编辑不会同步到前台（localStorage 隔离），仅适合快速浏览。
+
+---
+
+## 📞 技术支持
+
+- 大理大学第一附属医院档案室
+- 官网：https://www.dfy.dali.edu.cn
