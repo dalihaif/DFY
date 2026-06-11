@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -72,7 +72,7 @@
     }
     /* Setup mode */
     #login-overlay.setup .login-title::after {
-      content: ' — 首次使用请设置密码';
+      content: ' 鈥?棣栨浣跨敤璇疯缃瘑鐮?;
       font-size: 13px; color: #e67e22;
     }
   </style>
@@ -82,129 +82,129 @@
 <!-- ===== Login Overlay ===== -->
 <div id="login-overlay">
   <div class="login-card" id="login-card">
-    <div class="login-logo">🏥</div>
-    <div class="login-title" id="login-title">云端院史馆 · 管理后台</div>
-    <div class="login-sub" id="login-sub">请输入管理密码以继续</div>
+    <div class="login-logo">馃彞</div>
+    <div class="login-title" id="login-title">浜戠闄㈠彶棣?路 绠＄悊鍚庡彴</div>
+    <div class="login-sub" id="login-sub">璇疯緭鍏ョ鐞嗗瘑鐮佷互缁х画</div>
     <form id="login-form" onsubmit="return false;">
       <div class="form-group">
-        <label for="login-pwd">管理密码</label>
-        <input type="password" class="form-control" id="login-pwd" placeholder="请输入密码" autocomplete="current-password">
+        <label for="login-pwd">绠＄悊瀵嗙爜</label>
+        <input type="password" class="form-control" id="login-pwd" placeholder="璇疯緭鍏ュ瘑鐮? autocomplete="current-password">
       </div>
-      <button type="submit" class="btn-login" id="login-btn">进入后台</button>
+      <button type="submit" class="btn-login" id="login-btn">杩涘叆鍚庡彴</button>
     </form>
     <div class="login-msg" id="login-msg"></div>
-    <div class="login-hint" id="login-hint">首次使用？请输入并确认您的管理密码</div>
+    <div class="login-hint" id="login-hint">棣栨浣跨敤锛熻杈撳叆骞剁‘璁ゆ偍鐨勭鐞嗗瘑鐮?/div>
   </div>
 </div>
 
 <!-- ===== Main App (hidden until auth) ===== -->
 <div class="wrapper" id="admin-app" style="display:none;">
 
-  <!-- ===== 顶栏 ===== -->
+  <!-- ===== 椤舵爮 ===== -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="../index.html" class="nav-link" target="_blank"><i class="fas fa-external-link-alt mr-1"></i>预览前台</a>
+        <a href="../index.html" class="nav-link" target="_blank"><i class="fas fa-external-link-alt mr-1"></i>棰勮鍓嶅彴</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="https://www.dfy.dali.edu.cn" class="nav-link" target="_blank"><i class="fas fa-hospital mr-1"></i>医院官网</a>
+        <a href="https://www.dfy.dali.edu.cn" class="nav-link" target="_blank"><i class="fas fa-hospital mr-1"></i>鍖婚櫌瀹樼綉</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item" id="nav-logout-li" style="display:none;">
-        <a href="#" class="nav-link" id="nav-logout-btn"><i class="fas fa-sign-out-alt mr-1"></i>退出</a>
+        <a href="#" class="nav-link" id="nav-logout-btn"><i class="fas fa-sign-out-alt mr-1"></i>閫€鍑?/a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" id="btn-open-media-library" title="媒体库管理">
-          <i class="fas fa-cloud-upload-alt text-info mr-1"></i>媒体库
+        <a class="nav-link" href="#" id="btn-open-media-library" title="濯掍綋搴撶鐞?>
+          <i class="fas fa-cloud-upload-alt text-info mr-1"></i>濯掍綋搴?
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-success" href="#" id="btn-quick-export" title="导出所有数据为data.js"><i class="fas fa-download mr-1"></i>导出数据</a>
+        <a class="nav-link text-success" href="#" id="btn-quick-export" title="瀵煎嚭鎵€鏈夋暟鎹负data.js"><i class="fas fa-download mr-1"></i>瀵煎嚭鏁版嵁</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" id="btn-save-all"><i class="fas fa-save mr-1"></i>全部保存</a>
+        <a class="nav-link" href="#" id="btn-save-all"><i class="fas fa-save mr-1"></i>鍏ㄩ儴淇濆瓨</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#" id="btn-workflow-dashboard" title="审核发布工作流"><i class="fas fa-tasks mr-1"></i>审核工作流</a>
+        <a class="nav-link" href="#" id="btn-workflow-dashboard" title="瀹℃牳鍙戝竷宸ヤ綔娴?><i class="fas fa-tasks mr-1"></i>瀹℃牳宸ヤ綔娴?/a>
       </li>
       <li class="nav-item">
-        <span class="nav-link text-muted"><i class="fas fa-user-circle mr-1"></i>管理员</span>
+        <span class="nav-link text-muted"><i class="fas fa-user-circle mr-1"></i>绠＄悊鍛?/span>
       </li>
     </ul>
   </nav>
 
-  <!-- ===== 侧边栏 ===== -->
+  <!-- ===== 渚ц竟鏍?===== -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="#" class="brand-link">
-      <img src="../assets/images/logo-hospital.png" alt="院徽" class="brand-image img-circle elevation-3" style="opacity:.9">
-      <span class="brand-text font-weight-light">后台管理</span>
+      <img src="../assets/images/logo-hospital.png" alt="闄㈠窘" class="brand-image img-circle elevation-3" style="opacity:.9">
+      <span class="brand-text font-weight-light">鍚庡彴绠＄悊</span>
     </a>
     <div class="sidebar">
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
           <li class="nav-item">
             <a href="#" class="nav-link active" data-page="dashboard">
-              <i class="nav-icon fas fa-tachometer-alt"></i><p>控制台</p>
+              <i class="nav-icon fas fa-tachometer-alt"></i><p>鎺у埗鍙?/p>
             </a>
           </li>
-          <li class="nav-header text-uppercase">网站首页</li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="index"><i class="nav-icon fas fa-home"></i><p>首页内容 <span class="sidebar-status-badge" data-section="index"></span></p></a></li>
-          <li class="nav-header text-uppercase">板块管理</li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="history"><i class="nav-icon fas fa-history"></i><p>01 历史沿革 <span class="sidebar-status-badge" data-section="history"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="people"><i class="nav-icon fas fa-users"></i><p>02 人物风采 <span class="sidebar-status-badge" data-section="people"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="disciplines"><i class="nav-icon fas fa-microscope"></i><p>03 学科建设 <span class="sidebar-status-badge" data-section="disciplines"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="campus"><i class="nav-icon fas fa-building"></i><p>04 院区建设 <span class="sidebar-status-badge" data-section="campus"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="education"><i class="nav-icon fas fa-graduation-cap"></i><p>05 教学人才 <span class="sidebar-status-badge" data-section="education"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="culture"><i class="nav-icon fas fa-heart"></i><p>06 文化建设 <span class="sidebar-status-badge" data-section="culture"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="tech"><i class="nav-icon fas fa-robot"></i><p>07 科技交流 <span class="sidebar-status-badge" data-section="tech"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="duty"><i class="nav-icon fas fa-shield-alt"></i><p>08 责任担当 <span class="sidebar-status-badge" data-section="duty"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="honors"><i class="nav-icon fas fa-trophy"></i><p>09 荣誉殿堂 <span class="sidebar-status-badge" data-section="honors"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="vision"><i class="nav-icon fas fa-eye"></i><p>10 展望未来 <span class="sidebar-status-badge" data-section="vision"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="structure"><i class="nav-icon fas fa-sitemap"></i><p>11 组织架构 <span class="sidebar-status-badge" data-section="structure"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="leadership"><i class="nav-icon fas fa-user-tie"></i><p>12 领导团队 <span class="sidebar-status-badge" data-section="leadership"></span></p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="staff"><i class="nav-icon fas fa-address-book"></i><p>13 职工名录 <span class="sidebar-status-badge" data-section="staff"></span></p></a></li>
-          <li class="nav-header text-uppercase">系统</li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="announcements"><i class="nav-icon fas fa-bullhorn"></i><p>公告管理</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="data-manager"><i class="nav-icon fas fa-database"></i><p>数据管理</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="settings"><i class="nav-icon fas fa-cog"></i><p>网站设置</p></a></li>
+          <li class="nav-header text-uppercase">缃戠珯棣栭〉</li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="index"><i class="nav-icon fas fa-home"></i><p>棣栭〉鍐呭 <span class="sidebar-status-badge" data-section="index"></span></p></a></li>
+          <li class="nav-header text-uppercase">鏉垮潡绠＄悊</li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="history"><i class="nav-icon fas fa-history"></i><p>01 鍘嗗彶娌块潻 <span class="sidebar-status-badge" data-section="history"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="people"><i class="nav-icon fas fa-users"></i><p>02 浜虹墿椋庨噰 <span class="sidebar-status-badge" data-section="people"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="disciplines"><i class="nav-icon fas fa-microscope"></i><p>03 瀛︾寤鸿 <span class="sidebar-status-badge" data-section="disciplines"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="campus"><i class="nav-icon fas fa-building"></i><p>04 闄㈠尯寤鸿 <span class="sidebar-status-badge" data-section="campus"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="education"><i class="nav-icon fas fa-graduation-cap"></i><p>05 鏁欏浜烘墠 <span class="sidebar-status-badge" data-section="education"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="culture"><i class="nav-icon fas fa-heart"></i><p>06 鏂囧寲寤鸿 <span class="sidebar-status-badge" data-section="culture"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="tech"><i class="nav-icon fas fa-robot"></i><p>07 绉戞妧浜ゆ祦 <span class="sidebar-status-badge" data-section="tech"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="duty"><i class="nav-icon fas fa-shield-alt"></i><p>08 璐ｄ换鎷呭綋 <span class="sidebar-status-badge" data-section="duty"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="honors"><i class="nav-icon fas fa-trophy"></i><p>09 鑽ｈ獕娈垮爞 <span class="sidebar-status-badge" data-section="honors"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="vision"><i class="nav-icon fas fa-eye"></i><p>10 灞曟湜鏈潵 <span class="sidebar-status-badge" data-section="vision"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="structure"><i class="nav-icon fas fa-sitemap"></i><p>11 缁勭粐鏋舵瀯 <span class="sidebar-status-badge" data-section="structure"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="leadership"><i class="nav-icon fas fa-user-tie"></i><p>12 棰嗗鍥㈤槦 <span class="sidebar-status-badge" data-section="leadership"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="staff"><i class="nav-icon fas fa-address-book"></i><p>13 鑱屽伐鍚嶅綍 <span class="sidebar-status-badge" data-section="staff"></span></p></a></li>
+          <li class="nav-header text-uppercase">绯荤粺</li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="announcements"><i class="nav-icon fas fa-bullhorn"></i><p>鍏憡绠＄悊</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="data-manager"><i class="nav-icon fas fa-database"></i><p>鏁版嵁绠＄悊</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="settings"><i class="nav-icon fas fa-cog"></i><p>缃戠珯璁剧疆</p></a></li>
         </ul>
       </nav>
     </div>
   </aside>
 
-  <!-- ===== 主内容区 ===== -->
+  <!-- ===== 涓诲唴瀹瑰尯 ===== -->
   <div class="content-wrapper" id="content-wrapper">
-    <!-- 面包屑 -->
+    <!-- 闈㈠寘灞?-->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6"><h1 class="m-0" id="page-title">控制台</h1></div>
+          <div class="col-sm-6"><h1 class="m-0" id="page-title">鎺у埗鍙?/h1></div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right" id="breadcrumb">
-              <li class="breadcrumb-item active">控制台</li>
+              <li class="breadcrumb-item active">鎺у埗鍙?/li>
             </ol>
           </div>
         </div>
       </div>
     </div>
-    <!-- 内容 -->
+    <!-- 鍐呭 -->
     <section class="content" id="main-content">
       <div class="text-center py-5"><i class="fas fa-spinner fa-spin fa-2x text-muted"></i></div>
     </section>
   </div>
 
-  <!-- ===== 页脚 ===== -->
+  <!-- ===== 椤佃剼 ===== -->
   <footer class="main-footer">
-    <strong>云端院史馆 v2.0</strong> &mdash; 大理大学第一附属医院 | <a href="https://www.dfy.dali.edu.cn" target="_blank">医院官网</a>
+    <strong>浜戠闄㈠彶棣?v2.0</strong> &mdash; 澶х悊澶у绗竴闄勫睘鍖婚櫌 | <a href="https://www.dfy.dali.edu.cn" target="_blank">鍖婚櫌瀹樼綉</a>
   </footer>
 </div>
 
 <!-- Auth System (runs before AdminLTE) -->
-  <!-- ====== 数据同步脚本（自动同步 localStorage 到服务器）====== -->
+  <!-- ====== 鏁版嵁鍚屾鑴氭湰锛堣嚜鍔ㄥ悓姝?localStorage 鍒版湇鍔″櫒锛?===== -->
   <script src="../js/localStorage-sync.js"></script>
 <script>
 (function(){
@@ -226,10 +226,10 @@
     var card    = document.getElementById('login-card');
     if (isSetup) {
       // Switch to setup mode: need confirm password
-      titleEl.textContent = '云端院史馆 · 初始化设置';
-      subEl.textContent = '请设置您的管理密码';
-      hintEl.textContent = '设置后请牢记您的密码，遗失无法找回';
-      document.getElementById('login-pwd').placeholder = '设置管理密码';
+      titleEl.textContent = '浜戠闄㈠彶棣?路 鍒濆鍖栬缃?;
+      subEl.textContent = '璇疯缃偍鐨勭鐞嗗瘑鐮?;
+      hintEl.textContent = '璁剧疆鍚庤鐗㈣鎮ㄧ殑瀵嗙爜锛岄仐澶辨棤娉曟壘鍥?;
+      document.getElementById('login-pwd').placeholder = '璁剧疆绠＄悊瀵嗙爜';
       document.getElementById('login-pwd').value = '';
       // Add confirm field if not exists
       if (!document.getElementById('login-pwd2')) {
@@ -237,22 +237,22 @@
         confirmInput.type = 'password';
         confirmInput.className = 'form-control';
         confirmInput.id = 'login-pwd2';
-        confirmInput.placeholder = '确认管理密码';
+        confirmInput.placeholder = '纭绠＄悊瀵嗙爜';
         confirmInput.autocomplete = 'new-password';
         confirmInput.style.marginTop = '10px';
         document.getElementById('login-form').insertBefore(confirmInput, document.getElementById('login-btn'));
       }
-      document.getElementById('login-btn').textContent = '确认设置';
+      document.getElementById('login-btn').textContent = '纭璁剧疆';
       card.classList.add('setup');
     } else {
       card.classList.remove('setup');
-      titleEl.textContent = '云端院史馆 · 管理后台';
-      subEl.textContent = '请输入管理密码以继续';
-      hintEl.textContent = '首次使用？请输入并确认您的管理密码';
+      titleEl.textContent = '浜戠闄㈠彶棣?路 绠＄悊鍚庡彴';
+      subEl.textContent = '璇疯緭鍏ョ鐞嗗瘑鐮佷互缁х画';
+      hintEl.textContent = '棣栨浣跨敤锛熻杈撳叆骞剁‘璁ゆ偍鐨勭鐞嗗瘑鐮?;
       var existingConfirm = document.getElementById('login-pwd2');
       if (existingConfirm) existingConfirm.remove();
-      document.getElementById('login-pwd').placeholder = '请输入密码';
-      document.getElementById('login-btn').textContent = '进入后台';
+      document.getElementById('login-pwd').placeholder = '璇疯緭鍏ュ瘑鐮?;
+      document.getElementById('login-btn').textContent = '杩涘叆鍚庡彴';
     }
     setTimeout(function(){ document.getElementById('login-pwd').focus(); }, 200);
   }
@@ -263,7 +263,7 @@
     document.body.style.overflow = '';
     // Update user display
     var userSpan = document.getElementById('nav-user-display');
-    if (userSpan) userSpan.textContent = '管理员';
+    if (userSpan) userSpan.textContent = '绠＄悊鍛?;
     var logoutLi = document.getElementById('nav-logout-li');
     if (logoutLi) logoutLi.style.display = '';
   }
@@ -274,15 +274,15 @@
     msgEl.className = 'login-msg';
     msgEl.textContent = '';
     var pwd  = document.getElementById('login-pwd').value;
-    if (!pwd) { msgEl.className = 'login-msg text-danger'; msgEl.textContent = '请输入密码'; return false; }
+    if (!pwd) { msgEl.className = 'login-msg text-danger'; msgEl.textContent = '璇疯緭鍏ュ瘑鐮?; return false; }
     if (isSetup) {
       var pwd2 = document.getElementById('login-pwd2') ? document.getElementById('login-pwd2').value : '';
-      if (pwd.length < 4) { msgEl.className = 'login-msg text-danger'; msgEl.textContent = '密码至少4位'; return false; }
-      if (pwd !== pwd2) { msgEl.className = 'login-msg text-danger'; msgEl.textContent = '两次密码不一致'; return false; }
+      if (pwd.length < 4) { msgEl.className = 'login-msg text-danger'; msgEl.textContent = '瀵嗙爜鑷冲皯4浣?; return false; }
+      if (pwd !== pwd2) { msgEl.className = 'login-msg text-danger'; msgEl.textContent = '涓ゆ瀵嗙爜涓嶄竴鑷?; return false; }
       localStorage.setItem(PW_KEY, hashPwd(pwd));
       isSetup = false;
       msgEl.className = 'login-msg text-success';
-      msgEl.textContent = '密码设置成功！正在进入…';
+      msgEl.textContent = '瀵嗙爜璁剧疆鎴愬姛锛佹鍦ㄨ繘鍏モ€?;
       setTimeout(function(){ doLogin(); }, 800);
       return false;
     }
@@ -293,7 +293,7 @@
       showApp();
     } else {
       msgEl.className = 'login-msg text-danger';
-      msgEl.textContent = '密码错误，请重试';
+      msgEl.textContent = '瀵嗙爜閿欒锛岃閲嶈瘯';
       document.getElementById('login-pwd').value = '';
     }
     return false;
@@ -336,3 +336,4 @@
 <script src="js/admin.js"></script>
 </body>
 </html>
+

@@ -1,17 +1,17 @@
-/**
- * 数据服务层 v2 - 混合存储方案
- * 功能：同时保存到服务器（持久化）和 localStorage（快速读取）
- * 读取时优先从 localStorage 读取，失败再从服务器读取
+﻿/**
+ * 鏁版嵁鏈嶅姟灞?v2 - 娣峰悎瀛樺偍鏂规
+ * 鍔熻兘锛氬悓鏃朵繚瀛樺埌鏈嶅姟鍣紙鎸佷箙鍖栵級鍜?localStorage锛堝揩閫熻鍙栵級
+ * 璇诲彇鏃朵紭鍏堜粠 localStorage 璇诲彇锛屽け璐ュ啀浠庢湇鍔″櫒璇诲彇
  */
 
 const DataService = {
   API_BASE: window.location.origin.includes('localhost') 
     ? 'http://localhost:3000/api' 
-    : '/api', // 生产环境使用相对路径
+    : '/api', // 鐢熶骇鐜浣跨敤鐩稿璺緞
 
-  USE_SERVER: true, // 是否使用服务器存储
+  USE_SERVER: true, // 鏄惁浣跨敤鏈嶅姟鍣ㄥ瓨鍌?
 
-  // 从服务器获取数据
+  // 浠庢湇鍔″櫒鑾峰彇鏁版嵁
   async _fetchFromServer(endpoint) {
     if (!this.USE_SERVER) return null;
     try {
@@ -19,12 +19,12 @@ const DataService = {
       if (!response.ok) return null;
       return await response.json();
     } catch (e) {
-      console.warn(`从服务器获取数据失败: ${endpoint}`, e);
+      console.warn(`浠庢湇鍔″櫒鑾峰彇鏁版嵁澶辫触: ${endpoint}`, e);
       return null;
     }
   },
 
-  // 保存数据到服务器
+  // 淇濆瓨鏁版嵁鍒版湇鍔″櫒
   async _saveToServer(endpoint, data) {
     if (!this.USE_SERVER) return false;
     try {
@@ -35,12 +35,12 @@ const DataService = {
       });
       return response.ok;
     } catch (e) {
-      console.warn(`保存数据到服务器失败: ${endpoint}`, e);
+      console.warn(`淇濆瓨鏁版嵁鍒版湇鍔″櫒澶辫触: ${endpoint}`, e);
       return false;
     }
   },
 
-  // 获取所有数据（初始化用）
+  // 鑾峰彇鎵€鏈夋暟鎹紙鍒濆鍖栫敤锛?
   async getAllData() {
     if (!this.USE_SERVER) return null;
     try {
@@ -48,12 +48,12 @@ const DataService = {
       if (!response.ok) return null;
       return await response.json();
     } catch (e) {
-      console.warn('获取所有数据失败', e);
+      console.warn('鑾峰彇鎵€鏈夋暟鎹け璐?, e);
       return null;
     }
   },
 
-  // 初始化：从服务器加载数据到 localStorage
+  // 鍒濆鍖栵細浠庢湇鍔″櫒鍔犺浇鏁版嵁鍒?localStorage
   async initFromServer() {
     const serverData = await this.getAllData();
     if (!serverData) return false;
@@ -65,27 +65,27 @@ const DataService = {
       loadedCount++;
     }
 
-    console.log(`✅ 从服务器加载了 ${loadedCount} 个数据项`);
+    console.log(`鉁?浠庢湇鍔″櫒鍔犺浇浜?${loadedCount} 涓暟鎹」`);
     return true;
   },
 
-  // 保存数据到服务器和 localStorage
+  // 淇濆瓨鏁版嵁鍒版湇鍔″櫒鍜?localStorage
   async saveToServer(key, data) {
     const endpoint = this._getEndpoint(key);
     const success = await this._saveToServer(endpoint, data);
     
     if (success) {
-      console.log(`✅ 数据已保存到服务器: ${key}`);
+      console.log(`鉁?鏁版嵁宸蹭繚瀛樺埌鏈嶅姟鍣? ${key}`);
     } else {
-      console.warn(`⚠️ 数据保存到服务器失败，仅保存到本地: ${key}`);
+      console.warn(`鈿狅笍 鏁版嵁淇濆瓨鍒版湇鍔″櫒澶辫触锛屼粎淇濆瓨鍒版湰鍦? ${key}`);
     }
 
-    // 始终保存到 localStorage
+    // 濮嬬粓淇濆瓨鍒?localStorage
     localStorage.setItem(key, JSON.stringify(data));
     return success;
   },
 
-  // 辅助函数：根据 key 获取对应的 API 端点
+  // 杈呭姪鍑芥暟锛氭牴鎹?key 鑾峰彇瀵瑰簲鐨?API 绔偣
   _getEndpoint(key) {
     const endpointMap = {
       'hm_content': 'content',
@@ -98,11 +98,11 @@ const DataService = {
   }
 };
 
-// 页面加载时自动从服务器初始化数据
+// 椤甸潰鍔犺浇鏃惰嚜鍔ㄤ粠鏈嶅姟鍣ㄥ垵濮嬪寲鏁版嵁
 if (typeof window !== 'undefined') {
   window.DataService = DataService;
   
-  // 页面加载完成后初始化
+  // 椤甸潰鍔犺浇瀹屾垚鍚庡垵濮嬪寲
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       DataService.initFromServer();
@@ -111,3 +111,4 @@ if (typeof window !== 'undefined') {
     DataService.initFromServer();
   }
 }
+

@@ -1,20 +1,20 @@
-/**
- * localStorage 拦截器 - 自动同步数据到服务器
- * 功能：拦截所有 localStorage.setItem 调用，自动同步到服务器
- * 使用：只需在页面中引入此文件，无需修改其他代码
+﻿/**
+ * localStorage 鎷︽埅鍣?- 鑷姩鍚屾鏁版嵁鍒版湇鍔″櫒
+ * 鍔熻兘锛氭嫤鎴墍鏈?localStorage.setItem 璋冪敤锛岃嚜鍔ㄥ悓姝ュ埌鏈嶅姟鍣?
+ * 浣跨敤锛氬彧闇€鍦ㄩ〉闈腑寮曞叆姝ゆ枃浠讹紝鏃犻渶淇敼鍏朵粬浠ｇ爜
  */
 
 (function() {
-  // 配置
+  // 閰嶇疆
   const CONFIG = {
     API_BASE: window.location.origin.includes('localhost') 
       ? 'http://localhost:3000/api' 
-      : '/api', // 生产环境使用相对路径
-    ENABLED: true, // 是否启用服务器同步
-    DEBUG: false // 是否显示调试日志
+      : '/api', // 鐢熶骇鐜浣跨敤鐩稿璺緞
+    ENABLED: true, // 鏄惁鍚敤鏈嶅姟鍣ㄥ悓姝?
+    DEBUG: false // 鏄惁鏄剧ず璋冭瘯鏃ュ織
   };
 
-  // 需要同步到服务器的 key 列表
+  // 闇€瑕佸悓姝ュ埌鏈嶅姟鍣ㄧ殑 key 鍒楄〃
   const SYNC_KEYS = [
     'hm_content',
     'hm_settings', 
@@ -23,12 +23,12 @@
     'hm_staff'
   ];
 
-  // 保存原始方法
+  // 淇濆瓨鍘熷鏂规硶
   const originalSetItem = localStorage.setItem.bind(localStorage);
   const originalRemoveItem = localStorage.removeItem.bind(localStorage);
   const originalClear = localStorage.clear.bind(localStorage);
 
-  // 保存到服务器
+  // 淇濆瓨鍒版湇鍔″櫒
   async function saveToServer(key, value) {
     if (!CONFIG.ENABLED) return;
     if (!SYNC_KEYS.includes(key)) return;
@@ -44,23 +44,23 @@
       });
 
       if (response.ok) {
-        CONFIG.DEBUG && console.log(`✅ 已同步到服务器: ${key}`);
+        CONFIG.DEBUG && console.log(`鉁?宸插悓姝ュ埌鏈嶅姟鍣? ${key}`);
       } else {
-        CONFIG.DEBUG && console.warn(`⚠️ 同步到服务器失败: ${key}`, response.status);
+        CONFIG.DEBUG && console.warn(`鈿狅笍 鍚屾鍒版湇鍔″櫒澶辫触: ${key}`, response.status);
       }
     } catch (e) {
-      CONFIG.DEBUG && console.warn(`⚠️ 同步到服务器失败: ${key}`, e);
+      CONFIG.DEBUG && console.warn(`鈿狅笍 鍚屾鍒版湇鍔″櫒澶辫触: ${key}`, e);
     }
   }
 
-  // 从服务器加载数据
+  // 浠庢湇鍔″櫒鍔犺浇鏁版嵁
   async function loadFromServer() {
     if (!CONFIG.ENABLED) return;
 
     try {
       const response = await fetch(`${CONFIG.API_BASE}/all-data`);
       if (!response.ok) {
-        console.warn('⚠️ 从服务器加载数据失败', response.status);
+        console.warn('鈿狅笍 浠庢湇鍔″櫒鍔犺浇鏁版嵁澶辫触', response.status);
         return;
       }
 
@@ -69,46 +69,46 @@
 
       for (const [key, value] of Object.entries(serverData)) {
         const fullKey = key.includes('hm_') ? key : `hm_${key}`;
-        // 使用原始 setItem 避免触发 saveToServer 无限循环
+        // 浣跨敤鍘熷 setItem 閬垮厤瑙﹀彂 saveToServer 鏃犻檺寰幆
         originalSetItem(fullKey, JSON.stringify(value));
         loadedCount++;
       }
 
-      console.log(`✅ 从服务器加载了 ${loadedCount} 个数据项`);
+      console.log(`鉁?浠庢湇鍔″櫒鍔犺浇浜?${loadedCount} 涓暟鎹」`);
       
-      // 设置标志位，防止竞态条件
+      // 璁剧疆鏍囧織浣嶏紝闃叉绔炴€佹潯浠?
       window.__serverDataLoaded = true;
       
-      // 触发自定义事件，通知页面数据已更新
+      // 瑙﹀彂鑷畾涔変簨浠讹紝閫氱煡椤甸潰鏁版嵁宸叉洿鏂?
       window.dispatchEvent(new CustomEvent('serverDataLoaded'));
     } catch (e) {
-      console.warn('⚠️ 从服务器加载数据失败', e);
+      console.warn('鈿狅笍 浠庢湇鍔″櫒鍔犺浇鏁版嵁澶辫触', e);
     }
   }
 
-  // 重写 setItem
+  // 閲嶅啓 setItem
   localStorage.setItem = function(key, value) {
-    // 先调用原始方法
+    // 鍏堣皟鐢ㄥ師濮嬫柟娉?
     originalSetItem(key, value);
     
-    // 异步保存到服务器（不阻塞UI）
+    // 寮傛淇濆瓨鍒版湇鍔″櫒锛堜笉闃诲UI锛?
     saveToServer(key, value);
   };
 
-  // 重写 removeItem
+  // 閲嶅啓 removeItem
   localStorage.removeItem = function(key) {
     originalRemoveItem(key);
-    // 可以选择是否同步删除服务器数据
+    // 鍙互閫夋嫨鏄惁鍚屾鍒犻櫎鏈嶅姟鍣ㄦ暟鎹?
   };
 
-  // 重写 clear
+  // 閲嶅啓 clear
   localStorage.clear = function() {
-    if (confirm('确定要清除所有数据吗？这也会删除服务器上的数据！')) {
+    if (confirm('纭畾瑕佹竻闄ゆ墍鏈夋暟鎹悧锛熻繖涔熶細鍒犻櫎鏈嶅姟鍣ㄤ笂鐨勬暟鎹紒')) {
       originalClear();
     }
   };
 
-  // 页面加载时从服务器初始化数据
+  // 椤甸潰鍔犺浇鏃朵粠鏈嶅姟鍣ㄥ垵濮嬪寲鏁版嵁
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       loadFromServer();
@@ -117,12 +117,13 @@
     loadFromServer();
   }
 
-  // 暴露配置，允许页面控制
+  // 鏆撮湶閰嶇疆锛屽厑璁搁〉闈㈡帶鍒?
   window.LocalStorageSync = {
     CONFIG,
     loadFromServer,
     saveToServer
   };
 
-  console.log('✅ localStorage 拦截器已启用，数据将自动同步到服务器');
+  console.log('鉁?localStorage 鎷︽埅鍣ㄥ凡鍚敤锛屾暟鎹皢鑷姩鍚屾鍒版湇鍔″櫒');
 })();
+
