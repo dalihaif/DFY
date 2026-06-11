@@ -1,12 +1,617 @@
 {
-  "hm_content": [],
+  "hm_content": {
+    "sections": {
+      "index": {
+        "title": "网站首页",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "history": {
+        "title": "历史沿革",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "people": {
+        "title": "人物风采",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "disciplines": {
+        "title": "学科建设",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "campus": {
+        "title": "院区建设",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "education": {
+        "title": "教学人才",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "culture": {
+        "title": "文化建设",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "tech": {
+        "title": "科技交流",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "duty": {
+        "title": "责任担当",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "honors": {
+        "title": "荣誉殿堂",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "vision": {
+        "title": "展望未来",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "structure": {
+        "title": "组织架构",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "leadership": {
+        "title": "领导团队",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      },
+      "staff": {
+        "title": "职工名录",
+        "status": "published",
+        "updatedAt": "2026-06-11",
+        "notes": ""
+      }
+    },
+    "announcements": [
+      {
+        "id": 1,
+        "title": "大理大学第一附属医院2025年度工作报告",
+        "date": "2025-05-20",
+        "category": "notice",
+        "dept": "院办",
+        "content": "年度工作报告全文…",
+        "published": true
+      },
+      {
+        "id": 2,
+        "title": "关于开展2025年\"5·12\"国际护士节系列活动的通知",
+        "date": "2025-05-10",
+        "category": "event",
+        "dept": "护理部",
+        "content": "活动详情…",
+        "published": true
+      },
+      {
+        "id": 3,
+        "title": "关于2025年职称评审工作的通知",
+        "date": "2025-05-08",
+        "category": "hr",
+        "dept": "人事科",
+        "content": "评审条件与流程…",
+        "published": true
+      },
+      {
+        "id": 4,
+        "title": "关于召开2025年科研工作推进会的通知",
+        "date": "2025-04-28",
+        "category": "academic",
+        "dept": "科研科",
+        "content": "会议议程…",
+        "published": true
+      },
+      {
+        "id": 5,
+        "title": "2025年劳动节放假及值班安排",
+        "date": "2025-04-25",
+        "category": "notice",
+        "dept": "院办",
+        "content": "值班表…",
+        "published": true
+      },
+      {
+        "id": 6,
+        "title": "关于启动2026年度国家自然科学基金申报工作的通知",
+        "date": "2025-04-15",
+        "category": "academic",
+        "dept": "科研科",
+        "content": "申报指南…",
+        "published": true
+      },
+      {
+        "id": 7,
+        "title": "云端院史馆声明 ",
+        "date": "2026-06-11",
+        "category": "notice",
+        "dept": "综合档案室",
+        "content": "此云端院史馆非官网，系个人兴趣所致，加之对医院的热爱而创作。",
+        "published": true
+      }
+    ],
+    "index": {
+      "gallery": [
+        {
+          "icon": "📷",
+          "label": "1992年奠基典礼<br><small>历史影像</small>",
+          "url": "../assets/images/kgdl.jpg"
+        },
+        {
+          "icon": "📷",
+          "label": "1997年正式开诊<br><small>珍贵历史</small>",
+          "url": "../assets/images/kzys.jpg"
+        },
+        {
+          "icon": "📷",
+          "label": "2015年三甲评审<br><small>里程碑时刻</small>",
+          "url": "/assets/images/sjzp.jpg"
+        },
+        {
+          "icon": "📷",
+          "label": "2020年抗疫驰援<br><small>逆行英雄</small>",
+          "url": ""
+        }
+      ],
+      "hero": {
+        "bgImage": "",
+        "title": "",
+        "tag": "",
+        "desc": "",
+        "flipItems": [],
+        "cta1Text": "",
+        "cta1Link": "",
+        "cta2Text": ""
+      },
+      "sectionCards": [],
+      "footer": {
+        "slogan": "",
+        "addr": "",
+        "phones": "",
+        "copyright": ""
+      },
+      "statsBar": [
+        {
+          "value": "162",
+          "unit": "亩",
+          "label": "总占地面积"
+        },
+        {
+          "value": "1946",
+          "unit": "人",
+          "label": "全院职工"
+        },
+        {
+          "value": "1500",
+          "unit": "张",
+          "label": "编制床位"
+        },
+        {
+          "value": "11.15",
+          "unit": "亿",
+          "label": "资产总额"
+        },
+        {
+          "value": "41",
+          "unit": "个",
+          "label": "临床科室"
+        }
+      ]
+    },
+    "staff": {
+      "gallery": [
+        {
+          "icon": "👥",
+          "label": "全院职工合影",
+          "imgUrl": ""
+        },
+        {
+          "icon": "🏥",
+          "label": "临床科室查房",
+          "imgUrl": ""
+        },
+        {
+          "icon": "🎓",
+          "label": "教学带教日常",
+          "imgUrl": ""
+        },
+        {
+          "icon": "🎗",
+          "label": "护士节表彰",
+          "imgUrl": ""
+        },
+        {
+          "icon": "🤝",
+          "label": "多学科会诊MDT",
+          "imgUrl": ""
+        },
+        {
+          "icon": "🔬",
+          "label": "科研团队实验室",
+          "imgUrl": ""
+        },
+        {
+          "icon": "🏆",
+          "label": "年度表彰先进职工",
+          "imgUrl": ""
+        },
+        {
+          "icon": "📸",
+          "label": "医院文化活动",
+          "imgUrl": ""
+        }
+      ],
+      "dataCards": [
+        {
+          "value": "1946",
+          "label": "全院职工",
+          "note": "含编内编外"
+        },
+        {
+          "value": "1638",
+          "label": "卫技人员",
+          "note": "占比 84.2%"
+        },
+        {
+          "value": "29",
+          "label": "博士",
+          "note": "含在读"
+        },
+        {
+          "value": "360",
+          "label": "硕士",
+          "note": "含在读"
+        },
+        {
+          "value": "294",
+          "label": "高级职称",
+          "note": "正高+副高"
+        },
+        {
+          "value": "41",
+          "label": "临床科室",
+          "note": "覆盖主要专科"
+        }
+      ],
+      "blocks": [
+        {
+          "num": "01 · 根基 · 职工名录",
+          "title": "全院职工名录",
+          "subtitle": "铭记每一位为大附院发展贡献力量的人",
+          "text": "<h4>大理大学第一附属医院职工名录</h4><p>自1991年建院至今，一代代大附院人秉承\"诚信、进取、和谐、奉献\"的医院精神，在各自的岗位上默默耕耘。</p><p>本名录记录全院职工的姓名、科室、职称、职位等基本信息，旨在铭记每一位职工为医院发展所做出的贡献。</p>",
+          "imgIcon": "",
+          "imgLabel": "",
+          "imgSize": "",
+          "imgUrl": ""
+        }
+      ],
+      "profiles": [
+        {
+          "id": "s1",
+          "employeeId": "001",
+          "name": "张伟民",
+          "title": "主任医师 · 教授",
+          "dept": "心血管内科",
+          "position": "科室主任",
+          "desc": "深耕冠心病介入诊疗30年，主持国自然项目3项，培养硕士研究生18名。"
+        },
+        {
+          "id": "s17812112678490.6951836801959338",
+          "employeeId": "FY00022",
+          "name": "李海峰",
+          "title": "档案馆员",
+          "dept": "党政办",
+          "position": "科员",
+          "desc": "2000年入职，先后在保卫科、人事科、党政办综合档案室工作。",
+          "photo": "../assests/images/fy00022.png"
+        }
+      ],
+      "staff": [
+        {
+          "id": "s1781212297448",
+          "name": "姓名：李海峰性别：男身高：174 CM体重：78 KG学历：本科工作单位：大理大学第一附属医院联系电话：13988531240家庭住址：大理市青春海岸公寓918号",
+          "gender": "男",
+          "title": "档案馆员",
+          "department": "党政办",
+          "hireDate": "2000.7",
+          "leaveDate": "",
+          "status": "在职",
+          "remark": "",
+          "photo": ""
+        }
+      ],
+      "hero": {
+        "bgImage": "",
+        "num": "",
+        "title": "",
+        "subtitle": "",
+        "desc": ""
+      }
+    },
+    "people": {
+      "leaders": [
+        {
+          "id": "l1781211755050",
+          "category": "院长",
+          "name": "金顺时",
+          "years": "1992-1997",
+          "era": "标签",
+          "eraColor": "",
+          "desc": "简介",
+          "photo": ""
+        },
+        {
+          "id": "l1781211756233",
+          "category": "院长",
+          "name": "罗兆文",
+          "years": "1997-2003",
+          "era": "标签",
+          "eraColor": "",
+          "desc": "简介",
+          "photo": ""
+        },
+        {
+          "id": "l1781211759011",
+          "category": "院长",
+          "name": "丁跃明",
+          "years": "2003-2017",
+          "era": "标签",
+          "eraColor": "",
+          "desc": "简介",
+          "photo": ""
+        }
+      ],
+      "hero": {
+        "bgImage": "",
+        "num": "",
+        "title": "",
+        "subtitle": "",
+        "desc": ""
+      },
+      "blocks": [],
+      "dataCards": [],
+      "gallery": []
+    },
+    "history": {
+      "gallery": [
+        {
+          "icon": "📷",
+          "label": "1991年 批准文件"
+        },
+        {
+          "icon": "📷",
+          "label": "1992年 奠基典礼"
+        },
+        {
+          "icon": "📷",
+          "label": "1997年 开诊剪彩"
+        },
+        {
+          "icon": "📷",
+          "label": "2015年 三甲评审"
+        }
+      ],
+      "blocks": [
+        {
+          "id": "b1",
+          "num": "01 · 源起 · 历史定格",
+          "title": "源起与奠基",
+          "subtitle": "1991年始建 — 云南省人民政府批准成立",
+          "text": "<h4>建院缘起</h4><p>1991年，云南省人民政府正式批准成立大理医学院附属医院，这是大理高等医学教育与临床医疗事业发展的里程碑。</p><p>彼时，云南大理地处偏远，优质医疗资源严重匮乏，医院的批准成立，标志着大理人民就医水平将迎来质的飞跃。</p>",
+          "imgIcon": "📷",
+          "imgLabel": "1991年批准文件 / 医院蓝图规划",
+          "imgSize": "16:9"
+        },
+        {
+          "id": "b2",
+          "num": "02 · 启航 · 奠基盛典",
+          "title": "奠基开工与正式开诊",
+          "subtitle": "1992年动工 → 1997年开诊",
+          "text": "<h4>1992 · 奠基动工</h4><p>1992年，医院正式开工建设，标志从蓝图走向现实的第一步。</p><h4>1997 · 正式开诊</h4><p>经云南省卫生厅批准，医院于1997年正式开诊运营。</p>",
+          "imgIcon": "📷",
+          "imgLabel": "1992年奠基典礼 / 1997年开诊剪彩",
+          "imgSize": "4:3"
+        }
+      ],
+      "timeline": [
+        {
+          "year": "1991",
+          "title": "医院获批成立",
+          "desc": "大理医学院附属医院获云南省人民政府批准成立，奠定医院发展基础。",
+          "dot": "建"
+        },
+        {
+          "year": "1997",
+          "title": "正式开诊运营",
+          "desc": "经省卫生厅批准，医院顺利开诊运营，实现医疗服务零的突破。",
+          "dot": "诊"
+        },
+        {
+          "year": "2003",
+          "title": "院系一体化管理",
+          "desc": "与大理大学临床医学院一体化管理，推进医教协同发展。",
+          "dot": "教"
+        },
+        {
+          "year": "2008",
+          "title": "挂牌云南省第四人民医院",
+          "desc": "增挂云南省第四人民医院，服务能级向全省辐射提升。",
+          "dot": "省"
+        },
+        {
+          "year": "2009",
+          "title": "新住院大楼落成",
+          "desc": "新住院大楼竣工投用，综合服务能力显著提升。",
+          "dot": "楼"
+        },
+        {
+          "year": "2015",
+          "title": "获评三级甲等综合医院",
+          "desc": "通过国家三级甲等综合医院评审，正式跻身高水平医院行列。",
+          "dot": "甲"
+        },
+        {
+          "year": "2020–2025",
+          "title": "高质量发展新阶段",
+          "desc": "157名医护驰援抗疫；9个十四五省级重点专科立项建设；达芬奇机器人引进。",
+          "dot": "新"
+        }
+      ]
+    },
+    "structure": {
+      "gallery": [
+        {
+          "icon": "🏛",
+          "label": "职代会全景"
+        },
+        {
+          "icon": "🚩",
+          "label": "党委会议"
+        },
+        {
+          "icon": "👥",
+          "label": "党支部活动"
+        },
+        {
+          "icon": "🎉",
+          "label": "工会文体活动"
+        }
+      ],
+      "blocks": [
+        {
+          "id": "b1",
+          "num": "01 · 架构 · 组织体系",
+          "title": "医院组织架构",
+          "subtitle": "党委领导下的院长负责制",
+          "text": "<h4>管理体系</h4><p>院党委—院行政—党政管理部门—临床医技科室—教研室/实验室，五级管理体系。</p>",
+          "imgIcon": "🏛",
+          "imgLabel": "组织架构图",
+          "imgSize": "4:3"
+        }
+      ]
+    },
+    "leadership": {
+      "gallery": [
+        {
+          "icon": "👤",
+          "label": "党委书记风采",
+          "url": ""
+        },
+        {
+          "icon": "👤",
+          "label": "院长风采",
+          "url": ""
+        },
+        {
+          "icon": "👥",
+          "label": "领导班子合影",
+          "url": ""
+        },
+        {
+          "icon": "🏛",
+          "label": "院务会议",
+          "url": ""
+        }
+      ],
+      "blocks": [
+        {
+          "num": "01 · 领航 · 现任领导班子",
+          "title": "院党政领导班子",
+          "subtitle": "团结务实、开拓创新的领导核心",
+          "text": "<h4>大理大学第一附属医院（云南省第四人民医院）现任领导班子</h4><p>在云南省委教育工委、省卫健委和大理大学党委的领导下，医院党政领导班子坚持\"党委领导下的院长负责制\"。</p>",
+          "imgIcon": "",
+          "imgLabel": "",
+          "imgSize": "",
+          "imgUrl": ""
+        }
+      ],
+      "leaders": [
+        {
+          "id": "ld17812134832130.49651280152860744",
+          "name": "高文理",
+          "role": "党委书记",
+          "duty": "主持医院党委全面工作",
+          "resume": "曾任[待补充]，分管党政办公室、组织人事等工作。",
+          "photo": ""
+        },
+        {
+          "id": "ld17812134832130.05579979370519572",
+          "name": "吴新华",
+          "role": "党委副书记、院长",
+          "duty": "主持医院行政全面工作",
+          "resume": "医学博士，主任医师，教授，博士生导师。分管医务、科研等工作。",
+          "photo": ""
+        },
+        {
+          "id": "ld17812134832130.06895679331865057",
+          "name": "[待补充]",
+          "role": "党委副书记",
+          "duty": "分管党建、学生工作",
+          "resume": "协助党委书记负责党的建设、学生管理、共青团、工会等工作。",
+          "photo": ""
+        },
+        {
+          "id": "ld17812134832130.04141151513124519",
+          "name": "[待补充]",
+          "role": "副院长",
+          "duty": "分管医疗业务",
+          "resume": "分管医务部、护理部、临床科室质量管理等工作。",
+          "photo": ""
+        },
+        {
+          "id": "ld17812134832130.4917196496125449",
+          "name": "[待补充]",
+          "role": "副院长",
+          "duty": "分管科研教学",
+          "resume": "分管科研科、教学管理科、研究生培养等工作。",
+          "photo": ""
+        },
+        {
+          "id": "ld17812134832130.012640526673221575",
+          "name": "[待补充]",
+          "role": "纪委书记",
+          "duty": "分管纪检监察",
+          "resume": "主持医院纪委全面工作，分管纪检监察审计。",
+          "photo": ""
+        }
+      ],
+      "hero": {
+        "bgImage": "",
+        "num": "",
+        "title": "",
+        "subtitle": "",
+        "desc": ""
+      }
+    }
+  },
   "hm_settings": {
-    "title": "大理大学第一附属医院云端院史馆",
-    "logo_text": "云端院史馆",
-    "footer_text": "© 2026 大理大学第一附属医院（云南省第四人民医院）版权所有",
-    "contact_phone": "0872-2201062",
-    "address": "云南省大理白族自治州大理市嘉士伯大道32号",
-    "email": "office@dali.edu.cn"
+    "siteTitle": "云端院史馆",
+    "siteSubtitle": "大理大学第一附属医院",
+    "officialUrl": "https://www.dfy.dali.edu.cn",
+    "contactEmail": "",
+    "contactPhone": "",
+    "foundedYear": 1991
   },
   "hm_admin_sections": [
     {
@@ -91,11 +696,56 @@
   "hm_announcements": [
     {
       "id": 1,
-      "title": "大理大学第一附属医院2026年度工作要点通知",
-      "date": "2026-06-01",
+      "title": "大理大学第一附属医院2025年度工作报告",
+      "date": "2025-05-20",
       "category": "notice",
       "dept": "院办",
-      "content": "根据医院2026年工作部署，现就年度重点工作安排通知如下：\n一、全面推进智慧医院建设\n二、持续提升医疗服务质量\n三、加强人才队伍建设",
+      "content": "年度工作报告全文…",
+      "published": true
+    },
+    {
+      "id": 2,
+      "title": "关于开展2025年\"5·12\"国际护士节系列活动的通知",
+      "date": "2025-05-10",
+      "category": "event",
+      "dept": "护理部",
+      "content": "活动详情…",
+      "published": true
+    },
+    {
+      "id": 3,
+      "title": "关于2025年职称评审工作的通知",
+      "date": "2025-05-08",
+      "category": "hr",
+      "dept": "人事科",
+      "content": "评审条件与流程…",
+      "published": true
+    },
+    {
+      "id": 4,
+      "title": "关于召开2025年科研工作推进会的通知",
+      "date": "2025-04-28",
+      "category": "academic",
+      "dept": "科研科",
+      "content": "会议议程…",
+      "published": true
+    },
+    {
+      "id": 5,
+      "title": "2025年劳动节放假及值班安排",
+      "date": "2025-04-25",
+      "category": "notice",
+      "dept": "院办",
+      "content": "值班表…",
+      "published": true
+    },
+    {
+      "id": 6,
+      "title": "关于启动2026年度国家自然科学基金申报工作的通知",
+      "date": "2025-04-15",
+      "category": "academic",
+      "dept": "科研科",
+      "content": "申报指南…",
       "published": true
     }
   ],
