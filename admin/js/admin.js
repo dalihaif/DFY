@@ -469,9 +469,9 @@ function navigateTo(pageId) {
   // 更新侧边栏状态徽章
   updateSidebarBadges();
 
-  // 职工名录：初始化分页列表
+  // 职工名录：通过自定义事件跨作用域触发初始化
   if (pageId === 'staff') {
-    setTimeout(function() { initStaffAdmin(); }, 50);
+    setTimeout(function() { $(document).trigger('staff:init'); }, 50);
   }
 }
 
@@ -736,7 +736,8 @@ function renderSectionEditor(sec) {
       html+='<div class="content-section"><h5 class="content-section-title"><i class="fas fa-address-book mr-2" style="color:#0288d1"></i>职工名录';
       html+=' <button class="btn btn-xs btn-outline-info ml-1" id="btn-staff-batch-import"><i class="fas fa-file-import"></i> 文本导入</button>';
       html+=' <button class="btn btn-xs btn-outline-primary ml-1" id="btn-staff-csv-import"><i class="fas fa-file-csv"></i> CSV导入</button>';
-      html+=' <input type="file" id="staffCsvFileInput" accept=".csv" style="display:none">';
+      html+=' <input type="file" id="staffCsvFileInput" accept=".csv,.txt" style="display:none">';
+      html+=' <select id="staffCsvEncoding" style="display:none;width:auto;margin-left:4px;" class="form-control form-control-sm"><option value="auto">自动检测编码</option><option value="utf-8">UTF-8</option><option value="gbk">GBK/ANSI</option><option value="gb2312">GB2312</option><option value="utf-16le">UTF-16 LE</option></select>';
       html+=' <span class="float-right"><input class="form-control form-control-sm" id="staffAdminSearch" placeholder="🔍 搜索姓名/科室/职称…" style="width:240px;display:inline-block"></span>';
       html+='</h5>';
       html+='<div id="staffAdminContainer"></div></div>';
@@ -1872,7 +1873,8 @@ $(document).ready(function() {
     h += ' · 第 <b>' + page + '</b>/<b>' + totalPages + '</b> 页</span>';
     h += '<span class="float-right">';
     h += '<button class="btn btn-xs btn-outline-danger ml-2 btn-staff-batch-del" disabled id="btn-staff-batch-del"><i class="fas fa-trash-alt"></i> 批量删除</button>';
-    h += '<button class="btn btn-xs btn-outline-warning ml-1 btn-staff-batch-edit" disabled id="btn-staff-batch-edit"><i class="fas fa-edit"></i> 批量改科室</button>';
+    h += '<button class="btn btn-xs btn-outline-warning ml-1 btn-staff-batch-edit" disabled id="btn-staff-batch-edit"><i class="fas fa-edit"></i> 批量修改</button>';
+    h += '<button class="btn btn-xs btn-outline-secondary ml-1 btn-staff-batch-clear" disabled id="btn-staff-batch-clear"><i class="fas fa-eraser"></i> 批量清空</button>';
     h += '<button class="btn btn-xs btn-outline-success ml-2 btn-staff-add"><i class="fas fa-plus"></i> 新增职工</button>';
     h += '</span></div>';
 
@@ -1981,7 +1983,7 @@ $(document).ready(function() {
     // 单个复选框变化 → 更新批量按钮状态
     $(document).off('change.staffCheckbox').on('change.staffCheckbox', '.staff-checkbox', function() {
       var checked = $('.staff-checkbox:checked').length;
-      $('#btn-staff-batch-del, #btn-staff-batch-edit').prop('disabled', checked === 0);
+      $('#btn-staff-batch-del, #btn-staff-batch-edit, #btn-staff-batch-clear').prop('disabled', checked === 0);
       // 更新全选复选框状态
       var total = $('.staff-checkbox').length;
       $('#staff-select-all').prop('checked', total > 0 && checked === total);
@@ -2009,22 +2011,123 @@ $(document).ready(function() {
       $(document).Toasts('create', {class:'bg-warning', title:'批量删除完成', body:'已删除 ' + checked.length + ' 名职工', autohide:true, delay:2000});
     });
 
-    // 批量修改科室
+    // 批量修改（增强版：支持多字段）
     $(document).off('click.staffBatchEdit').on('click.staffBatchEdit', '#btn-staff-batch-edit', function() {
       var checked = $('.staff-checkbox:checked');
       if (checked.length === 0) return;
-      var dept = prompt('请输入新的科室名称（将对选中的 ' + checked.length + ' 人统一修改）：');
-      if (!dept || !dept.trim()) return;
-      dept = dept.trim();
-      // 修改所有选中行
+      showBatchEditModal(checked.length, 'modify');
+    });
+
+    // 批量清空
+    $(document).off('click.staffBatchClear').on('click.staffBatchClear', '#btn-staff-batch-clear', function() {
+      var checked = $('.staff-checkbox:checked');
+      if (checked.length === 0) return;
+      showBatchEditModal(checked.length, 'clear');
+    });
+  }
+
+  // 批量操作弹窗（修改 / 清空）
+  function showBatchEditModal(count, mode) {
+    var isClear = (mode === 'clear');
+    var title = isClear ? '批量清空字段' : '批量修改字段';
+    var icon = isClear ? 'fa-eraser' : 'fa-edit';
+    var btnClass = isClear ? 'btn-warning' : 'btn-primary';
+    var btnIcon = isClear ? 'fa-eraser' : 'fa-save';
+    var btnText = isClear ? '确认清空 ' + count + ' 人' : '确认修改 ' + count + ' 人';
+    var modalHtml = [
+      '<div class="modal fade show" id="batchEditModal" style="display:block;background:rgba(0,0,0,0.5)" tabindex="-1">',
+      '<div class="modal-dialog"><div class="modal-content">',
+      '<div class="modal-header bg-' + (isClear ? 'warning' : 'primary') + '"><h5 class="modal-title"><i class="fas ' + icon + ' mr-2"></i>' + title + '</h5>',
+      '<button type="button" class="close" id="btn-close-batch-edit">&times;</button></div>',
+      '<div class="modal-body">',
+      '<div class="alert alert-' + (isClear ? 'warning' : 'info') + '"><i class="fas fa-info-circle mr-2"></i>将对选中的 <b>' + count + '</b> 人执行' + (isClear ? '清空' : '修改') + '操作</div>',
+      '<div class="form-group"><label><input type="checkbox" class="batch-field-check" data-field="dept"> 科室</label>',
+      isClear ? '' : '<input class="form-control form-control-sm mt-1 batch-field-val" data-field="dept" placeholder="新科室名称（留空不修改）" disabled>',
+      '</div>',
+      '<div class="form-group"><label><input type="checkbox" class="batch-field-check" data-field="title"> 职称</label>',
+      isClear ? '' : '<input class="form-control form-control-sm mt-1 batch-field-val" data-field="title" placeholder="新职称（留空不修改）" disabled>',
+      '</div>',
+      '<div class="form-group"><label><input type="checkbox" class="batch-field-check" data-field="position"> 职位</label>',
+      isClear ? '' : '<input class="form-control form-control-sm mt-1 batch-field-val" data-field="position" placeholder="新职位（留空不修改）" disabled>',
+      '</div>',
+      '<div class="form-group"><label><input type="checkbox" class="batch-field-check" data-field="desc"> 简介</label>',
+      isClear ? '' : '<input class="form-control form-control-sm mt-1 batch-field-val" data-field="desc" placeholder="新简介（留空不修改）" disabled>',
+      '</div>',
+      '<div class="form-group"><label><input type="checkbox" class="batch-field-check" data-field="photo"> 照片URL</label>',
+      isClear ? '' : '<input class="form-control form-control-sm mt-1 batch-field-val" data-field="photo" placeholder="新照片URL（留空不修改）" disabled>',
+      '</div>',
+      '</div>',
+      '<div class="modal-footer">',
+      '<button class="btn btn-secondary" id="btn-cancel-batch-edit">取消</button>',
+      '<button class="btn ' + btnClass + '" id="btn-execute-batch-edit"><i class="fas ' + btnIcon + ' mr-1"></i>' + btnText + '</button>',
+      '</div></div></div></div>'
+    ].join('');
+    $('body').append(modalHtml);
+
+    function closeModal() { $('#batchEditModal').remove(); }
+    $('#btn-close-batch-edit, #btn-cancel-batch-edit').click(closeModal);
+
+    // Checkbox 切换输入框状态
+    $('#batchEditModal').on('change', '.batch-field-check', function() {
+      var field = $(this).data('field');
+      var input = $('#batchEditModal .batch-field-val[data-field="' + field + '"]');
+      if (this.checked) {
+        input.prop('disabled', false);
+        if (isClear) input.val('').focus();
+      } else {
+        input.prop('disabled', true);
+      }
+    });
+
+    // 批量清空模式下自动勾选并禁用输入
+    if (isClear) {
+      // 默认全勾选
+      $('#batchEditModal .batch-field-check').prop('checked', true);
+    }
+
+    $('#btn-execute-batch-edit').click(function() {
+      var fields = [];
+      var values = {};
+      var hasSelection = false;
+      $('#batchEditModal .batch-field-check').each(function() {
+        if (this.checked) {
+          hasSelection = true;
+          var field = $(this).data('field');
+          fields.push(field);
+          if (isClear) {
+            values[field] = '';
+          } else {
+            var val = $('#batchEditModal .batch-field-val[data-field="' + field + '"]').val();
+            if (val && val.trim()) values[field] = val.trim();
+          }
+        }
+      });
+
+      if (!hasSelection) { alert('请至少选择一个要操作的字段'); return; }
+      if (!isClear && Object.keys(values).length === 0) { alert('请至少为一个字段填入新值'); return; }
+
+      // 应用修改
+      var checked = $('.staff-checkbox:checked');
       var profiles = getStaffProfiles();
       checked.each(function() {
         var idx = parseInt(this.getAttribute('data-idx'), 10);
-        if (profiles[idx]) profiles[idx].dept = dept;
+        if (!profiles[idx]) return;
+        fields.forEach(function(f) {
+          if (isClear) {
+            profiles[idx][f] = '';
+          } else if (values[f] !== undefined) {
+            profiles[idx][f] = values[f];
+          }
+        });
       });
+
       saveContent(staffAdminState.content);
+      closeModal();
       renderStaffTable();
-      $(document).Toasts('create', {class:'bg-success', title:'批量修改完成', body:'已将 ' + checked.length + ' 人的科室改为「' + dept + '」', autohide:true, delay:2000});
+      var msg = isClear
+        ? '已清空 ' + checked.length + ' 人的 [' + fields.join('/') + '] 字段'
+        : '已将 ' + checked.length + ' 人的 [' + fields.join('/') + '] 修改';
+      $(document).Toasts('create', {class:'bg-success', title: isClear ? '批量清空完成' : '批量修改完成', body: msg, autohide:true, delay:2500});
     });
   }
 
@@ -2098,12 +2201,19 @@ $(document).ready(function() {
   $(document).on('change', '#staffCsvFileInput', function(e) {
     var file = e.target.files && e.target.files[0];
     if (!file) return;
+    var encOverride = $('#staffCsvEncoding').val();
     var reader = new FileReader();
     reader.onload = function(ev) {
       var buffer = ev.target.result; // ArrayBuffer
-      var text = decodeCsv(buffer);
+      var text;
+      if (encOverride && encOverride !== 'auto') {
+        // 手动指定编码
+        text = new TextDecoder(encOverride, { fatal: false }).decode(buffer);
+      } else {
+        text = decodeCsv(buffer);
+      }
       var parsed = parseCSV(text);
-      if (!parsed.length) { alert('CSV 文件为空或无法解析'); return; }
+      if (!parsed.length) { alert('CSV 文件为空或无法解析，请尝试手动选择编码格式（UTF-8 / GBK）'); $('#staffCsvEncoding').show(); return; }
       showCsvPreview(parsed);
     };
     reader.readAsArrayBuffer(file);
@@ -2111,29 +2221,69 @@ $(document).ready(function() {
     this.value = '';
   });
 
-  // CSV 编码自动检测（UTF-8 / GBK）
+  // CSV 编码自动检测（UTF-8 / GBK / GB2312 / UTF-16） + 手动选择保底
   function decodeCsv(buffer) {
     var arr = new Uint8Array(buffer);
-    // 检测 BOM：UTF-8 BOM = EF BB BF
-    var hasUtf8Bom = arr.length >= 3 && arr[0] === 0xEF && arr[1] === 0xBB && arr[2] === 0xBF;
+    var len = arr.length;
 
-    // 先用 UTF-8 解码
-    var utfText = new TextDecoder('utf-8', { fatal: false }).decode(buffer);
-
-    // 有 BOM 或文本中存在合法中文 → 直接返回 UTF-8
-    if (hasUtf8Bom || /[\u4e00-\u9fff]/.test(utfText)) {
-      return utfText;
+    // 1. BOM 检测
+    // UTF-8 BOM: EF BB BF
+    if (len >= 3 && arr[0] === 0xEF && arr[1] === 0xBB && arr[2] === 0xBF) {
+      return new TextDecoder('utf-8').decode(buffer);
+    }
+    // UTF-16LE BOM: FF FE
+    if (len >= 2 && arr[0] === 0xFF && arr[1] === 0xFE) {
+      return new TextDecoder('utf-16le').decode(buffer);
+    }
+    // UTF-16BE BOM: FE FF
+    if (len >= 2 && arr[0] === 0xFE && arr[1] === 0xFF) {
+      return new TextDecoder('utf-16be').decode(buffer);
     }
 
-    // UTF-8 无中文 → 尝试 GBK 解码
+    // 2. 优先尝试 UTF-8
+    var text = '';
     try {
-      var gbkText = new TextDecoder('gbk', { fatal: false }).decode(buffer);
-      if (/[\u4e00-\u9fff]/.test(gbkText)) {
-        return gbkText;
-      }
-    } catch(e) {}
+      text = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
+      // fatal:true 成功 → 确实是合法 UTF-8
+      return text;
+    } catch(e) {
+      // UTF-8 解码失败（有非法字节序列），尝试 GB 系列
+    }
 
-    // 都不行，返回 UTF-8 结果
+    // 3. 用宽松模式 UTF-8 解码，检查乱码率
+    var utfText = new TextDecoder('utf-8', { fatal: false }).decode(buffer);
+    // 统计替换字符 U+FFFD (�) 占比
+    var replacementCount = 0;
+    for (var i = 0; i < utfText.length; i++) {
+      if (utfText.charCodeAt(i) === 0xFFFD) replacementCount++;
+    }
+    var garbledRatio = replacementCount / Math.max(utfText.length, 1);
+
+    // 替换字符 > 1% 或者有中文 BOM 特征 → 尝试 GB 编码
+    if (garbledRatio > 0.01 || (len >= 2 && (arr[0] >= 0xA1 || arr[1] >= 0xA1))) {
+      // 4. 尝试 GBK
+      try {
+        var gbkText = new TextDecoder('gbk', { fatal: false }).decode(buffer);
+        if (/[\u4e00-\u9fff]/.test(gbkText)) return gbkText;
+      } catch(e) {}
+
+      // 5. 尝试 GB2312（部分浏览器不支持单独 GB2312，但 gbk 兼容）
+      try {
+        var gbText = new TextDecoder('gb2312', { fatal: false }).decode(buffer);
+        if (/[\u4e00-\u9fff]/.test(gbText)) return gbText;
+      } catch(e) {}
+
+      // 6. 最后尝试 GB18030
+      try {
+        var gb18030Text = new TextDecoder('gb18030', { fatal: false }).decode(buffer);
+        if (/[\u4e00-\u9fff]/.test(gb18030Text)) return gb18030Text;
+      } catch(e) {}
+    }
+
+    // 7. 都没有中文字符 → 尝试 UTF-8 宽松模式（可能是纯英文/数字 CSV）
+    if (/[\u4e00-\u9fff]/.test(utfText)) return utfText;
+
+    // 8. 最终保底：返回原始 UTF-8 解码
     return utfText;
   }
 
@@ -2349,9 +2499,15 @@ $(document).ready(function() {
       saveContent(content);
       closeModal();
       $(document).Toasts('create', {class:'bg-success', title:'导入成功', body:'成功导入 ' + addedCount + ' 条职工记录（跳过 ' + (parsedData.length - addedCount) + ' 条重复）', autohide:true, delay:3000});
-      navigateTo('staff');
+      // 统一用 renderStaffTable 刷新（委托事件已由 initStaffAdmin 绑定）
+      staffAdminState.content = content;
+      staffAdminState.page = 1;
+      renderStaffTable();
     });
   });
+
+  // 职工名录初始化：接收来自全局作用域 navigateTo 的事件，确保在正确的闭包作用域内执行
+  $(document).on('staff:init', function() { initStaffAdmin(); });
 
   // 检测 file:// 协议，提示用户切换到 localhost
   if (window.location.protocol === 'file:') {
