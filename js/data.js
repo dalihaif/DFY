@@ -1,6 +1,6 @@
 /**
  * 云端院史馆 · 持久化数据文件
- * 自动生成于: 2026/6/11 16:19:04
+ * 自动生成于: 2026/6/11 17:07:48
  * 请勿手动编辑，由后台「导出数据」功能生成
  */
 window.HM_DATA = {
@@ -639,7 +639,69 @@ window.HM_DATA = {
         "imgIcon": "🚩",
         "imgLabel": "党员先锋岗 / 主题党日活动<br><small>党建风采 · 16:9</small>",
         "imgSize": "16:9 横幅"
-      }
+      },
+      "blocks": [
+        {
+          "id": "pb1",
+          "num": "01 · 薪火 · 传承接力",
+          "title": "薪火相传",
+          "subtitle": "一棒接一棒，精神永相传",
+          "text": "<h4>薪火相传</h4><p>从首任院长到现任领导，一代代大附院人接过接力棒，赓续百年薪火，书写新时代高质量发展新篇章。</p>",
+          "imgIcon": "🤝",
+          "imgLabel": "领导交接合影 /  milestone 时刻",
+          "imgSize": "16:9"
+        },
+        {
+          "id": "pb2",
+          "num": "02 · 党建 · 领航把舵",
+          "title": "党建领航",
+          "subtitle": "党建引领，筑牢发展根基",
+          "text": "<h4>党建领航</h4><p>坚持和加强党对医院工作的全面领导，以高质量党建引领高质量发展，筑牢公立医院发展的「根」和「魂」。</p>",
+          "imgIcon": "🚩",
+          "imgLabel": "党建活动 / 主题教育",
+          "imgSize": "4:3"
+        },
+        {
+          "id": "pb3",
+          "num": "03 · 群英 · 学科领军",
+          "title": "群英荟萃",
+          "subtitle": "学科带头人，医院的脊梁",
+          "text": "<h4>群英荟萃</h4><p>一批批省突专家、省学术带头人、兴滇英才扎根滇西，以精湛医术和高尚医德服务边疆各族群众。</p>",
+          "imgIcon": "👨‍⚕️",
+          "imgLabel": "学科带头人在手术 / 带教",
+          "imgSize": "16:9"
+        },
+        {
+          "id": "pb4",
+          "num": "04 · 组织 · 凝心聚力",
+          "title": "组织有力",
+          "subtitle": "基层组织，坚强堡垒",
+          "text": "<h4>组织有力</h4><p>全院X个党支部、Y名党员，战斗在医疗、教学、科研、管理各条战线的最前沿，让党旗在高原大地高高飘扬。</p>",
+          "imgIcon": "🏗️",
+          "imgLabel": "支部活动 / 志愿者服务",
+          "imgSize": "4:3"
+        },
+        {
+          "id": "pb5",
+          "num": "05 · 人才 · 厚德精医",
+          "title": "厚德精医",
+          "subtitle": "医学人才，立德树人",
+          "text": "<h4>厚德精医</h4><p>秉承「厚德精医、博学笃行」院训，培养了一批批医术精湛、医德高尚的医学人才，为滇西医疗卫生事业输送源源不断的新鲜血液。</p>",
+          "imgIcon": "🎓",
+          "imgLabel": "教学查房 / 名师授课",
+          "imgSize": "16:9"
+        },
+        {
+          "id": "pb6",
+          "num": "06 · 荣誉 · 榜样力量",
+          "title": "榜样力量",
+          "subtitle": "优秀员工，闪耀星光",
+          "text": "<h4>榜样力量</h4><p>每年评选表彰一批优秀员工，用身边事教育身边人，让崇尚先进、学习先进、争当先进在医院蔚然成风。</p>",
+          "imgIcon": "🏆",
+          "imgLabel": "表彰大会 / 优秀员工合影",
+          "imgSize": "4:3"
+        }
+      ]
     },
     "disciplines": {
       "hero": {
@@ -1377,7 +1439,7 @@ window.HM_DATA = {
         "num": "板块十三 · SECTION 13",
         "title": "职工名录",
         "subtitle": "每一位职工，都是医院发展的基石",
-        "desc": "1946名在册职工，41个临床科室，来自五湖四海，汇聚于此。铭记每一位大附院人的名字与贡献。"
+        "desc": "自医院建院伊始，五湖四海的同仁相聚于此。每一位大附院人都值得被铭记，每一份耕耘，都为医院发展筑牢根基、注入前行力量。"
       },
       "blocks": [
         {
@@ -26265,31 +26327,37 @@ window.HM_DATA = {
       ],
       "dataCards": [
         {
+          "icon": "",
           "value": "1946",
           "label": "全院职工",
           "note": "含编内编外"
         },
         {
+          "icon": "",
           "value": "1638",
           "label": "卫技人员",
           "note": "占比 84.2%"
         },
         {
+          "icon": "",
           "value": "29",
           "label": "博士",
           "note": "含在读"
         },
         {
+          "icon": "",
           "value": "360",
           "label": "硕士",
           "note": "含在读"
         },
         {
+          "icon": "",
           "value": "294",
           "label": "高级职称",
           "note": "正高+副高"
         },
         {
+          "icon": "",
           "value": "41",
           "label": "临床科室",
           "note": "覆盖主要专科"
@@ -26423,7 +26491,7 @@ window.HM_DATA = {
       "category": "notice",
       "dept": "院办",
       "content": "年度工作报告全文…",
-      "published": false
+      "published": true
     },
     {
       "id": 2,
@@ -26432,7 +26500,7 @@ window.HM_DATA = {
       "category": "event",
       "dept": "护理部",
       "content": "活动详情…",
-      "published": false
+      "published": true
     },
     {
       "id": 3,
@@ -26441,7 +26509,7 @@ window.HM_DATA = {
       "category": "hr",
       "dept": "人事科",
       "content": "评审条件与流程…",
-      "published": false
+      "published": true
     },
     {
       "id": 4,
@@ -26450,7 +26518,7 @@ window.HM_DATA = {
       "category": "academic",
       "dept": "科研科",
       "content": "会议议程…",
-      "published": false
+      "published": true
     },
     {
       "id": 5,
@@ -26459,7 +26527,7 @@ window.HM_DATA = {
       "category": "notice",
       "dept": "院办",
       "content": "值班表…",
-      "published": false
+      "published": true
     },
     {
       "id": 6,
@@ -26468,7 +26536,7 @@ window.HM_DATA = {
       "category": "academic",
       "dept": "科研科",
       "content": "申报指南…",
-      "published": false
+      "published": true
     },
     {
       "id": 7,
