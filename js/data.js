@@ -1,13 +1,13 @@
 /**
  * 云端院史馆 · 持久化数据文件
- * 自动生成于: 2026/6/11 17:07:48
+ * 自动生成于: 2026/6/11 17:23:31
  * 请勿手动编辑，由后台「导出数据」功能生成
  */
 window.HM_DATA = {
   "content": {
     "history": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块一 · SECTION 01",
         "title": "历史沿革",
         "subtitle": "医院发展的时光足迹",
@@ -22,7 +22,7 @@ window.HM_DATA = {
           "imgIcon": "📷",
           "imgLabel": "1991年批准文件 / 医院蓝图规划",
           "imgSize": "16:9",
-          "imgUrl": "/assets/images/jypw.jpg"
+          "imgUrl": "../assets/images/jypw.jpg"
         },
         {
           "num": "02 · 启航 · 奠基盛典",
@@ -32,7 +32,7 @@ window.HM_DATA = {
           "imgIcon": "📷",
           "imgLabel": "1992年奠基典礼 / 1997年开诊剪彩",
           "imgSize": "4:3",
-          "imgUrl": "/assets/images/kgdl.jpg"
+          "imgUrl": "../assets/images/kgdl.jpg"
         }
       ],
       "timeline": [
@@ -83,42 +83,42 @@ window.HM_DATA = {
         {
           "icon": "📷",
           "label": "1991年 批准文件",
-          "url": "/assets/images/jypw.jpg"
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "📷",
           "label": "1992年 奠基典礼",
-          "url": "/assets/images/kgdl.jpg"
+          "url": "../assets/images/kgdl.jpg"
         },
         {
           "icon": "📷",
           "label": "1997年 开诊剪彩",
-          "url": "/assets/images/kzys.jpg"
+          "url": "../assets/images/kzys.jpg"
         },
         {
           "icon": "📷",
           "label": "更名大理学院附属医院",
-          "url": "/assets/images/hygl.jpg"
+          "url": "../assets/images/hygl.jpg"
         },
         {
           "icon": "📷",
           "label": "云南省第四人民医院挂牌仪式",
-          "url": "/assets/images/gpys.jpg"
+          "url": "../assets/images/gpys.jpg"
         },
         {
           "icon": "📷",
           "label": "2015年 三甲评审",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "../assets/images/sjzp.jpg"
         },
         {
           "icon": "📷",
           "label": "省二传院奠基",
-          "url": "/assets/images/ecydj.jpg"
+          "url": "../assets/images/ecydj.jpg"
         },
         {
           "icon": "📷",
           "label": "省二传院开诊",
-          "url": "/assets/images/ecykz.png"
+          "url": "../assets/images/ecykz.png"
         }
       ]
     },
@@ -705,7 +705,7 @@ window.HM_DATA = {
     },
     "disciplines": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块三 · SECTION 03",
         "title": "学科建设",
         "subtitle": "构筑滇西医学高地",
@@ -713,46 +713,50 @@ window.HM_DATA = {
       },
       "blocks": [
         {
-          "id": "b1",
           "num": "01 · 重点 · 省级重点专科",
           "title": "十四五省级重点专科",
           "subtitle": "9个专科入围十四五省级临床重点专科建设项目",
           "text": "<h4>在建项目</h4><p>神经外科、康复科、神经内科、检验科、重症医学科——5个专科进入十四五在建重点项目。</p><h4>首次/复评立项</h4><p>呼吸科、老年病科首次立项；普外科、麻醉科复评立项——共4个专科获得省级认定。</p>",
           "imgIcon": "🏛",
           "imgLabel": "重点专科/实验室场景图",
-          "imgSize": "4:3"
+          "imgSize": "4:3",
+          "imgUrl": ""
         }
       ],
       "profiles": [
         {
-          "id": "d1",
+          "id": "p17811695193180.8769845127170256",
           "name": "[待补充]",
           "title": "神经外科主任 · 省突专家",
           "dept": "神经外科",
+          "position": "",
           "desc": "滇西神经外科领军人物。",
           "photo": ""
         },
         {
-          "id": "d2",
+          "id": "p17811695193180.22654480819379064",
           "name": "[待补充]",
           "title": "重症医学科主任 · 省学术带头人",
           "dept": "重症医学科",
+          "position": "",
           "desc": "急危重症救治专家。",
           "photo": ""
         },
         {
-          "id": "d3",
+          "id": "p17811695193180.358154774553727",
           "name": "[待补充]",
           "title": "呼吸科主任 · 省卫健委高层次人才",
           "dept": "呼吸科",
+          "position": "",
           "desc": "呼吸疾病全病程管理专家。",
           "photo": ""
         },
         {
-          "id": "d4",
+          "id": "p17811695193180.3862947547692812",
           "name": "[待补充]",
           "title": "骨科主任 · 省学术带头人",
           "dept": "骨科",
+          "position": "",
           "desc": "脊柱微创与关节置换领域专家。",
           "photo": ""
         }
@@ -760,25 +764,29 @@ window.HM_DATA = {
       "gallery": [
         {
           "icon": "🔬",
-          "label": "重点专科授牌仪式"
+          "label": "重点专科授牌仪式",
+          "url": ""
         },
         {
           "icon": "🏥",
-          "label": "临床科室实景"
+          "label": "临床科室实景",
+          "url": ""
         },
         {
           "icon": "🎓",
-          "label": "学术会议交流"
+          "label": "学术会议交流",
+          "url": ""
         },
         {
           "icon": "🏛",
-          "label": "实验室平台"
+          "label": "实验室平台",
+          "url": ""
         }
       ]
     },
     "campus": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块四 · SECTION 04",
         "title": "院区建设",
         "subtitle": "一院两区 · 双核驱动",
@@ -808,26 +816,31 @@ window.HM_DATA = {
       ],
       "dataCards": [
         {
+          "icon": "",
           "value": "162",
           "label": "总占地面积（亩）",
           "note": "院本部+凤仪院区"
         },
         {
+          "icon": "",
           "value": "18万",
           "label": "业务用房面积",
           "note": "m²"
         },
         {
+          "icon": "",
           "value": "1500",
           "label": "编制床位（张）",
           "note": "实际开放2013张"
         },
         {
+          "icon": "",
           "value": "2",
           "label": "运营院区",
           "note": "院本部+凤仪院区"
         },
         {
+          "icon": "",
           "value": "41",
           "label": "临床科室",
           "note": "覆盖主要专科领域"
@@ -858,7 +871,7 @@ window.HM_DATA = {
     },
     "education": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块五 · SECTION 05",
         "title": "教学与人才",
         "subtitle": "医教协同 · 人才兴院",
@@ -866,62 +879,69 @@ window.HM_DATA = {
       },
       "blocks": [
         {
-          "id": "b1",
           "num": "01 · 教学 · 临床教学",
           "title": "医学教育体系",
           "subtitle": "国家临床教学示范中心 · 住培基地",
           "text": "<h4>教学体系</h4><p>承担大理大学临床医学院教学任务，涵盖本科、硕士、博士多层次培养。</p>",
           "imgIcon": "🎓",
           "imgLabel": "教学场景照片",
-          "imgSize": "16:9"
+          "imgSize": "16:9",
+          "imgUrl": ""
         }
       ],
       "profiles": [
         {
-          "id": "e1",
+          "id": "p17811695263820.009796862814433482",
           "name": "[待补充]",
           "title": "省级教学名师",
           "dept": "临床教学部",
+          "position": "",
           "desc": "连续5年被评为学生最喜爱教师。",
           "photo": ""
         },
         {
-          "id": "e2",
+          "id": "p17811695263820.893555969411293",
           "name": "[待补充]",
           "title": "优秀带教老师",
           "dept": "内科",
+          "position": "",
           "desc": "培养住院医师规范化培训学员120人。",
           "photo": ""
         },
         {
-          "id": "e3",
+          "id": "p17811695263820.8804880377546142",
           "name": "[待补充]",
           "title": "教学改革先锋",
           "dept": "外科",
+          "position": "",
           "desc": "主持省级教改项目3项。",
           "photo": ""
         },
         {
-          "id": "e4",
+          "id": "p17811695263820.4715387244092367",
           "name": "[待补充]",
           "title": "全科医学导师",
           "dept": "全科医学科",
+          "position": "",
           "desc": "全科医师培养基地核心师资。",
           "photo": ""
         }
       ],
       "dataCards": [
         {
+          "icon": "",
           "value": "21",
           "label": "教研室/实验室",
           "note": ""
         },
         {
+          "icon": "",
           "value": "5",
           "label": "教学基地",
           "note": "含住培/全科"
         },
         {
+          "icon": "",
           "value": "800+",
           "label": "年培养学员",
           "note": "各级各类"
@@ -930,25 +950,29 @@ window.HM_DATA = {
       "gallery": [
         {
           "icon": "🎓",
-          "label": "教学活动"
+          "label": "教学活动",
+          "url": ""
         },
         {
           "icon": "📚",
-          "label": "技能培训"
+          "label": "技能培训",
+          "url": ""
         },
         {
           "icon": "🏆",
-          "label": "教学竞赛"
+          "label": "教学竞赛",
+          "url": ""
         },
         {
           "icon": "👨‍🏫",
-          "label": "名师风采"
+          "label": "名师风采",
+          "url": ""
         }
       ]
     },
     "culture": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块六 · SECTION 06",
         "title": "文化建设",
         "subtitle": "诚信 · 进取 · 和谐 · 奉献",
@@ -968,6 +992,7 @@ window.HM_DATA = {
       ],
       "dataCards": [
         {
+          "icon": "",
           "value": "35",
           "label": "文化积淀（年）",
           "note": "1991至今"
@@ -998,7 +1023,7 @@ window.HM_DATA = {
     },
     "tech": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块七 · SECTION 07",
         "title": "科技与交流",
         "subtitle": "创新驱动 · 开放合作",
@@ -1006,33 +1031,37 @@ window.HM_DATA = {
       },
       "blocks": [
         {
-          "id": "b1",
           "num": "01 · 科研 · 科研创新",
           "title": "科研平台与成果",
           "subtitle": "院士工作站 · 重点实验室",
           "text": "<h4>科研平台</h4><p>建有院士工作站1个、省级重点实验室3个、省级医学研究分中心8个。</p>",
           "imgIcon": "🔬",
           "imgLabel": "科研平台照片",
-          "imgSize": "16:9"
+          "imgSize": "16:9",
+          "imgUrl": ""
         }
       ],
       "dataCards": [
         {
+          "icon": "",
           "value": "193",
           "label": "SCI论文（篇）",
           "note": "累计发表国际期刊"
         },
         {
+          "icon": "",
           "value": "102",
           "label": "专利授权（项）",
           "note": "自主知识产权成果"
         },
         {
+          "icon": "",
           "value": "8",
           "label": "省研究分中心",
           "note": "省级科研平台集群"
         },
         {
+          "icon": "",
           "value": "16",
           "label": "国际留学生来源国",
           "note": ""
@@ -1041,25 +1070,29 @@ window.HM_DATA = {
       "gallery": [
         {
           "icon": "🔬",
-          "label": "科研实验"
+          "label": "科研实验",
+          "url": ""
         },
         {
           "icon": "🌐",
-          "label": "国际交流"
+          "label": "国际交流",
+          "url": ""
         },
         {
           "icon": "📄",
-          "label": "学术论文"
+          "label": "学术论文",
+          "url": ""
         },
         {
           "icon": "🏆",
-          "label": "科技成果"
+          "label": "科技成果",
+          "url": ""
         }
       ]
     },
     "duty": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块八 · SECTION 08",
         "title": "责任与担当",
         "subtitle": "医者仁心 · 大爱无疆",
@@ -1067,33 +1100,37 @@ window.HM_DATA = {
       },
       "blocks": [
         {
-          "id": "b1",
           "num": "01 · 抗疫 · 驰援一线",
           "title": "抗疫驰援",
           "subtitle": "157名医护驰援抗疫一线",
           "text": "<h4>逆行出征</h4><p>新冠疫情暴发后，医院先后派出157名医护人员驰援武汉、上海、瑞丽等地。</p>",
           "imgIcon": "🦸",
           "imgLabel": "抗疫出征照片",
-          "imgSize": "16:9"
+          "imgSize": "16:9",
+          "imgUrl": ""
         }
       ],
       "dataCards": [
         {
+          "icon": "",
           "value": "157",
           "label": "抗疫驰援医护（名）",
           "note": "驰援武汉/上海/瑞丽"
         },
         {
+          "icon": "",
           "value": "87",
           "label": "帮扶脱贫（户）",
           "note": "云龙县健康扶贫"
         },
         {
+          "icon": "",
           "value": "10+",
           "label": "对口支援医院",
           "note": "滇西基层医疗单位"
         },
         {
+          "icon": "",
           "value": "1",
           "label": "代管机构",
           "note": "省第二传染病医院"
@@ -1102,25 +1139,29 @@ window.HM_DATA = {
       "gallery": [
         {
           "icon": "🦸",
-          "label": "抗疫出征"
+          "label": "抗疫出征",
+          "url": ""
         },
         {
           "icon": "🤝",
-          "label": "对口帮扶"
+          "label": "对口帮扶",
+          "url": ""
         },
         {
           "icon": "🏔",
-          "label": "脱贫攻坚"
+          "label": "脱贫攻坚",
+          "url": ""
         },
         {
           "icon": "🚑",
-          "label": "应急救援"
+          "label": "应急救援",
+          "url": ""
         }
       ]
     },
     "honors": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块九 · SECTION 09",
         "title": "荣誉殿堂",
         "subtitle": "辉煌成就 · 荣耀时刻",
@@ -1140,11 +1181,13 @@ window.HM_DATA = {
       ],
       "dataCards": [
         {
+          "icon": "",
           "value": "50+",
           "label": "省部级荣誉",
           "note": ""
         },
         {
+          "icon": "",
           "value": "100+",
           "label": "厅局级荣誉",
           "note": ""
@@ -1180,7 +1223,7 @@ window.HM_DATA = {
     },
     "vision": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块十 · SECTION 10",
         "title": "展望未来",
         "subtitle": "踔厉奋发 · 勇毅前行",
@@ -1188,33 +1231,37 @@ window.HM_DATA = {
       },
       "blocks": [
         {
-          "id": "b1",
           "num": "01 · 战略 · 发展目标",
           "title": "战略目标",
           "subtitle": "建设滇西区域医疗中心",
           "text": "<h4>核心目标</h4><p>建成集医疗、教学、科研、预防、康复于一体的滇西区域医疗中心。</p>",
           "imgIcon": "🎯",
           "imgLabel": "发展愿景图",
-          "imgSize": "16:9"
+          "imgSize": "16:9",
+          "imgUrl": ""
         }
       ],
       "dataCards": [
         {
+          "icon": "",
           "value": "区域",
           "label": "医疗中心建设目标",
           "note": "滇西高水平医疗中心"
         },
         {
+          "icon": "",
           "value": "9",
           "label": "十四五省级重点专科",
           "note": "在建+新立项"
         },
         {
+          "icon": "",
           "value": "AI",
           "label": "智能诊断",
           "note": "智慧医院全面深化"
         },
         {
+          "icon": "",
           "value": "16国",
           "label": "国际合作",
           "note": "南亚东南亚拓展"
@@ -1223,19 +1270,23 @@ window.HM_DATA = {
       "gallery": [
         {
           "icon": "🎯",
-          "label": "战略规划"
+          "label": "战略规划",
+          "url": ""
         },
         {
           "icon": "🚀",
-          "label": "未来蓝图"
+          "label": "未来蓝图",
+          "url": ""
         },
         {
           "icon": "🌟",
-          "label": "远景目标"
+          "label": "远景目标",
+          "url": ""
         },
         {
           "icon": "📈",
-          "label": "发展路径"
+          "label": "发展路径",
+          "url": ""
         }
       ],
       "timeline": [
@@ -1267,7 +1318,7 @@ window.HM_DATA = {
     },
     "structure": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块十一 · SECTION 11",
         "title": "组织架构",
         "subtitle": "科学管理 · 高效运行",
@@ -1282,7 +1333,7 @@ window.HM_DATA = {
           "imgIcon": "🏛",
           "imgLabel": "组织架构图",
           "imgSize": "4:3",
-          "imgUrl": "/assets/images/zzjgt.png"
+          "imgUrl": "../assets/images/zzjgt.png"
         }
       ],
       "gallery": [
@@ -1310,7 +1361,7 @@ window.HM_DATA = {
     },
     "leadership": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块十二 · SECTION 12",
         "title": "领导团队",
         "subtitle": "领航定向，掌舵前行",
@@ -1330,23 +1381,23 @@ window.HM_DATA = {
       ],
       "leaders": [
         {
-          "id": "ld17811467479150.5795037451152606",
+          "id": "ld17811695822380.32882265939355004",
           "name": "高文理",
           "role": "党委书记",
           "duty": "主持医院党委全面工作",
           "resume": "曾任[待补充]，分管党政办公室、组织人事等工作。",
-          "photo": "/assets/images/gwl.png"
+          "photo": "../assets/images/gwl.png"
         },
         {
-          "id": "ld17811467479150.18014057251397553",
+          "id": "ld17811695822380.1926191191270028",
           "name": "吴新华",
           "role": "党委副书记、院长",
           "duty": "主持医院行政全面工作",
           "resume": "医学博士，主任医师，教授，博士生导师。分管医务、科研等工作。",
-          "photo": "/assets/images/wxh.png"
+          "photo": "../assets/images/wxh.png"
         },
         {
-          "id": "ld17811467479150.17640013286756118",
+          "id": "ld17811695822380.45429161538188",
           "name": "胡林",
           "role": "党委副书记",
           "duty": "分管党建、学生工作",
@@ -1354,7 +1405,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811467479150.9912445541572894",
+          "id": "ld17811695822380.08175039952173502",
           "name": "刘进",
           "role": "副院长",
           "duty": "分管医疗业务",
@@ -1362,7 +1413,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811467479160.05252143910989526",
+          "id": "ld17811695822380.1552076446909777",
           "name": "吴学东",
           "role": "副院长",
           "duty": "分管科研教学",
@@ -1370,7 +1421,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811467479160.1790022394201859",
+          "id": "ld17811695822380.6185346271633756",
           "name": "张黎明",
           "role": "纪委书记",
           "duty": "分管纪检监察",
@@ -1378,7 +1429,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811467479160.19339892705213058",
+          "id": "ld17811695822380.7528973195557801",
           "name": "田昆仑",
           "role": "副院长",
           "duty": "",
@@ -1386,7 +1437,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811467479160.8077734154264303",
+          "id": "ld17811695822380.899870662032788",
           "name": "李绍波",
           "role": "",
           "duty": "",
@@ -1394,7 +1445,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811467479160.670431262860685",
+          "id": "ld17811695822380.9664466749939473",
           "name": "张云红",
           "role": "副院长",
           "duty": "",
@@ -1402,7 +1453,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811467479160.9385826380735338",
+          "id": "ld17811695822380.7074079828789138",
           "name": "杨林",
           "role": "党委委员",
           "duty": "",
@@ -1435,7 +1486,7 @@ window.HM_DATA = {
     },
     "staff": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.png",
         "num": "板块十三 · SECTION 13",
         "title": "职工名录",
         "subtitle": "每一位职工，都是医院发展的基石",
@@ -1662,7 +1713,7 @@ window.HM_DATA = {
           "dept": "党委办公室、行政办公室",
           "position": "",
           "desc": "",
-          "photo": "/assets/images/fy00022.png"
+          "photo": "../assets/images/fy00022.png"
         },
         {
           "id": "s17811643196780.5411792859606247",
@@ -26367,22 +26418,22 @@ window.HM_DATA = {
         {
           "icon": "👥",
           "label": "全院职工合影",
-          "url": "/assets/images/kzys.jpg"
+          "url": "../assets/images/kzys.jpg"
         },
         {
           "icon": "🏥",
           "label": "临床科室查房",
-          "url": "/assets/images/jypw.jpg"
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "🎓",
           "label": "教学带教日常",
-          "url": "/assets/images/jypw.jpg"
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "🎗",
           "label": "护士节表彰",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "../assets/images/sjzp.jpg"
         },
         {
           "icon": "🤝",
@@ -26392,17 +26443,17 @@ window.HM_DATA = {
         {
           "icon": "🔬",
           "label": "科研团队实验室",
-          "url": "/assets/images/jypw.jpg"
+          "url": "../assets/images/jypw.jpg"
         },
         {
           "icon": "🏆",
           "label": "年度表彰先进职工",
-          "url": "/assets/images/kzys.jpg"
+          "url": "../assets/images/kzys.jpg"
         },
         {
           "icon": "📸",
           "label": "医院文化活动",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "../assets/images/sjzp.jpg"
         }
       ]
     },
@@ -26411,12 +26462,12 @@ window.HM_DATA = {
         {
           "icon": "📷",
           "label": "1992年奠基典礼<br><small>历史影像</small>",
-          "url": "/assets/images/kgdl.jpg"
+          "url": "../assets/images/kgdl.jpg"
         },
         {
           "icon": "📷",
           "label": "1997年正式开诊<br><small>珍贵历史</small>",
-          "url": "/assets/images/kzys.jpg"
+          "url": "../assets/images/kzys.jpg"
         },
         {
           "icon": "📷",
