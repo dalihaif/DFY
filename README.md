@@ -1,134 +1,205 @@
-# 云端院史馆 · 大理大学第一附属医院
+# 🏥 云端院史馆 · 大理大学第一附属医院
 
-> 基于纯静态网页的医院数字院史展馆，支持后台 CMS 编辑，数据固化部署到 GitHub Pages。
+> 大理大学第一附属医院（云南省第四人民医院）数字院史展馆 —— 纯静态、CMS 驱动、GitHub Pages 自动部署
 
----
-
-## 🚀 快速部署（GitHub Pages）
-
-### 第一次部署
-
-1. **Fork 或 Push 到 GitHub**
-
-```bash
-git remote add origin https://github.com/<你的用户名>/hospital-museum.git
-git push -u origin main
-```
-
-2. **开启 GitHub Pages**
-   - 打开仓库 → Settings → Pages
-   - Source 选择 **GitHub Actions**
-   - 保存后等待约 1 分钟，自动部署完成
-
-3. **访问网站**
-   - 地址：`https://<你的用户名>.github.io/hospital-museum/`
+[![Deploy to GitHub Pages](https://github.com/dalihaif/DFY/actions/workflows/pages.yml/badge.svg)](https://github.com/dalihaif/DFY/actions/workflows/pages.yml)
 
 ---
 
-## ✏️ 更新内容流程
+## 📖 项目简介
 
-### ⚠️ 关键：本地编辑必须用 HTTP 服务器
+云端院史馆是一个**纯前端静态网站**，完整呈现大理大学第一附属医院的院史文化。系统采用 CMS（内容管理系统）架构，支持后台可视化编辑，数据既可通过 `localStorage` 实时预览，也可导出为 `data.js` 固化部署。
 
-**Chrome 的 `file://` 协议下，不同目录的页面 localStorage 相互隔离！**  
-管理后台 (`admin/`) 和前台页面 (`pages/`) 的 localStorage 不共享，导致数据不同步。
+### 核心特性
 
-**正确做法：始终通过本地服务器访问**
+| 特性 | 说明 |
+|------|------|
+| 🧩 **13 大板块** | 历史沿革、人物风采、学科建设、院区风貌、医学教育、文化建设、医疗技术、社会责任、医院荣誉、发展愿景、组织架构、历任院领导、职工名录 |
+| 🖥️ **可视化后台** | 基于 AdminLTE 的管理面板，支持富文本编辑、图片上传、数据导入/导出 |
+| 📊 **职工名录** | 支持 CSV/文本批量导入，编码自动检测（UTF-8/GBK/GB2312），分页浏览，批量增删改 |
+| 👤 **人物群像** | 专家群像馆、医学人才、榜样员工、院领导动态卡片，照片 lightbox 放大 |
+| 🔄 **数据双通道** | localStorage（编辑预览）→ data.js（发布快照），优先级可配置 |
+| 🚀 **自动部署** | Push 即部署，GitHub Actions 自动构建发布到 GitHub Pages |
+| 📱 **响应式** | 适配桌面、平板、手机端 |
+
+---
+
+## 🚀 快速开始
+
+### 1. 本地预览（仅浏览）
+
+直接双击 `index.html` 在浏览器中打开即可。
+
+### 2. 本地编辑（推荐）
 
 ```bash
-# 在项目根目录启动
-cd E:\my-web\hospital-museum
-python serve.py
+# 在项目根目录启动 Python HTTP 服务器
+cd hospital-museum
+python -m http.server 8000
 ```
 
-然后通过以下地址访问（共享同一份 localStorage）：
+然后通过以下地址访问：
 
 | 页面 | 地址 |
 |------|------|
 | 🖥️ 管理后台 | `http://localhost:8000/admin/` |
 | 🏠 前台首页 | `http://localhost:8000/` |
 | 👥 职工名录 | `http://localhost:8000/pages/13-staff.html` |
-| 🔍 数据诊断 | `http://localhost:8000/diagnostic.html` |
 
-### 日常内容更新（推荐）
+> ⚠️ **重要**：管理后台和前台必须在同一 origin（同域名同端口）下访问，否则 `localStorage` 不共享，编辑不会即时生效。
+
+### 3. 部署到 GitHub Pages
+
+1. Push 到 GitHub 仓库的 `main` 或 `master` 分支
+2. 仓库 Settings → Pages → Source 选择 **GitHub Actions**
+3. 等待约 1 分钟自动部署完成
+4. 访问 `https://<用户名>.github.io/<仓库名>/`
+
+---
+
+## ✏️ 内容更新流程
 
 ```
-① 启动本地服务器   → python serve.py
-② 打开管理后台     → http://localhost:8000/admin/
-③ 编辑各板块内容   → 点「保存」
-④ 导出数据         → 顶部导航「导出数据」按钮 → 下载 data.js
-⑤ 替换文件         → 将下载的 data.js 覆盖 js/data.js
-⑥ 提交并 push      → git add js/data.js && git commit -m "update: 更新内容" && git push
-⑦ 等待自动部署    → GitHub Actions 约 1 分钟完成
-```
-
-### 一键命令（Windows）
-
-```cmd
-cd C:\path\to\hospital-museum
-git add js/data.js
-git commit -m "update: 更新展馆内容 %date%"
-git push
+① 启动本地 HTTP 服务器  →  python -m http.server 8000
+② 打开管理后台          →  http://localhost:8000/admin/
+③ 编辑各板块内容        →  点击「保存」
+④ 导出数据              →  顶部导航「导出数据」→ 下载 data.js
+⑤ 替换文件              →  将下载的 data.js 覆盖 js/data.js
+⑥ 提交推送              →  git add js/data.js && git commit -m "update: 内容更新" && git push
+⑦ 自动部署              →  GitHub Actions 约 1 分钟完成
 ```
 
 ---
 
-## 📦 数据持久化说明
+## 📦 数据架构
 
-| 存储方式 | 可见范围 | 是否持久 | 使用场景 |
-|---------|---------|---------|---------|
-| `localStorage` | 当前浏览器/当前 origin | ❌ 清缓存即丢失 | 本地编辑预览（需同源） |
-| `js/data.js`（导出部署） | **所有访客** | ✅ 永久保存在代码中 | 正式部署 |
+```
+┌─────────────────────────────────────────────────┐
+│                    前台页面                       │
+│  main.js: 读取 HM_DATA → 动态渲染 13 个板块       │
+│  优先级: localStorage.hm_content > js/data.js    │
+└──────────────────┬──────────────────────────────┘
+                   │
+    ┌──────────────┴──────────────┐
+    │                             │
+    ▼                             ▼
+┌───────────────┐         ┌──────────────┐
+│  localStorage │  ←编辑→  │   管理后台    │
+│  hm_content   │  保存    │  admin/      │
+└──────┬────────┘         └──────┬───────┘
+       │                         │
+       │  导出                    │
+       ▼                         │
+┌──────────────┐                 │
+│  js/data.js  │ ←── 替代 ──────┘
+│  (发布快照)   │
+└──────────────┘
+```
 
-**工作原理：**
-- 前台 `main.js` **优先级 localStorage > data.js**：
-  1. 若 `localStorage.hm_content` 有数据 → 优先使用（管理后台编辑即时反映）
-  2. 否则使用 `js/data.js` 中的 `window.HM_DATA`
-- 管理后台的「保存」按钮写入 `localStorage.hm_content`
-- 「导出数据」按钮将 localStorage 数据固化为 `data.js` 文件
-
-**⚠️ 重要**：管理后台和前台必须在同一 origin（同域名同端口）下访问，否则 localStorage 不共享。使用 `python serve.py` 启动本地服务器即可保证同源。
+| 存储方式 | 可见范围 | 持久性 | 使用场景 |
+|---------|---------|--------|---------|
+| `localStorage` | 当前浏览器 origin | ❌ 清缓存即丢失 | 本地编辑预览（需同源） |
+| `js/data.js` | **所有访客** | ✅ 永久保存在代码中 | 正式部署 |
 
 ---
 
-## 🗂️ 目录结构
+## 🗂️ 项目结构
 
 ```
 hospital-museum/
-├── index.html              # 网站首页
-├── pages/
-│   ├── 01-history.html     # 历史沿革
-│   ├── 02-people.html      # 人物风采
-│   └── ... (共12个板块)
+├── index.html                  # 🏠 网站首页（Hero + 板块导航 + 页脚）
+├── pages/                      # 📄 13 个内容板块
+│   ├── 01-history.html         #   历史沿革
+│   ├── 02-people.html          #   人物风采（专家群像馆 + 医学人才 + 榜样）
+│   ├── 03-disciplines.html     #   学科建设
+│   ├── 04-campus.html          #   院区风貌
+│   ├── 05-education.html       #   医学教育
+│   ├── 06-culture.html         #   文化建设
+│   ├── 07-tech.html            #   医疗技术
+│   ├── 08-duty.html            #   社会责任
+│   ├── 09-honors.html          #   医院荣誉
+│   ├── 10-vision.html          #   发展愿景
+│   ├── 11-structure.html       #   组织架构
+│   ├── 12-leadership.html      #   历任院领导
+│   └── 13-staff.html           #   职工名录
 ├── js/
-│   ├── main.js             # 前台渲染引擎
-│   └── data.js             # ← 持久化数据（由后台导出生成）
+│   ├── main.js                 # 🔧 前台渲染引擎（动态生成页面内容）
+│   └── data.js                 # 📊 持久化数据文件（CMS 导出，约 2.5 万行）
 ├── admin/
-│   ├── index.html          # 后台管理界面
-│   └── js/admin.js         # 后台 CMS 逻辑
-└── .github/
-    └── workflows/
-        └── pages.yml       # GitHub Pages 自动部署配置
+│   ├── index.html              # 🖥️ 管理后台界面（基于 AdminLTE 3）
+│   └── js/
+│       ├── admin.js            #   后台 CMS 核心逻辑（约 3000 行）
+│       └── adminlte.min.js     #   AdminLTE 框架
+├── css/
+│   ├── style.css               # 全局样式
+│   ├── sections.css            # 板块布局样式
+│   └── visuals.css             # 视觉特效样式
+├── modules/                    # 🧩 可复用 HTML 模块
+│   ├── culture.html            #   文化建设子模块
+│   ├── culture-detail.html     #   文化详情
+│   ├── departments.html        #   科室介绍
+│   ├── education.html          #   教育子模块
+│   ├── future.html             #   未来展望
+│   ├── history.html            #   历史子模块
+│   ├── innovation.html         #   创新子模块
+│   └── people.html             #   人物子模块
+├── assets/
+│   ├── images/                 # 🖼️ 图片资源（院徽、照片等）
+│   └── svg/                    # SVG 图标
+├── .github/workflows/
+│   └── pages.yml               # ⚙️ GitHub Pages 自动部署配置
+└── README.md
 ```
 
 ---
 
-## 🛠️ 本地预览
+## 🛠️ 技术栈
 
-### 方式一：本地 HTTP 服务器（推荐）
-```bash
-cd E:\my-web\hospital-museum
-python serve.py
-# 访问 http://localhost:8000
-```
-管理后台和前台共享 localStorage，编辑即时生效。
-
-### 方式二：直接打开文件（仅浏览）
-双击 `index.html` 在浏览器打开。  
-⚠️ 此方式下管理后台的编辑不会同步到前台（localStorage 隔离），仅适合快速浏览。
+| 类别 | 技术 |
+|------|------|
+| 前端框架 | 原生 HTML/CSS/JS（无框架依赖） |
+| UI 库（后台） | AdminLTE 3 + Bootstrap 4 |
+| 富文本 | 原生 `<textarea>` + HTML |
+| 数据存储 | localStorage + 静态 JSON（`data.js`） |
+| 图标 | Font Awesome 5 |
+| 字体 | Noto Sans/Serif TC（思源字体） |
+| 部署 | GitHub Pages + Actions |
+| 本地服务 | Python `http.server` |
 
 ---
 
-## 📞 技术支持
+## 📋 管理后台功能
 
-- 大理大学第一附属医院档案室
-- 官网：https://www.dfy.dali.edu.cn
+| 功能模块 | 说明 |
+|---------|------|
+| 🏠 **首页编辑** | Hero 轮播图、板块导航卡片、Footer 信息 |
+| 📜 **13 个内容板块** | 每个板块独立编辑标题、正文、配图 |
+| 👥 **人物风采** | 专家群像、医学人才、榜样员工、学科数据卡片、党建力量 |
+| 👨‍⚕️ **历任院领导** | 照片、姓名、职务、任期、简介 |
+| 👷 **职工名录** | CSV/文本批量导入、编码自动检测、分页、批量操作 |
+| 📤 **数据导出** | 一键导出 `data.js`，下载即可部署 |
+| 📥 **数据导入** | 从 `data.js` 文件恢复数据 |
+
+---
+
+## 🌐 浏览器兼容性
+
+- Chrome / Edge 90+
+- Firefox 90+
+- Safari 15+
+
+---
+
+## 📞 关于医院
+
+**大理大学第一附属医院（云南省第四人民医院）**
+
+- 等级：三级甲等综合医院
+- 定位：立足大理、辐射滇西
+- 官网：[https://www.dfy.dali.edu.cn](https://www.dfy.dali.edu.cn)
+
+---
+
+## 📄 许可证
+
+本项目为大理大学第一附属医院内部项目，保留所有权利。
