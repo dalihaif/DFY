@@ -366,7 +366,7 @@ function seedContent() {
           imgIcon:'', imgLabel:'', imgSize:'' }
       ],
       profiles: [
-        { id:'s1',  name:'张伟民', title:'主任医师 · 教授', dept:'心血管内科', position:'科室主任', desc:'深耕冠心病介入诊疗30年，主持国自然项目3项，培养硕士研究生18名。' }
+        { id:'s1', employeeId:'001', name:'张伟民', title:'主任医师 · 教授', dept:'心血管内科', position:'科室主任', desc:'深耕冠心病介入诊疗30年，主持国自然项目3项，培养硕士研究生18名。' }
       ],
       dataCards: [
         { value:'1946', label:'全院职工', note:'含编内编外' },
@@ -401,6 +401,7 @@ function saveContent(data) {
   try {
     var json = JSON.stringify(data);
     localStorage.setItem('hm_content', json);
+    localStorage.setItem('hm_last_edit', Date.now().toString());
     var sc = data && data.staff && Array.isArray(data.staff.profiles) ? data.staff.profiles.length : 0;
     console.log('[Admin saveContent] 已保存 hm_content，大小=' + (json.length/1024).toFixed(1) + 'KB，staff.profiles=' + sc + '条');
     return true;
@@ -441,6 +442,9 @@ function navigateTo(pageId) {
   $('#breadcrumb').html(bc);
   $('#main-content').html(html);
   $('#breadcrumb a[data-nav]').click(function(e){ e.preventDefault(); navigateTo($(this).data('nav')); });
+
+  // 更新侧边栏状态徽章
+  updateSidebarBadges();
 
   // 职工名录：初始化分页列表
   if (pageId === 'staff') {
@@ -526,7 +530,7 @@ function renderIndexEditor(content) {
   h += '<div class="form-row"><div class="col-md-6"><label>背景图</label><input class="form-control form-control-sm hero-bg" value="' + escHtml(hero.bgImage || '') + '"></div>';
   h += '<div class="col-md-6"><label>医院名称</label><input class="form-control form-control-sm hero-index-title" value="' + escHtml(hero.title || '') + '"></div></div>';
   h += '<div class="form-row mt-2"><div class="col-md-6"><label>标签</label><input class="form-control form-control-sm hero-index-tag" value="' + escHtml(hero.tag || '') + '"></div>';
-  h += '<div class="col-md-6"><label>描述</label><textarea class="form-control form-control-sm hero-index-desc" rows="2">' + escHtml(hero.desc || '') + '</textarea></div></div>';
+  h += '<div class="col-md-6"><label>描述</label><textarea class="form-control" rows="4" style="width:100%">' + (hero.desc || '') + '</textarea></div></div>';
   h += '<div class="form-row mt-2"><div class="col-md-3"><label>按钮1文字</label><input class="form-control form-control-sm hero-index-cta1-text" value="' + escHtml(hero.cta1Text || '') + '"></div>';
   h += '<div class="col-md-3"><label>按钮1链接</label><input class="form-control form-control-sm hero-index-cta1-link" value="' + escHtml(hero.cta1Link || '') + '"></div>';
   h += '<div class="col-md-3"><label>按钮2文字</label><input class="form-control form-control-sm hero-index-cta2-text" value="' + escHtml(hero.cta2Text || '') + '"></div></div>';
@@ -645,7 +649,7 @@ function renderSectionEditor(sec) {
     html+='<div class="col-md-6"><label>板块编号</label><input class="form-control form-control-sm hero-num" data-key="num" value="'+escHtml(hero.num||'')+'"></div></div>';
     html+='<div class="form-row mt-2"><div class="col-md-6"><label>标题</label><input class="form-control form-control-sm hero-title" data-key="title" value="'+escHtml(hero.title||'')+'"></div>';
     html+='<div class="col-md-6"><label>副标题</label><input class="form-control form-control-sm hero-subtitle" data-key="subtitle" value="'+escHtml(hero.subtitle||'')+'"></div></div>';
-    html+='<div class="form-row mt-2"><div class="col-12"><label>描述</label><textarea class="form-control form-control-sm hero-desc" data-key="desc" rows="2">'+escHtml(hero.desc||'')+'</textarea></div></div>';
+    html+='<div class="form-row mt-2"><div class="col-12"><label>描述</label><textarea class="form-control" rows="4" style="width:100%">'+(hero.desc||'')+'</textarea></div></div>';
     html+='</div>';
   }
 
@@ -733,8 +737,8 @@ function renderSectionEditor(sec) {
       html+='<div class="form-row"><div class="col-md-3"><label>姓名</label><input class="form-control form-control-sm lsh-name" value="'+escHtml(l.name||'')+'"></div>';
       html+='<div class="col-md-3"><label>职务</label><input class="form-control form-control-sm lsh-role" value="'+escHtml(l.role||'')+'"></div>';
       html+='<div class="col-md-6"><label>职责</label><input class="form-control form-control-sm lsh-duty" value="'+escHtml(l.duty||'')+'"></div></div>';
-      html+='<div class="form-row mt-1"><div class="col-md-10"><label>简历</label><div class="input-group input-group-sm"><textarea class="form-control lsh-resume" rows="2">'+escHtml(l.resume||'')+'</textarea><div class="input-group-append"><button class="btn btn-outline-danger btn-del-leadership" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div>';
-      html+='<div class="col-md-2 d-flex flex-column justify-content-end"><label>&nbsp;</label></div></div>';
+      html+='<div class="form-row mt-1"><div class="col-md-10"><label>简历</label><textarea class="form-control form-control-sm" rows="4" style="width:100%">'+(l.resume||'')+'</textarea></div>';
+      html+='<div class="col-md-2 d-flex flex-column justify-content-end"><button class="btn btn-outline-danger btn-sm btn-del-leadership" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div>';
       html+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
       html+='<input class="form-control form-control-sm lsh-photo" value="'+escHtml(l.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
       html+='</div>';
@@ -784,7 +788,12 @@ function renderSectionEditor(sec) {
   // 侧边信息
   html+='<div class="col-md-4"><div class="card card-accent card-outline"><div class="card-header"><h3 class="card-title">页面信息</h3></div>';
   html+='<div class="card-body"><p><strong>前台页面：</strong><br><code>pages/'+sec.page+'</code></p>';
-  html+='<p><strong>状态：</strong><br><span id="info-status" class="status-badge '+(data.status==='published'?'status-published':'status-draft')+'">'+(data.status==='published'?'已发布':'草稿')+'</span></p>';
+  html+='<p><strong>状态：</strong><br><span id="info-status" class="status-badge '+(data.status==='published'?'status-published':(data.status==='review'?'status-review':'status-draft'))+'">'+(data.status==='published'?'已发布・前台可见':(data.status==='review'?'审核中・内部预览':'草稿・前台隐藏'))+'</span></p>';
+  html+='<p><strong>快速切换：</strong><br>';
+  html+='<button class="btn-workflow-action act-publish btn-set-status" data-section="'+sec.id+'" data-status="published"><i class="fas fa-check mr-1"></i>发布</button>';
+  html+='<button class="btn-workflow-action act-review btn-set-status" data-section="'+sec.id+'" data-status="review"><i class="fas fa-clock mr-1"></i>审核中</button>';
+  html+='<button class="btn-workflow-action act-draft btn-set-status" data-section="'+sec.id+'" data-status="draft"><i class="fas fa-pencil-alt mr-1"></i>退回</button>';
+  html+='</p>';
   html+='<p><strong>内容类型：</strong><br><span class="text-muted">'+sec.types.join(' · ')+'</span></p>';
   html+='<p><strong>提示：</strong><br><small class="text-muted">修改内容后点击<b>保存全部</b>按钮，刷新前台页面即可看到更新。</small></p>';
   html+='<a href="../pages/'+sec.page+'" target="_blank" class="btn btn-outline-info btn-sm btn-block"><i class="fas fa-eye mr-1"></i>预览前台页面</a>';
@@ -798,11 +807,11 @@ function renderBlockEditor(secId,b,i){
   h+='<div class="form-row"><div class="col-md-4"><label>编号</label><input class="form-control form-control-sm bl-num" value="'+escHtml(b.num||'')+'"></div>';
   h+='<div class="col-md-4"><label>标题</label><input class="form-control form-control-sm bl-title" value="'+escHtml(b.title||'')+'"></div>';
   h+='<div class="col-md-4"><label>副标题</label><div class="input-group input-group-sm"><input class="form-control bl-subtitle" value="'+escHtml(b.subtitle||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-block" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
-  h+='<div class="form-row mt-1"><div class="col-12"><label>正文 (HTML)</label><textarea class="form-control form-control-sm bl-text" rows="3">'+escHtml(b.text||'')+'</textarea></div></div>';
+  h+='<div class="form-row mt-1"><div class="col-12"><label>正文</label><textarea class="form-control" rows="6" style="width:100%">'+(b.text||'')+'</textarea></div></div>';
   h+='<div class="form-row mt-1"><div class="col-md-2"><label>图片Emoji</label><input class="form-control form-control-sm bl-imgIcon" value="'+escHtml(b.imgIcon||'')+'"></div>';
   h+='<div class="col-md-7"><label>图片描述</label><input class="form-control form-control-sm bl-imgLabel" value="'+escHtml(b.imgLabel||'')+'"></div>';
   h+='<div class="col-md-3"><label>尺寸比例</label><input class="form-control form-control-sm bl-imgSize" value="'+escHtml(b.imgSize||'')+'"></div></div>';
-  h+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-link text-primary mr-1"></i>图片URL <small class="text-muted">(填入后前台将显示真实图片，留空则显示占位图标)</small></label>';
+  h+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-link text-primary mr-1"></i>图片URL <small class="text-muted">(填入后前台将显示真实图片，留空则显示占位图标)</small> <button class="btn-img-picker ml-2" onclick="openMediaPickerFor(this)" data-target=".bl-imgUrl"><i class="fas fa-image mr-1"></i>从媒体库选择</button></label>';
   h+='<input class="form-control form-control-sm bl-imgUrl" value="'+escHtml(b.imgUrl||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg" style="word-break:break-all;"></div></div>';
   h+='</div>';
   return h;
@@ -831,7 +840,7 @@ function saveIndexContent() {
     bgImage: $('#section-editor-body .hero-bg').val() || '',
     title: $('#section-editor-body .hero-index-title').val() || '',
     tag: $('#section-editor-body .hero-index-tag').val() || '',
-    desc: $('#section-editor-body .hero-index-desc').val() || '',
+    desc: $('#section-editor-body textarea').first().val() || '',
     flipItems: [],
     cta1Text: $('#section-editor-body .hero-index-cta1-text').val() || '',
     cta1Link: $('#section-editor-body .hero-index-cta1-link').val() || '',
@@ -908,19 +917,20 @@ function saveSectionContent(secId) {
       num: $('#section-editor-body .hero-num').val()||'',
       title: $('#section-editor-body .hero-title').val()||'',
       subtitle: $('#section-editor-body .hero-subtitle').val()||'',
-      desc: $('#section-editor-body .hero-desc').val()||''
+      desc: $('#section-editor-body textarea').first().val()||''
     };
   }
 
   // Blocks
   if(sec.types.indexOf('block')>=0) {
     content[secId].blocks=[];
-    $('#section-editor-body .block-item-editor').each(function(){
+    $('#section-editor-body .block-item-editor').each(function(idx){
+      var textValue = $(this).find('textarea').val() || '';
       content[secId].blocks.push({
         num: $(this).find('.bl-num').val()||'',
         title: $(this).find('.bl-title').val()||'',
         subtitle: $(this).find('.bl-subtitle').val()||'',
-        text: $(this).find('.bl-text').val()||'',
+        text: textValue,
         imgIcon: $(this).find('.bl-imgIcon').val()||'',
         imgLabel: $(this).find('.bl-imgLabel').val()||'',
         imgSize: $(this).find('.bl-imgSize').val()||'',
@@ -993,7 +1003,7 @@ function saveSectionContent(secId) {
         name: $(this).find('.lsh-name').val()||'',
         role: $(this).find('.lsh-role').val()||'',
         duty: $(this).find('.lsh-duty').val()||'',
-        resume: $(this).find('.lsh-resume').val()||'',
+        resume: $(this).find('textarea').val()||'',
         photo: $(this).find('.lsh-photo').val()||''
       });
     });
@@ -1024,9 +1034,10 @@ function saveSectionContent(secId) {
   }
 
   saveContent(content);
-  // Update updatedAt
+  // Update updatedAt，保留原有状态
   var sd=JSON.parse(localStorage.getItem('hm_admin_sections')||'{}');
-  if(!sd[secId]) sd[secId]={title:sec.name,status:'published',updatedAt:'',notes:''};
+  var oldStatus = sd[secId] ? sd[secId].status : 'draft';
+  if(!sd[secId]) sd[secId]={title:sec.name,status:oldStatus,updatedAt:'',notes:''};
   sd[secId].updatedAt=new Date().toISOString().split('T')[0];
   localStorage.setItem('hm_admin_sections',JSON.stringify(sd));
 
@@ -1060,9 +1071,9 @@ function renderAnnouncements() {
   html+='<div class="col-md-3"><label>日期</label><input type="date" class="form-control" id="ann-date"></div>';
   html+='<div class="col-md-3"><label>分类</label><select class="form-control" id="ann-cat"><option value="notice">通知公告</option><option value="event">活动事件</option><option value="hr">人事信息</option><option value="academic">科研学术</option></select></div>';
   html+='<div class="col-md-3"><label>部门</label><input class="form-control" id="ann-dept"></div>';
-  html+='<div class="col-12 mt-2"><label>正文</label><textarea class="form-control" id="ann-content" rows="3"></textarea></div>';
-  html+='</div><input type="hidden" id="ann-edit-id"><button class="btn btn-accent mt-2" id="btn-save-ann"><i class="fas fa-check mr-1"></i>提交</button> ';
-  html+='<button class="btn btn-outline-secondary mt-2" id="btn-cancel-ann">取消</button></div></div></div></div>';
+  html+='<div class="col-12 mt-2"><label>正文</label><textarea class="form-control" id="ann-content" rows="8" style="width:100%"></textarea></div>';
+  html+='</div><input type="hidden" id="ann-edit-id"><button type="button" class="btn btn-accent mt-2" id="btn-save-ann"><i class="fas fa-check mr-1"></i>提交</button> ';
+  html+='<button type="button" class="btn btn-outline-secondary mt-2" id="btn-cancel-ann">取消</button></div></div></div></div>';
   html+='</div></div>';
   return html;
 }
@@ -1132,11 +1143,35 @@ function exportDataJs() {
 // ====== 导入 data.js 文件 ======
 var _importPendingData = null;
 
+// 通用文件编码自动检测（UTF-8 BOM / UTF-8 / GBK）
+function decodeImportFile(buffer) {
+  var arr = new Uint8Array(buffer);
+  var hasUtf8Bom = arr.length >= 3 && arr[0] === 0xEF && arr[1] === 0xBB && arr[2] === 0xBF;
+
+  // 先用 UTF-8 解码
+  var utfText = new TextDecoder('utf-8', { fatal: false }).decode(buffer);
+  // 有 BOM 或文本中存在合法中文 → 直接返回 UTF-8
+  if (hasUtf8Bom || /[\u4e00-\u9fff]/.test(utfText)) {
+    return utfText;
+  }
+
+  // UTF-8 无中文 → 尝试 GBK 解码
+  try {
+    var gbkText = new TextDecoder('gbk', { fatal: false }).decode(buffer);
+    if (/[\u4e00-\u9fff]/.test(gbkText)) {
+      return gbkText;
+    }
+  } catch(e) { console.warn('[Admin] GBK decoder not available, using UTF-8 fallback'); }
+
+  return utfText;
+}
+
 function importDataJs(file) {
   var reader = new FileReader();
   reader.onload = function(e) {
-    var text = e.target.result;
-    // 提取 window.HM_DATA = {...} 中的 JSON（括号计数法，兼容各种格式）
+    var buffer = e.target.result; // ArrayBuffer
+    var text = decodeImportFile(buffer);
+    // ... rest of parsing
     var startIdx = text.indexOf('window.HM_DATA');
     if (startIdx === -1) {
       $(document).Toasts('create', { class:'bg-danger', title:'格式错误', body:'文件不是有效的 data.js，未找到 window.HM_DATA 定义', autohide:true, delay:5000 });
@@ -1234,6 +1269,7 @@ function importDataJs(file) {
     showConfirmModal('确认导入数据', previewHtml, function() {
       // 执行导入
       localStorage.setItem('hm_content', JSON.stringify(data.content));
+      localStorage.setItem('hm_last_edit', Date.now().toString());
       if (data.settings) localStorage.setItem('hm_settings', JSON.stringify(data.settings));
       if (data.announcements) localStorage.setItem('hm_announcements', JSON.stringify(data.announcements));
       if (data.sections) localStorage.setItem('hm_admin_sections', JSON.stringify(data.sections));
@@ -1241,7 +1277,7 @@ function importDataJs(file) {
       setTimeout(function() { location.reload(); }, 1500);
     });
   };
-  reader.readAsText(file, 'utf-8');
+  reader.readAsArrayBuffer(file);
 }
 
 // ====== 通用确认弹窗 ======
@@ -1518,30 +1554,55 @@ $(document).ready(function() {
     $(document).Toasts('create',{class:'bg-success',title:'全部保存',body:'12板块已全部设为已发布',autohide:true,delay:2000});
   });
 
-  // 公告管理
-  $(document).on('click','#btn-add-ann',function(){ $('#ann-form-title').text('新增公告'); $('#ann-edit-id').val('');$('#ann-title').val('');$('#ann-date').val('');$('#ann-cat').val('notice');$('#ann-dept').val('');$('#ann-content').val(''); $('#add-ann-form').slideDown(); });
+  $(document).on('click','#btn-add-ann',function(){
+    $('#ann-form-title').text('新增公告'); $('#ann-edit-id').val('');
+    $('#ann-title').val(''); $('#ann-date').val(''); $('#ann-cat').val('notice'); $('#ann-dept').val('');
+    $('#ann-content').val('');
+    $('#btn-save-ann').prop('disabled', false).html('<i class="fas fa-check mr-1"></i>提交');
+    $('#add-ann-form').slideDown();
+  });
+
   $(document).on('click','#btn-cancel-ann',function(){ $('#add-ann-form').slideUp(); });
+
   $(document).on('click','.btn-edit-ann',function(){
     var anns=JSON.parse(localStorage.getItem('hm_announcements')||'[]');
-    var a=anns.find(function(x){return x.id===$(this).data('id');}.bind(this))||anns.find(function(x){return x.id===parseInt($(this).data('id'));});
+    var $this=$(this);
+    var a=anns.find(function(x){return x.id===parseInt($this.data('id'));});
     if(!a) return;
     $('#ann-form-title').text('编辑公告 #'+a.id); $('#ann-edit-id').val(a.id);
     $('#ann-title').val(a.title); $('#ann-date').val(a.date); $('#ann-cat').val(a.category);
-    $('#ann-dept').val(a.dept); $('#ann-content').val(a.content||'');
+    $('#ann-dept').val(a.dept);
+    $('#ann-content').val(a.content || '');
+    $('#btn-save-ann').prop('disabled', false).html('<i class="fas fa-check mr-1"></i>提交');
     $('#add-ann-form').slideDown();
   });
-  $(document).on('click','#btn-save-ann',function(){
-    var anns=JSON.parse(localStorage.getItem('hm_announcements')||'[]');
-    var editId=$('#ann-edit-id').val();
-    if(editId){
-      anns=anns.map(function(a){ if(a.id===parseInt(editId)){ a.title=$('#ann-title').val(); a.date=$('#ann-date').val(); a.category=$('#ann-cat').val(); a.dept=$('#ann-dept').val(); a.content=$('#ann-content').val(); } return a; });
-    } else {
-      var maxId=0; anns.forEach(function(a){if(a.id>maxId)maxId=a.id;});
-      anns.push({id:maxId+1,title:$('#ann-title').val(),date:$('#ann-date').val(),category:$('#ann-cat').val(),dept:$('#ann-dept').val(),content:$('#ann-content').val(),published:true});
+
+  $(document).on('click','#btn-save-ann',function(e){
+    e.preventDefault();
+    var $btn = $(this);
+    if ($btn.prop('disabled')) return;
+    $btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin mr-1"></i>保存中…');
+    try {
+      var anns=JSON.parse(localStorage.getItem('hm_announcements')||'[]');
+      var editId=$('#ann-edit-id').val();
+      var annContent = $('#ann-content').val() || '';
+      console.log('[save-ann] editId='+editId+' contentLen='+annContent.length);
+
+      if(editId){
+        anns=anns.map(function(a){ if(a.id===parseInt(editId)){ a.title=$('#ann-title').val(); a.date=$('#ann-date').val(); a.category=$('#ann-cat').val(); a.dept=$('#ann-dept').val(); a.content=annContent; } return a; });
+      } else {
+        var maxId=0; anns.forEach(function(a){if(a.id>maxId)maxId=a.id;});
+        anns.push({id:maxId+1,title:$('#ann-title').val(),date:$('#ann-date').val(),category:$('#ann-cat').val(),dept:$('#ann-dept').val(),content:annContent,published:true});
+      }
+      localStorage.setItem('hm_announcements',JSON.stringify(anns));
+      console.log('[save-ann] saved, total='+anns.length);
+      navigateTo('announcements');
+      $(document).Toasts('create',{class:'bg-success',title:editId?'更新成功':'新增成功',body:'公告已保存',autohide:true,delay:2000});
+    } catch(err) {
+      console.error('[save-ann] ERROR:', err);
+      $btn.prop('disabled', false).html('<i class="fas fa-check mr-1"></i>提交');
+      $(document).Toasts('create',{class:'bg-danger',title:'保存失败',body:'保存公告时出错: '+err.message,autohide:true,delay:5000});
     }
-    localStorage.setItem('hm_announcements',JSON.stringify(anns));
-    navigateTo('announcements');
-    $(document).Toasts('create',{class:'bg-success',title:editId?'更新成功':'新增成功',body:'公告已保存',autohide:true,delay:2000});
   });
   $(document).on('click','.toggle-ann',function(){
     var id=$(this).data('id');
@@ -1590,6 +1651,13 @@ $(document).ready(function() {
   function initStaffAdmin() {
     // 读取最新数据
     var allContent = getContent();
+    // 确保 staff 数据结构存在
+    if (!allContent.staff) allContent.staff = {};
+    if (!Array.isArray(allContent.staff.profiles)) allContent.staff.profiles = [];
+    // 给老数据补上 employeeId（如果没有的话）
+    allContent.staff.profiles.forEach(function(p, i) {
+      if (!p.employeeId) p.employeeId = 'S' + String(i + 1).padStart(4, '0');
+    });
     staffAdminState.content = allContent;
     staffAdminState.page = 1;
     renderStaffTable();
@@ -1629,23 +1697,31 @@ $(document).ready(function() {
     var batch = filtered.slice(start, start + staffAdminState.pageSize);
 
     var h = '';
-    // 统计栏
+    // 统计栏 + 批量操作按钮
     h += '<div class="staff-admin-bar"><span class="text-muted">共 <b>' + total + '</b> 人';
     if (staffAdminState.search) h += '（搜索结果）';
     h += ' · 第 <b>' + page + '</b>/<b>' + totalPages + '</b> 页</span>';
-    h += '<button class="btn btn-xs btn-outline-success ml-3 btn-staff-add"><i class="fas fa-plus"></i> 新增职工</button></div>';
+    h += '<span class="float-right">';
+    h += '<button class="btn btn-xs btn-outline-danger ml-2 btn-staff-batch-del" disabled id="btn-staff-batch-del"><i class="fas fa-trash-alt"></i> 批量删除</button>';
+    h += '<button class="btn btn-xs btn-outline-warning ml-1 btn-staff-batch-edit" disabled id="btn-staff-batch-edit"><i class="fas fa-edit"></i> 批量改科室</button>';
+    h += '<button class="btn btn-xs btn-outline-success ml-2 btn-staff-add"><i class="fas fa-plus"></i> 新增职工</button>';
+    h += '</span></div>';
 
     // 表格
     h += '<div class="table-responsive"><table class="table table-sm table-hover staff-admin-table">';
-    h += '<thead><tr><th style="width:40px">#</th><th style="width:80px">姓名</th><th style="width:130px">职称</th><th style="width:130px">科室</th><th style="width:110px">职位</th><th>简介</th><th style="width:100px">照片</th><th style="width:120px">操作</th></tr></thead><tbody>';
+    h += '<thead><tr>';
+    h += '<th style="width:30px"><input type="checkbox" id="staff-select-all" title="全选/取消"></th>';
+    h += '<th style="width:40px">#</th><th style="width:80px">工号</th><th style="width:80px">姓名</th><th style="width:130px">职称</th><th style="width:130px">科室</th><th style="width:110px">职位</th><th>简介</th><th style="width:100px">照片</th><th style="width:120px">操作</th></tr></thead><tbody>';
 
     if (batch.length === 0) {
-      h += '<tr><td colspan="8" class="text-center text-muted py-4">暂无数据，点击「新增职工」或「导入」添加</td></tr>';
+      h += '<tr><td colspan="11" class="text-center text-muted py-4">暂无数据，点击「新增职工」或「导入」添加</td></tr>';
     } else {
       batch.forEach(function(p, i) {
-        var idx = start + i + 1;
+        var idx = start + i;
         h += '<tr>';
-        h += '<td>' + idx + '</td>';
+        h += '<td><input type="checkbox" class="staff-checkbox" data-idx="' + idx + '"></td>';
+        h += '<td>' + (idx + 1) + '</td>';
+        h += '<td><code>' + escHtml(p.employeeId || '-') + '</code></td>';
         h += '<td><b>' + escHtml(p.name || '-') + '</b></td>';
         h += '<td>' + escHtml(p.title || '-') + '</td>';
         h += '<td><span class="badge badge-light">' + escHtml(p.dept || '-') + '</span></td>';
@@ -1727,12 +1803,66 @@ $(document).ready(function() {
       renderStaffTable();
       $(document).Toasts('create', {class:'bg-warning', title:'已删除', body:'「' + p.name + '」已移除', autohide:true, delay:2000});
     });
+
+    // 全选/取消全选
+    $(document).off('change.staffSelectAll').on('change.staffSelectAll', '#staff-select-all', function() {
+      $('.staff-checkbox').prop('checked', this.checked).trigger('change');
+    });
+
+    // 单个复选框变化 → 更新批量按钮状态
+    $(document).off('change.staffCheckbox').on('change.staffCheckbox', '.staff-checkbox', function() {
+      var checked = $('.staff-checkbox:checked').length;
+      $('#btn-staff-batch-del, #btn-staff-batch-edit').prop('disabled', checked === 0);
+      // 更新全选复选框状态
+      var total = $('.staff-checkbox').length;
+      $('#staff-select-all').prop('checked', total > 0 && checked === total);
+    });
+
+    // 批量删除
+    $(document).off('click.staffBatchDel').on('click.staffBatchDel', '#btn-staff-batch-del', function() {
+      var checked = $('.staff-checkbox:checked');
+      if (checked.length === 0) return;
+      var names = [];
+      checked.each(function() { 
+        var idx = parseInt(this.getAttribute('data-idx'), 10);
+        var p = getStaffProfiles()[idx];
+        if (p) names.push(p.name);
+      });
+      if (!confirm('确定删除以下 ' + checked.length + ' 名职工吗？\n\n' + names.slice(0, 10).join('、') + (names.length > 10 ? '…等' + names.length + '人' : '') + '\n\n此操作不可恢复！')) return;
+      // 从后往前删除（避免索引错乱）
+      var indices = [];
+      checked.each(function() { indices.push(parseInt(this.getAttribute('data-idx'), 10)); });
+      indices.sort(function(a, b) { return b - a; });
+      var profiles = getStaffProfiles();
+      indices.forEach(function(idx) { profiles.splice(idx, 1); });
+      saveContent(staffAdminState.content);
+      renderStaffTable();
+      $(document).Toasts('create', {class:'bg-warning', title:'批量删除完成', body:'已删除 ' + checked.length + ' 名职工', autohide:true, delay:2000});
+    });
+
+    // 批量修改科室
+    $(document).off('click.staffBatchEdit').on('click.staffBatchEdit', '#btn-staff-batch-edit', function() {
+      var checked = $('.staff-checkbox:checked');
+      if (checked.length === 0) return;
+      var dept = prompt('请输入新的科室名称（将对选中的 ' + checked.length + ' 人统一修改）：');
+      if (!dept || !dept.trim()) return;
+      dept = dept.trim();
+      // 修改所有选中行
+      var profiles = getStaffProfiles();
+      checked.each(function() {
+        var idx = parseInt(this.getAttribute('data-idx'), 10);
+        if (profiles[idx]) profiles[idx].dept = dept;
+      });
+      saveContent(staffAdminState.content);
+      renderStaffTable();
+      $(document).Toasts('create', {class:'bg-success', title:'批量修改完成', body:'已将 ' + checked.length + ' 人的科室改为「' + dept + '」', autohide:true, delay:2000});
+    });
   }
 
   function openStaffEditor(idx) {
     var profiles = getStaffProfiles();
     var isNew = (idx < 0 || idx >= profiles.length);
-    var p = isNew ? {name:'',title:'',dept:'',position:'',desc:'',photo:''} : profiles[idx];
+    var p = isNew ? {employeeId:'',name:'',title:'',dept:'',position:'',desc:'',photo:''} : profiles[idx];
 
     var modalHtml = [
       '<div class="modal fade show" id="staffEditModal" style="display:block;background:rgba(0,0,0,0.5)" tabindex="-1">',
@@ -1740,6 +1870,7 @@ $(document).ready(function() {
       '<div class="modal-header bg-primary"><h5 class="modal-title"><i class="fas fa-user-edit mr-2"></i>' + (isNew ? '新增职工' : '编辑职工') + '</h5>',
       '<button type="button" class="close" id="btn-close-staff-edit">&times;</button></div>',
       '<div class="modal-body">',
+      '<div class="form-group"><label>工号 <span class="text-danger">*</span><small class="text-muted ml-2">唯一标识，不可重复</small></label><input class="form-control" id="se-employeeId" value="' + escHtml(p.employeeId || '') + '" placeholder="如：001"></div>',
       '<div class="form-group"><label>姓名 <span class="text-danger">*</span></label><input class="form-control" id="se-name" value="' + escHtml(p.name) + '"></div>',
       '<div class="form-group"><label>职称/称号</label><input class="form-control" id="se-title" value="' + escHtml(p.title) + '"></div>',
       '<div class="form-group"><label>科室</label><input class="form-control" id="se-dept" value="' + escHtml(p.dept) + '"></div>',
@@ -1758,10 +1889,16 @@ $(document).ready(function() {
     $('#btn-close-staff-edit, #btn-cancel-staff-edit').click(closeModal);
 
     $('#btn-save-staff-edit').click(function() {
+      var employeeId = $('#se-employeeId').val().trim();
       var name = $('#se-name').val().trim();
+      if (!employeeId) { alert('工号不能为空'); return; }
       if (!name) { alert('姓名不能为空'); return; }
+      // 工号唯一性检查（排除自己）
+      var dup = profiles.some(function(pr, i) { return pr.employeeId === employeeId && i !== idx; });
+      if (dup) { alert('工号「' + employeeId + '」已存在，请使用不同的工号'); return; }
       var newP = {
         id: p.id || ('s' + Date.now() + Math.random()),
+        employeeId: employeeId,
         name: name,
         title: $('#se-title').val().trim(),
         dept: $('#se-dept').val().trim(),
@@ -1775,8 +1912,8 @@ $(document).ready(function() {
       } else {
         profiles[idx] = newP;
       }
-      // 按姓名重排
-      profiles.sort(function(a, b) { return (a.name || '').localeCompare(b.name || '', 'zh'); });
+      // 按工号排序
+      profiles.sort(function(a, b) { return (a.employeeId || '').localeCompare(b.employeeId || ''); });
       saveContent(staffAdminState.content);
       closeModal();
       renderStaffTable();
@@ -1841,7 +1978,7 @@ $(document).ready(function() {
     var firstRow = parseCSVLine(lines[0]);
     var hasHeader = firstRow.some(function(cell) {
       var t = cell.trim();
-      return t === '姓名' || t === 'name' || t === '职称' || t === 'title' || t === '科室' || t === 'dept' || t === '职位' || t === 'position';
+      return t === '工号' || t === 'employeeId' || t === '姓名' || t === 'name' || t === '职称' || t === 'title' || t === '科室' || t === 'dept' || t === '职位' || t === 'position';
     });
 
     var startIdx = hasHeader ? 1 : 0;
@@ -1850,12 +1987,13 @@ $(document).ready(function() {
       var cols = parseCSVLine(lines[i]);
       if (cols.length < 1 || !cols[0].trim()) continue;
       result.push({
-        name: (cols[0] || '').trim(),
-        title: (cols[1] || '').trim(),
-        dept: (cols[2] || '').trim(),
-        position: (cols[3] || '').trim(),
-        desc: (cols[4] || '').trim(),
-        photo: (cols[5] || '').trim()
+        employeeId: (cols[0] || '').trim(),
+        name: (cols[1] || '').trim(),
+        title: (cols[2] || '').trim(),
+        dept: (cols[3] || '').trim(),
+        position: (cols[4] || '').trim(),
+        desc: (cols[5] || '').trim(),
+        photo: (cols[6] || '').trim()
       });
     }
     return result;
@@ -1900,13 +2038,13 @@ $(document).ready(function() {
       '<div class="modal-body">',
       '<div class="alert alert-info"><i class="fas fa-info-circle mr-2"></i>解析成功：<b>' + parsed.length + '</b> 条记录</div>',
       '<div class="table-responsive" style="max-height:360px;overflow:auto"><table class="table table-sm table-bordered">',
-      '<thead><tr><th>#</th><th>姓名</th><th>职称</th><th>科室</th><th>职位</th><th>简介</th><th>照片</th></tr></thead><tbody>'
+      '<thead><tr><th>#</th><th>工号</th><th>姓名</th><th>职称</th><th>科室</th><th>职位</th><th>简介</th><th>照片</th></tr></thead><tbody>'
     ];
     parsed.forEach(function(p, i) {
       if (i >= 200) return; // 预览最多200条
-      modalHtml.push('<tr><td>' + (i + 1) + '</td><td>' + escHtml(p.name) + '</td><td>' + escHtml(p.title) + '</td><td>' + escHtml(p.dept) + '</td><td>' + escHtml(p.position || '') + '</td><td style="font-size:12px">' + escHtml((p.desc || '').substring(0, 30)) + '</td><td>' + (p.photo ? '<span class="badge badge-success">有</span>' : '<span class="badge badge-secondary">-</span>') + '</td></tr>');
+      modalHtml.push('<tr><td>' + (i + 1) + '</td><td>' + escHtml(p.employeeId) + '</td><td>' + escHtml(p.name) + '</td><td>' + escHtml(p.title) + '</td><td>' + escHtml(p.dept) + '</td><td>' + escHtml(p.position || '') + '</td><td style="font-size:12px">' + escHtml((p.desc || '').substring(0, 30)) + '</td><td>' + (p.photo ? '<span class="badge badge-success">有</span>' : '<span class="badge badge-secondary">-</span>') + '</td></tr>');
     });
-    if (parsed.length > 200) modalHtml.push('<tr><td colspan="7" class="text-center text-muted">… 仅显示前 200 条，共 ' + parsed.length + ' 条</td></tr>');
+    if (parsed.length > 200) modalHtml.push('<tr><td colspan="8" class="text-center text-muted">… 仅显示前 200 条，共 ' + parsed.length + ' 条</td></tr>');
     modalHtml.push('</tbody></table></div></div>');
     modalHtml.push('<div class="modal-footer">');
     modalHtml.push('<button class="btn btn-secondary" id="btn-cancel-csv-import">取消</button>');
@@ -1922,23 +2060,27 @@ $(document).ready(function() {
       if (!allContent.staff) allContent.staff = {};
       if (!allContent.staff.profiles) allContent.staff.profiles = [];
 
-      var existingNames = {};
-      allContent.staff.profiles.forEach(function(p) { existingNames[p.name] = true; });
+      var existingIds = {};
+      allContent.staff.profiles.forEach(function(p) { if (p.employeeId) existingIds[p.employeeId] = true; });
 
       var added = 0, skipped = 0;
       parsed.forEach(function(p) {
-        if (existingNames[p.name]) { skipped++; return; }
+        // 工号去重：不允许重复工号
+        if (p.employeeId && existingIds[p.employeeId]) { skipped++; return; }
+        // 工号为空则跳过（工号必需）
+        if (!p.employeeId) { skipped++; return; }
         allContent.staff.profiles.push({
           id: 's' + Date.now() + Math.random(),
+          employeeId: p.employeeId,
           name: p.name, title: p.title, dept: p.dept,
           position: p.position, desc: p.desc, photo: p.photo || ''
         });
-        existingNames[p.name] = true;
+        existingIds[p.employeeId] = true;
         added++;
       });
 
-      // 按姓名排序
-      allContent.staff.profiles.sort(function(a, b) { return (a.name || '').localeCompare(b.name || '', 'zh'); });
+      // 按工号排序
+      allContent.staff.profiles.sort(function(a, b) { return (a.employeeId || '').localeCompare(b.employeeId || ''); });
       saveContent(allContent);
       closeModal();
       $(document).Toasts('create', {class:'bg-success', title:'CSV导入完成', body:'成功导入 ' + added + ' 条（跳过 ' + skipped + ' 条重复）', autohide:true, delay:3000});
@@ -2063,5 +2205,427 @@ $(document).ready(function() {
   }
 
   if(!$('.toasts-top-right').length) $('body').append('<div class="toasts-top-right fixed" style="position:fixed;top:70px;right:20px;z-index:9999"></div>');
+
+  // ====== 功能二：拖拽媒体上传系统 ======
+  var _mediaStore = {};  // { filename: base64data, ... }
+
+  function initMediaStore() {
+    try {
+      var raw = localStorage.getItem('hm_media_library');
+      if (raw) _mediaStore = JSON.parse(raw);
+      else _mediaStore = {};
+    } catch(e) { _mediaStore = {}; }
+  }
+
+  function saveMediaStore() {
+    try {
+      localStorage.setItem('hm_media_library', JSON.stringify(_mediaStore));
+    } catch(e) {
+      $(document).Toasts('create', {class:'bg-danger', title:'存储不足', body:'媒体库数据过大，请清理旧图片', autohide:true, delay:3000});
+    }
+  }
+
+  function updateMediaCount() {
+    var keys = Object.keys(_mediaStore);
+    $('#media-count').text(keys.length > 0 ? keys.length + ' 张图片' : '暂无图片');
+  }
+
+  function addMedia(filename, base64) {
+    _mediaStore[filename] = base64;
+    saveMediaStore();
+    updateMediaCount();
+  }
+
+  function deleteMedia(filename) {
+    delete _mediaStore[filename];
+    saveMediaStore();
+    updateMediaCount();
+  }
+
+  function getMediaList() {
+    return Object.keys(_mediaStore).map(function(k) {
+      return { name: k, data: _mediaStore[k] };
+    });
+  }
+
+  // 将图片文件转为 Base64
+  function fileToBase64(file, callback) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      callback(null, e.target.result, file.name);
+    };
+    reader.onerror = function() {
+      callback('文件读取失败: ' + file.name);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // 媒体上传处理
+  function handleMediaFiles(files) {
+    if (!files || !files.length) return;
+    var $status = $('#media-upload-status');
+    var total = files.length;
+    var done = 0;
+    $status.html('<span class="text-info"><i class="fas fa-spinner fa-spin mr-1"></i>正在上传 ' + total + ' 个文件…</span>');
+
+    for (var i = 0; i < files.length; i++) {
+      (function(file) {
+        if (!file.type.match(/^image\//)) {
+          done++;
+          $status.append('<div class="text-danger">跳过非图片文件: ' + file.name + '</div>');
+          if (done >= total) updateMediaCount();
+          return;
+        }
+        fileToBase64(file, function(err, base64, fname) {
+          done++;
+          if (err) {
+            $status.append('<div class="text-danger">' + err + '</div>');
+          } else {
+            addMedia(fname, base64);
+            $status.append('<div class="media-upload-item"><img class="thumb" src="' + base64 + '"><span class="url-input">data:image/… (Base64)</span><span class="copied-tip">已存储</span></div>');
+          }
+          if (done >= total) {
+            setTimeout(function() { updateMediaCount(); }, 300);
+            $(document).Toasts('create', {class:'bg-success', title:'上传完成', body:'成功存入 ' + (done - (files.length - total)) + ' 张图片到媒体库', autohide:true, delay:2500});
+          }
+        });
+      })(files[i]);
+    }
+  }
+
+  // 拖拽上传事件
+  $(document).on('dragover', '#media-drop-zone', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    $(this).addClass('drag-over');
+  });
+  $(document).on('dragleave', '#media-drop-zone', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    $(this).removeClass('drag-over');
+  });
+  $(document).on('drop', '#media-drop-zone', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    $(this).removeClass('drag-over');
+    handleMediaFiles(e.originalEvent.dataTransfer.files);
+  });
+  $(document).on('click', '#media-drop-zone', function() {
+    $('#media-file-input').click();
+  });
+  $(document).on('change', '#media-file-input', function() {
+    handleMediaFiles(this.files);
+    this.value = '';
+  });
+
+  // 浏览媒体库弹窗
+  $(document).on('click', '#btn-browse-media, #btn-open-media-library', function(e) {
+    e.preventDefault();
+    showMediaGallery();
+  });
+
+  function showMediaGallery(onSelect) {
+    var list = getMediaList();
+    var html = '';
+    if (list.length === 0) {
+      html = '<div class="text-center text-muted py-4"><i class="fas fa-images fa-2x mb-2"></i><p>媒体库为空</p><small>将图片拖入顶部「媒体库」面板开始使用</small></div>';
+    } else {
+      html = '<div class="media-gallery-grid">';
+      list.forEach(function(m) {
+        var itemOnClick = onSelect
+          ? ('window._mediaSelectCb(\'' + m.name.replace(/'/g,'\\\'') + '\')')
+          : ('copyMediaUrl(\'' + m.name.replace(/'/g,'\\\'') + '\')');
+        html += '<div class="media-gallery-item" onclick="' + itemOnClick + '">';
+        html += '<img src="' + m.data + '" alt="' + escHtml(m.name) + '">';
+        html += '<div class="media-name">' + escHtml(m.name) + '</div>';
+        if (!onSelect) {
+          html += '<button class="copy-btn" onclick="event.stopPropagation();copyMediaUrl(\'' + m.name.replace(/'/g,'\\\'') + '\')"><i class="fas fa-copy"></i> 复制</button>';
+        } else {
+          html += '<button class="select-btn" onclick="event.stopPropagation();window._mediaSelectCb(\'' + m.name.replace(/'/g,'\\\'') + '\')"><i class="fas fa-check"></i> 选择</button>';
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    var modal = [
+      '<div class="modal fade show" id="mediaGalleryModal" style="display:block;background:rgba(0,0,0,0.5)" tabindex="-1">',
+      '<div class="modal-dialog modal-lg"><div class="modal-content">',
+      '<div class="modal-header bg-primary"><h5 class="modal-title"><i class="fas fa-images mr-2"></i>媒体库（' + list.length + ' 张）</h5>',
+      '<button type="button" class="close" id="btn-close-media-gallery">&times;</button></div>',
+      '<div class="modal-body">',
+      '<div class="alert alert-info"><i class="fas fa-info-circle mr-2"></i>点击图片复制 Base64 URL，可粘贴到任意图片URL输入框中</div>',
+      html,
+      '</div>',
+      '<div class="modal-footer">',
+      '<button class="btn btn-outline-danger" id="btn-clear-media"><i class="fas fa-trash-alt mr-1"></i>清空媒体库</button>',
+      '<button class="btn btn-secondary" id="btn-close-media-gallery-btn">关闭</button>',
+      '</div></div></div></div>'
+    ].join('');
+    $('body').append(modal);
+
+    // ===== 上传区域 =====
+    $('#mediaGalleryModal .modal-body').prepend(
+      '<div id="media-upload-area" class="media-drop-zone mb-3">' +
+      '<i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i>' +
+      '<p class="mb-1 text-muted">拖拽图片到此处或点击选择</p>' +
+      '<small class="text-muted">自动转为 Base64 存入媒体库</small>' +
+      '<input type="file" id="media-gallery-file-input" accept="image/*" multiple style="display:none">' +
+      '</div>' +
+      '<div id="media-upload-progress" class="mb-2" style="font-size:12px"></div>'
+    );
+
+    function doUpload(files) {
+      if (!files || !files.length) return;
+      var $prog = $('#media-upload-progress');
+      $prog.html('<span class="text-info"><i class="fas fa-spinner fa-spin mr-1"></i>上传中…</span>');
+      var done = 0;
+      for (var i = 0; i < files.length; i++) {
+        (function(file) {
+          if (!file.type.match(/^image\//)) { done++; return; }
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            addMedia(file.name, e.target.result);
+            done++;
+            if (done >= files.length) {
+              $prog.html('<span class="text-success"><i class="fas fa-check mr-1"></i>上传完成！</span>');
+              setTimeout(function() { $prog.empty(); }, 2000);
+              $('#mediaGalleryModal').remove();
+              showMediaGallery(onSelect);
+            }
+          };
+          reader.onerror = function() { done++; };
+          reader.readAsDataURL(file);
+        })(files[i]);
+      }
+    }
+
+    $('#media-upload-area').off('click').on('click', function() { $('#media-gallery-file-input').click(); });
+    $('#media-gallery-file-input').off('change').on('change', function() { doUpload(this.files); this.value = ''; });
+    $('#media-upload-area').off('dragover').on('dragover', function(e) { e.preventDefault(); e.stopPropagation(); $(this).addClass('drag-over'); });
+    $('#media-upload-area').off('dragleave').on('dragleave', function(e) { e.preventDefault(); e.stopPropagation(); $(this).removeClass('drag-over'); });
+    $('#media-upload-area').off('drop').on('drop', function(e) { e.preventDefault(); e.stopPropagation(); $(this).removeClass('drag-over'); doUpload(e.originalEvent.dataTransfer.files); });
+
+    if (onSelect) {
+      window._mediaSelectCb = function(filename) {
+        var data = _mediaStore[filename];
+        if (data && onSelect) onSelect(data);
+        $('#mediaGalleryModal').remove();
+      };
+    }
+
+    function closeModal() { $('#mediaGalleryModal').remove(); }
+    $('#btn-close-media-gallery, #btn-close-media-gallery-btn').click(closeModal);
+
+    $('#btn-clear-media').click(function() {
+      if (!confirm('确定清空所有媒体库图片吗？此操作不可恢复！')) return;
+      _mediaStore = {};
+      saveMediaStore();
+      closeModal();
+      updateMediaCount();
+      $(document).Toasts('create', {class:'bg-warning', title:'已清空', body:'媒体库已清空', autohide:true, delay:2000});
+    });
+  }
+
+  // 全局函数：复制媒体 URL 到剪贴板
+  window.copyMediaUrl = function(filename) {
+    var data = _mediaStore[filename];
+    if (!data) return;
+    // 复制到剪贴板
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(data).then(function() {
+        $(document).Toasts('create', {class:'bg-success', title:'已复制', body:'图片URL已复制到剪贴板，可粘贴到任意图片URL输入框', autohide:true, delay:2000});
+      });
+    } else {
+      // 降级方案
+      var textarea = document.createElement('textarea');
+      textarea.value = data;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      $(document).Toasts('create', {class:'bg-success', title:'已复制', body:'图片URL已复制到剪贴板', autohide:true, delay:2000});
+    }
+  };
+
+  // 全局函数：从媒体库选择图片（按钮点击）
+  window.openMediaPickerFor = function(btn) {
+    var targetSelector = $(btn).data('target');
+    var $target = $(btn).closest('.block-item-editor, .gallery-row, .profile-row-editor, .leader-item-editor').find(targetSelector);
+    var list = getMediaList();
+    if (list.length === 0) {
+      alert('媒体库为空，请先将图片拖入顶部「媒体库」面板');
+      return;
+    }
+    var optionsHtml = list.map(function(m) {
+      return '<option value="' + escHtml(m.data) + '">' + escHtml(m.name) + '</option>';
+    }).join('');
+    var modalHtml = [
+      '<div class="modal fade show" id="mediaPickerModal" style="display:block;background:rgba(0,0,0,0.5)" tabindex="-1">',
+      '<div class="modal-dialog"><div class="modal-content">',
+      '<div class="modal-header bg-info"><h5 class="modal-title"><i class="fas fa-image mr-2"></i>选择图片</h5><button type="button" class="close" id="btn-close-picker">&times;</button></div>',
+      '<div class="modal-body">',
+      '<select class="form-control" id="media-picker-select" size="8">' + optionsHtml + '</select>',
+      '<div class="mt-2 text-center"><img id="media-picker-preview" style="max-height:120px;max-width:100%;border-radius:6px;display:none"></div>',
+      '</div>',
+      '<div class="modal-footer">',
+      '<button class="btn btn-secondary" id="btn-cancel-picker">取消</button>',
+      '<button class="btn btn-primary" id="btn-confirm-picker"><i class="fas fa-check mr-1"></i>选择此图片</button>',
+      '</div></div></div></div>'
+    ].join('');
+    $('body').append(modalHtml);
+
+    function closePicker() { $('#mediaPickerModal').remove(); }
+    $('#btn-close-picker, #btn-cancel-picker').click(closePicker);
+
+    $('#media-picker-select').on('change', function() {
+      var val = $(this).val();
+      if (val) { $('#media-picker-preview').attr('src', val).show(); }
+      else { $('#media-picker-preview').hide(); }
+    }).trigger('change');
+
+    $('#btn-confirm-picker').click(function() {
+      var val = $('#media-picker-select').val();
+      if (val && $target.length) {
+        $target.val(val);
+        $(document).Toasts('create', {class:'bg-success', title:'已插入', body:'图片URL已填入输入框', autohide:true, delay:1500});
+      }
+      closePicker();
+    });
+  };
+
+  // ====== 功能三：审核发布工作流 ======
+  window.updateSidebarBadges = function() {
+    var sd = JSON.parse(localStorage.getItem('hm_admin_sections') || '{}');
+    $('.sidebar-status-badge').each(function() {
+      var sectionId = $(this).data('section');
+      var info = sd[sectionId] || { status: 'draft' };
+      $(this).removeClass('status-published status-draft status-review')
+             .addClass('status-' + info.status)
+             .attr('title', info.status === 'published' ? '已发布' : (info.status === 'review' ? '审核中' : '草稿'));
+    });
+  }
+
+  function renderWorkflowDashboard() {
+    var sd = JSON.parse(localStorage.getItem('hm_admin_sections') || '{}');
+    var content = getContent();
+    var published = 0, draft = 0, review = 0;
+
+    var html = '<div class="container-fluid">';
+    // 统计概览
+    html += '<div class="workflow-stats">';
+    html += '<div class="workflow-stat-item published"><div class="count" id="wf-pub-count">0</div><div class="label">已发布</div></div>';
+    html += '<div class="workflow-stat-item draft"><div class="count" id="wf-draft-count">0</div><div class="label">草稿</div></div>';
+    html += '<div class="workflow-stat-item review"><div class="count" id="wf-review-count">0</div><div class="label">审核中</div></div>';
+    html += '</div>';
+
+    html += '<div class="card card-primary card-outline"><div class="card-header">';
+    html += '<h3 class="card-title"><i class="fas fa-tasks mr-2"></i>审核发布工作流</h3>';
+    html += '<div class="card-tools">';
+    html += '<button class="btn btn-xs btn-outline-success ml-1" id="btn-wf-publish-all"><i class="fas fa-check-double mr-1"></i>全部发布</button>';
+    html += '<button class="btn btn-xs btn-outline-warning ml-1" id="btn-wf-draft-all"><i class="fas fa-undo mr-1"></i>全部退回草稿</button>';
+    html += '</div></div>';
+
+    html += '<div class="card-body p-0"><div class="table-responsive"><table class="table table-hover workflow-table mb-0">';
+    html += '<thead><tr><th>序号</th><th>板块</th><th>状态</th><th>内容条目</th><th>最后更新</th><th>快速切换</th></tr></thead><tbody>';
+
+    SECTIONS.forEach(function(s, i) {
+      var info = sd[s.id] || { title: s.name, status: 'draft', updatedAt: '-', notes: '' };
+      var statusText = info.status === 'published' ? '已发布' : (info.status === 'review' ? '审核中' : '草稿');
+      var statusClass = info.status === 'published' ? 'status-published' : (info.status === 'review' ? 'status-review' : 'status-draft');
+      if (info.status === 'published') published++;
+      else if (info.status === 'review') review++;
+      else draft++;
+
+      var itemCount = 0;
+      var c = content[s.id] || {};
+      ['leaders','profiles','profiles2','timeline','blocks','gallery','dataCards'].forEach(function(t) {
+        if (Array.isArray(c[t])) itemCount += c[t].length;
+      });
+
+      html += '<tr>';
+      html += '<td>' + pad2(i + 1) + '</td>';
+      html += '<td><i class="' + s.icon + '" style="color:' + s.color + ';margin-right:8px"></i><strong>' + s.name + '</strong></td>';
+      html += '<td><span class="status-badge ' + statusClass + '" id="wf-status-' + s.id + '">' + statusText + '</span></td>';
+      html += '<td>' + itemCount + ' 条</td>';
+      html += '<td>' + (info.updatedAt || '-') + '</td>';
+      html += '<td>';
+      html += '<button class="btn-workflow-action act-publish btn-set-status" data-section="' + s.id + '" data-status="published"><i class="fas fa-check mr-1"></i>发布</button>';
+      html += '<button class="btn-workflow-action act-review btn-set-status" data-section="' + s.id + '" data-status="review"><i class="fas fa-clock mr-1"></i>审核中</button>';
+      html += '<button class="btn-workflow-action act-draft btn-set-status" data-section="' + s.id + '" data-status="draft"><i class="fas fa-pencil-alt mr-1"></i>退回</button>';
+      html += '</td></tr>';
+    });
+
+    html += '</tbody></table></div></div></div>';
+    html += '</div>';
+
+    // 注入动态数据
+    setTimeout(function() {
+      $('#wf-pub-count').text(published);
+      $('#wf-draft-count').text(draft);
+      $('#wf-review-count').text(review);
+    }, 50);
+
+    return html;
+  }
+
+  // 设置板块状态
+  function setSectionStatus(sectionId, status) {
+    var sd = JSON.parse(localStorage.getItem('hm_admin_sections') || '{}');
+    if (!sd[sectionId]) sd[sectionId] = { title: sectionId, status: status, updatedAt: new Date().toISOString().split('T')[0], notes: '' };
+    else {
+      sd[sectionId].status = status;
+      sd[sectionId].updatedAt = new Date().toISOString().split('T')[0];
+    }
+    localStorage.setItem('hm_admin_sections', JSON.stringify(sd));
+    updateSidebarBadges();
+  }
+
+  // 按钮事件：设置状态
+  $(document).on('click', '.btn-set-status', function() {
+    var sectionId = $(this).data('section');
+    var status = $(this).data('status');
+    setSectionStatus(sectionId, status);
+    // 刷新当前视图
+    var statusText = status === 'published' ? '已发布' : (status === 'review' ? '审核中' : '草稿');
+    var statusClass = status === 'published' ? 'status-published' : (status === 'review' ? 'status-review' : 'status-draft');
+    $('#wf-status-' + sectionId).text(statusText).removeClass().addClass('status-badge ' + statusClass);
+    // 同步更新板块编辑器内的状态标签
+    if (currentSection && currentSection.id === sectionId) {
+      var fullText = status === 'published' ? '已发布·前台可见' : (status === 'review' ? '审核中·内部预览' : '草稿·前台隐藏');
+      $('#info-status').text(fullText).removeClass().addClass('status-badge ' + statusClass);
+    }
+    $(document).Toasts('create', {class:'bg-success', title:'状态已更新', body:'板块已设为 "' + statusText + '"', autohide:true, delay:1500});
+  });
+
+  // 全部发布
+  $(document).on('click', '#btn-wf-publish-all', function() {
+    if (!confirm('确认将所有板块设为「已发布」？')) return;
+    SECTIONS.forEach(function(s) { setSectionStatus(s.id, 'published'); });
+    navigateTo('dashboard');
+    $(document).Toasts('create', {class:'bg-success', title:'全部发布', body:'所有板块已设为已发布', autohide:true, delay:2000});
+  });
+
+  // 全部退回草稿
+  $(document).on('click', '#btn-wf-draft-all', function() {
+    if (!confirm('确认将所有板块退回「草稿」状态？前台将隐藏这些内容。')) return;
+    SECTIONS.forEach(function(s) { setSectionStatus(s.id, 'draft'); });
+    navigateTo('dashboard');
+    $(document).Toasts('create', {class:'bg-warning', title:'全部退回', body:'所有板块已退回草稿状态', autohide:true, delay:2000});
+  });
+
+  // 审核工作流面板入口
+  $(document).on('click', '#btn-workflow-dashboard', function(e) {
+    e.preventDefault();
+    $('#main-content').html(renderWorkflowDashboard());
+    $('#page-title').text('审核发布工作流');
+    $('#breadcrumb').html('<li class="breadcrumb-item"><a href="#" data-nav="dashboard">控制台</a></li><li class="breadcrumb-item active">审核工作流</li>');
+    $('#breadcrumb a[data-nav]').click(function(e2){ e2.preventDefault(); navigateTo($(this).data('nav')); });
+    updateSidebarBadges();
+  });
+
+  // 初始化媒体库
+  initMediaStore();
+  updateMediaCount();
+  // 初始化侧边栏徽章
+  setTimeout(updateSidebarBadges, 200);
+
   navigateTo('dashboard');
 });

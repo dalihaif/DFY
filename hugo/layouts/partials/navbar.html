@@ -1,0 +1,37 @@
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="container">
+    <a href="{{ "/" | relURL }}" class="nav-logo">
+      <img src="/assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="nav-logo-img">
+    </a>
+    <button class="nav-toggle" aria-label="菜单" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      {{ $sections := slice 
+        (dict "url" "/history/" "label" "历史<br>沿革")
+        (dict "url" "/people/" "label" "人物<br>风采")
+        (dict "url" "/disciplines/" "label" "学科<br>建设")
+        (dict "url" "/campus/" "label" "院区<br>建设")
+        (dict "url" "/education/" "label" "教学<br>人才")
+        (dict "url" "/culture/" "label" "文化<br>建设")
+        (dict "url" "/tech/" "label" "科技<br>交流")
+        (dict "url" "/duty/" "label" "责任<br>担当")
+        (dict "url" "/honors/" "label" "荣誉<br>殿堂")
+        (dict "url" "/vision/" "label" "展望<br>未来")
+        (dict "url" "/structure/" "label" "组织<br>架构")
+        (dict "url" "/leadership/" "label" "领导<br>团队")
+        (dict "url" "/staff/" "label" "职工<br>名录")
+      }}
+      {{ range $sections }}
+      <li><a href="{{ .url }}">{{ .label | safeHTML }}</a></li>
+      {{ end }}
+    </ul>
+    <div class="nav-actions">
+      <a href="#announcements" class="btn-announce">📢 公告</a>
+      <a href="{{ .Site.Params.officialUrl }}" class="btn-official" target="_blank" rel="noopener">🌐 官网</a>
+      <button class="btn-theme" onclick="toggleTheme()" title="切换主题">☀️</button>
+      <a href="/history/" class="btn-tour">云端参观</a>
+    </div>
+  </div>
+</nav>

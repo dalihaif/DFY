@@ -1,0 +1,132 @@
+{{/*
+  museum_section shortcode - renders a complete museum section from data/museum.json
+  Usage: {{< museum_section id="history" >}}
+*/}}
+{{ $id := .Get "id" }}
+{{ $data := index hugo.Data.museum.content $id }}
+
+<!-- Hero Section -->
+{{ if $data.hero }}
+<section class="page-hero">
+  <img class="page-hero-bg" src="{{ $data.hero.bgImage }}" alt="{{ $data.hero.title }}" onerror="this.style.display='none'">
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <div class="page-hero-num">{{ $data.hero.num }}</div>
+    <h1 class="page-hero-title">{{ $data.hero.title }}</h1>
+    <p class="page-hero-subtitle">{{ $data.hero.subtitle }}</p>
+    <p class="page-hero-desc">{{ $data.hero.desc }}</p>
+  </div>
+</section>
+{{ end }}
+
+<div class="container section-content">
+
+  <!-- Stats / Data Cards -->
+  {{ if $data.dataCards }}
+  <div class="data-cards-row">
+    {{ range $data.dataCards }}
+    <div class="data-card">
+      <div class="data-card-value">{{ .value }}</div>
+      <div class="data-card-label">{{ .label }}</div>
+      {{ if .note }}<div class="data-card-note">{{ .note }}</div>{{ end }}
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  <!-- Blocks -->
+  {{ if $data.blocks }}
+  {{ range $data.blocks }}
+  <div class="content-block">
+    <div class="block-header">
+      <div class="block-num">{{ .num }}</div>
+      <h2 class="block-title">{{ .title }}</h2>
+      <p class="block-sub">{{ .subtitle }}</p>
+    </div>
+    <div class="block-body">
+      {{ if .text }}
+      <div class="content-text">
+        {{ if .imgIcon }}<span class="img-icon">{{ .imgIcon }}</span>{{ end }}
+        <div class="text-html">{{ .text | safeHTML }}</div>
+        {{ if .imgUrl }}<a href="{{ .imgUrl }}" data-lightbox="{{ $id }}"><img src="{{ .imgUrl }}" alt="{{ .imgLabel }}" class="block-img" loading="lazy"></a>{{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+  {{ end }}
+
+  <!-- Timeline -->
+  {{ if $data.timeline }}
+  <div class="timeline">
+    {{ range $data.timeline }}
+    <div class="timeline-item">
+      <div class="timeline-dot">{{ .dot }}</div>
+      <div class="timeline-content">
+        <div class="timeline-year">{{ .year }}</div>
+        <h3 class="timeline-title">{{ .title }}</h3>
+        <p class="timeline-desc">{{ .desc }}</p>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  <!-- Leaders (人物风采) -->
+  {{ if $data.leaders }}
+  <div class="leader-grid">
+    {{ range $data.leaders }}
+    <div class="leader-card">
+      <div class="leader-photo">
+        {{ if .photo }}<img src="{{ .photo }}" alt="{{ .name }}">{{ else }}<div class="leader-avatar">{{ slicestr .name 0 1 }}</div>{{ end }}
+      </div>
+      <div class="leader-info">
+        <h3 class="leader-name">{{ .name }}</h3>
+        <p class="leader-position">{{ .position }}</p>
+        {{ if .years }}<p class="leader-years">{{ .years }}</p>{{ end }}
+        {{ if .era }}<span class="leader-era">{{ .era }}</span>{{ end }}
+        {{ if .desc }}<p class="leader-desc">{{ .desc }}</p>{{ end }}
+        {{ if .duty }}<p class="leader-duty">{{ .duty }}</p>{{ end }}
+        {{ if .resume }}<p class="leader-resume">{{ .resume }}</p>{{ end }}
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  <!-- Profiles -->
+  {{ if $data.profiles }}
+  <div class="profile-grid">
+    {{ range $data.profiles }}
+    <div class="profile-card">
+      {{ if .photo }}<div class="profile-photo"><img src="{{ .photo }}" alt="{{ .name }}"></div>{{ end }}
+      <div class="profile-info">
+        <h3 class="profile-name">{{ .name }}</h3>
+        <p class="profile-title">{{ .title }}</p>
+        <p class="profile-dept">{{ .dept }}</p>
+        {{ if .desc }}<p class="profile-desc">{{ .desc }}</p>{{ end }}
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+
+  <!-- Gallery -->
+  {{ if $data.gallery }}
+  <div class="gallery-grid">
+    {{ range $data.gallery }}
+    <div class="gallery-item">
+      {{ if .url }}
+      <a href="{{ .url }}" data-lightbox="{{ $id }}">
+        <img src="{{ .url }}" alt="{{ .label }}" loading="lazy">
+      </a>
+      {{ else }}
+      <div class="gallery-placeholder">{{ .icon }}</div>
+      {{ end }}
+      <div class="gallery-label">{{ .label | safeHTML }}</div>
+    </div>
+    {{ end }}
+  </div>
+  {{ end }}
+
+</div>

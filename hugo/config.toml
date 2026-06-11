@@ -1,0 +1,25 @@
+baseURL = "https://museum.dfy.dali.edu.cn"
+locale = "zh-CN"
+title = "云端院史馆"
+# Theme integrated directly (layouts/ in project root)
+
+[params]
+  subtitle = "大理大学第一附属医院"
+  foundedYear = 1991
+  officialUrl = "https://www.dfy.dali.edu.cn"
+  contactEmail = ""
+  contactPhone = ""
+
+[params.author]
+  name = "大理大学第一附属医院"
+
+[permalinks]
+  page = "/:slug/"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  page = ["HTML"]
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"

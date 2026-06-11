@@ -532,3 +532,233 @@
 }
 .content-stat-item .stat-value { font-size: 20px; font-weight: 700; color: var(--admin-primary); }
 .content-stat-item .stat-label { font-size: 11px; color: var(--admin-text-muted); }
+
+/* ========================================
+   功能二：拖拽媒体上传样式
+   ======================================== */
+.media-drop-zone {
+  border: 2px dashed #c0c4cc;
+  border-radius: 10px;
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  background: #fafbfc;
+}
+.media-drop-zone:hover,
+.media-drop-zone.drag-over {
+  border-color: var(--admin-accent);
+  background: #fff9e6;
+  box-shadow: 0 0 0 3px rgba(212,168,83,0.1);
+}
+.media-drop-zone p { margin: 4px 0; }
+.media-drop-zone small { display: block; }
+
+.media-upload-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+  border-bottom: 1px dotted #e5e7eb;
+}
+.media-upload-item .thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+.media-upload-item .url-input {
+  flex: 1;
+  font-size: 11px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 2px 6px;
+  cursor: text;
+  word-break: break-all;
+}
+.media-upload-item .copied-tip {
+  color: #27ae60;
+  font-size: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* 媒体库浏览弹窗 */
+.media-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+.media-gallery-item {
+  position: relative;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.media-gallery-item:hover { border-color: var(--admin-accent); }
+.media-gallery-item img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  display: block;
+}
+.media-gallery-item .media-name {
+  font-size: 10px;
+  padding: 3px 4px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.media-gallery-item .copy-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 11px;
+  padding: 2px 6px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.media-gallery-item:hover .copy-btn { opacity: 1; }
+
+/* 图片插入按钮 - 在 URL 输入框旁边的快捷按钮 */
+.btn-img-picker {
+  cursor: pointer;
+  border: 1px dashed #ccc;
+  background: #f9f9f9;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  color: #666;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-img-picker:hover {
+  border-color: var(--admin-accent);
+  color: var(--admin-accent);
+  background: #fff9e6;
+}
+
+/* ========================================
+   功能三：审核发布工作流样式
+   ======================================== */
+/* 侧边栏状态徽章 */
+.sidebar-status-badge {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: middle;
+  transition: background 0.3s;
+}
+.sidebar-status-badge.status-published { background: #27ae60; }
+.sidebar-status-badge.status-draft { background: #f39c12; }
+.sidebar-status-badge.status-review { background: #3498db; }
+
+/* 审核工作流面板 */
+.workflow-table td {
+  vertical-align: middle;
+}
+.workflow-table .status-select {
+  width: 110px;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* 状态标签增强 */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: default;
+  transition: all 0.2s;
+}
+.status-published { background: #e8f8f0; color: #27ae60; }
+.status-draft { background: #fef3e2; color: #e67e22; }
+.status-review { background: #e8f4fd; color: #2980b9; }
+
+/* 顶部快捷状态切换 */
+.workflow-quick-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid;
+}
+.workflow-quick-toggle.draft {
+  background: #fef3e2;
+  border-color: #f39c12;
+  color: #e67e22;
+}
+.workflow-quick-toggle.published {
+  background: #e8f8f0;
+  border-color: #27ae60;
+  color: #27ae60;
+}
+.workflow-quick-toggle.review {
+  background: #e8f4fd;
+  border-color: #3498db;
+  color: #2980b9;
+}
+.workflow-quick-toggle:hover {
+  filter: brightness(0.95);
+  transform: scale(1.03);
+}
+
+/* 工作流面板：统计图表 */
+.workflow-stats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.workflow-stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 12px 8px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+}
+.workflow-stat-item .count { font-size: 28px; font-weight: 700; }
+.workflow-stat-item .label { font-size: 11px; color: #7f8c8d; margin-top: 2px; }
+.workflow-stat-item.published .count { color: #27ae60; }
+.workflow-stat-item.draft .count { color: #e67e22; }
+.workflow-stat-item.review .count { color: #2980b9; }
+
+/* 工作流列表操作按钮 */
+.btn-workflow-action {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0 2px;
+}
+.btn-workflow-action:hover { border-color: var(--admin-accent); }
+.btn-workflow-action.act-publish:hover { background: #e8f8f0; color: #27ae60; border-color: #27ae60; }
+.btn-workflow-action.act-draft:hover { background: #fef3e2; color: #e67e22; border-color: #e67e22; }
+.btn-workflow-action.act-review:hover { background: #e8f4fd; color: #2980b9; border-color: #2980b9; }

@@ -1,0 +1,18 @@
+<script src="/js/main.js"></script>
+<script>
+// Theme toggle
+(function(){
+  var THEME_KEY = 'museum-theme';
+  var html = document.documentElement;
+  function getTheme() { return localStorage.getItem(THEME_KEY) || 'dark'; }
+  function applyTheme(t) {
+    html.setAttribute('data-theme', t);
+    var btn = document.querySelector('.btn-theme');
+    if (btn) btn.textContent = t === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem(THEME_KEY, t);
+  }
+  window.toggleTheme = function() { applyTheme(getTheme() === 'dark' ? 'light' : 'dark'); };
+  window.toggleMenu = function() { document.getElementById('navMenu').classList.toggle('active'); };
+  applyTheme(getTheme());
+})();
+</script>

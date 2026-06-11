@@ -30,10 +30,18 @@
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
+        <a class="nav-link" href="#" id="btn-open-media-library" title="媒体库管理">
+          <i class="fas fa-cloud-upload-alt text-info mr-1"></i>媒体库
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link text-success" href="#" id="btn-quick-export" title="导出所有数据为data.js"><i class="fas fa-download mr-1"></i>导出数据</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#" id="btn-save-all"><i class="fas fa-save mr-1"></i>全部保存</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="btn-workflow-dashboard" title="审核发布工作流"><i class="fas fa-tasks mr-1"></i>审核工作流</a>
       </li>
       <li class="nav-item">
         <span class="nav-link text-muted"><i class="fas fa-user-circle mr-1"></i>管理员</span>
@@ -56,21 +64,21 @@
             </a>
           </li>
           <li class="nav-header text-uppercase">网站首页</li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="index"><i class="nav-icon fas fa-home"></i><p>首页内容</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="index"><i class="nav-icon fas fa-home"></i><p>首页内容 <span class="sidebar-status-badge" data-section="index"></span></p></a></li>
           <li class="nav-header text-uppercase">板块管理</li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="history"><i class="nav-icon fas fa-history"></i><p>01 历史沿革</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="people"><i class="nav-icon fas fa-users"></i><p>02 人物风采</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="disciplines"><i class="nav-icon fas fa-microscope"></i><p>03 学科建设</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="campus"><i class="nav-icon fas fa-building"></i><p>04 院区建设</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="education"><i class="nav-icon fas fa-graduation-cap"></i><p>05 教学人才</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="culture"><i class="nav-icon fas fa-heart"></i><p>06 文化建设</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="tech"><i class="nav-icon fas fa-robot"></i><p>07 科技交流</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="duty"><i class="nav-icon fas fa-shield-alt"></i><p>08 责任担当</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="honors"><i class="nav-icon fas fa-trophy"></i><p>09 荣誉殿堂</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="vision"><i class="nav-icon fas fa-eye"></i><p>10 展望未来</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="structure"><i class="nav-icon fas fa-sitemap"></i><p>11 组织架构</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="leadership"><i class="nav-icon fas fa-user-tie"></i><p>12 领导团队</p></a></li>
-          <li class="nav-item"><a href="#" class="nav-link" data-page="staff"><i class="nav-icon fas fa-address-book"></i><p>13 职工名录</p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="history"><i class="nav-icon fas fa-history"></i><p>01 历史沿革 <span class="sidebar-status-badge" data-section="history"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="people"><i class="nav-icon fas fa-users"></i><p>02 人物风采 <span class="sidebar-status-badge" data-section="people"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="disciplines"><i class="nav-icon fas fa-microscope"></i><p>03 学科建设 <span class="sidebar-status-badge" data-section="disciplines"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="campus"><i class="nav-icon fas fa-building"></i><p>04 院区建设 <span class="sidebar-status-badge" data-section="campus"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="education"><i class="nav-icon fas fa-graduation-cap"></i><p>05 教学人才 <span class="sidebar-status-badge" data-section="education"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="culture"><i class="nav-icon fas fa-heart"></i><p>06 文化建设 <span class="sidebar-status-badge" data-section="culture"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="tech"><i class="nav-icon fas fa-robot"></i><p>07 科技交流 <span class="sidebar-status-badge" data-section="tech"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="duty"><i class="nav-icon fas fa-shield-alt"></i><p>08 责任担当 <span class="sidebar-status-badge" data-section="duty"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="honors"><i class="nav-icon fas fa-trophy"></i><p>09 荣誉殿堂 <span class="sidebar-status-badge" data-section="honors"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="vision"><i class="nav-icon fas fa-eye"></i><p>10 展望未来 <span class="sidebar-status-badge" data-section="vision"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="structure"><i class="nav-icon fas fa-sitemap"></i><p>11 组织架构 <span class="sidebar-status-badge" data-section="structure"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="leadership"><i class="nav-icon fas fa-user-tie"></i><p>12 领导团队 <span class="sidebar-status-badge" data-section="leadership"></span></p></a></li>
+          <li class="nav-item"><a href="#" class="nav-link" data-page="staff"><i class="nav-icon fas fa-address-book"></i><p>13 职工名录 <span class="sidebar-status-badge" data-section="staff"></span></p></a></li>
           <li class="nav-header text-uppercase">系统</li>
           <li class="nav-item"><a href="#" class="nav-link" data-page="announcements"><i class="nav-icon fas fa-bullhorn"></i><p>公告管理</p></a></li>
           <li class="nav-item"><a href="#" class="nav-link" data-page="data-manager"><i class="nav-icon fas fa-database"></i><p>数据管理</p></a></li>
@@ -97,14 +105,13 @@
     </div>
     <!-- 内容 -->
     <section class="content" id="main-content">
-      <!-- 动态加载内容 -->
       <div class="text-center py-5"><i class="fas fa-spinner fa-spin fa-2x text-muted"></i></div>
     </section>
   </div>
 
   <!-- ===== 页脚 ===== -->
   <footer class="main-footer">
-    <strong>云端院史馆 v1.0</strong> &mdash; 大理大学第一附属医院 | <a href="https://www.dfy.dali.edu.cn" target="_blank">医院官网</a>
+    <strong>云端院史馆 v2.0</strong> &mdash; 大理大学第一附属医院 | <a href="https://www.dfy.dali.edu.cn" target="_blank">医院官网</a>
   </footer>
 </div>
 
