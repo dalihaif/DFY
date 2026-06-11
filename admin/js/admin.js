@@ -9,7 +9,7 @@ var SECTIONS = [
   { id:'index',       name:'网站首页', icon:'fas fa-home',          color:'#1a73e8', page:'index.html',         types:['index-hero','sectionCards','stats-bar','gallery','footer'] },
 
   { id:'history',     name:'历史沿革', icon:'fas fa-history',       color:'#2980b9', page:'01-history.html',     types:['hero','block','timeline','gallery'] },
-  { id:'people',      name:'人物风采', icon:'fas fa-users',         color:'#e67e22', page:'02-people.html',      types:['hero','leader','profile','dataCard','gallery'] },
+  { id:'people',      name:'人物风采', icon:'fas fa-users',         color:'#e67e22', page:'02-people.html',      types:['hero','leader','profile','dataCard','gallery','party','roleModel'] },
   { id:'disciplines', name:'学科建设', icon:'fas fa-microscope',    color:'#27ae60', page:'03-disciplines.html', types:['hero','block','profile','gallery'] },
   { id:'campus',      name:'院区建设', icon:'fas fa-building',      color:'#8e44ad', page:'04-campus.html',      types:['hero','block','dataCard','gallery'] },
   { id:'education',   name:'教学人才', icon:'fas fa-graduation-cap',color:'#e91e63', page:'05-education.html',   types:['hero','block','profile','dataCard','gallery'] },
@@ -113,6 +113,14 @@ function seedContent() {
         { id:'p17', name:'[待补充]', title:'硕士 · 副主任技师', dept:'检验科', desc:'PCR实验室负责人。' },
         { id:'p18', name:'[待补充]', title:'硕士 · 主治医师', dept:'康复医学科', desc:'神经康复与骨伤康复专家。' }
       ],
+      statsCards: [
+        { value:'3', label:'省突/省贴专家' },
+        { value:'4', label:'兴滇英才' },
+        { value:'6', label:'省学术带头人' },
+        { value:'16', label:'省卫健委高层次人才' },
+        { value:'59', label:'院级学术带头人' },
+        { value:'294', label:'高级职称人员' }
+      ],
       dataCards: [
         { value:'1946', label:'全院职工', note:'含编内编外' },
         { value:'1638', label:'卫技人员', note:'占比 84.2%' },
@@ -120,9 +128,24 @@ function seedContent() {
         { value:'360', label:'硕士', note:'含在读' },
         { value:'294', label:'高级职称', note:'正高+副高' }
       ],
+      party: {
+        branches: '9', subBranches: '55', members: '803',
+        staffMembers: '615', gradMembers: '188',
+        textTitle: '组织有力 · 党员先锋',
+        text: '医院党委始终坚持以高质量党建引领高质量发展。9个党总支、55个党支部（含1个直属支部）覆盖医疗、教学、科研、管理各条战线，803名党员（教工615名、研究生188名）在各自岗位上发挥先锋模范作用。',
+        textTitle2: '党旗在一线高高飘扬',
+        text2: '在抗疫驰援、脱贫攻坚、对口帮扶、应急救援等急难险重任务中，党员始终冲锋在前、勇挑重担。党组织战斗堡垒作用和党员先锋模范作用，已成为医院攻坚克难、砥砺前行的最强保障。',
+        imgIcon: '🚩', imgLabel: '党员先锋岗 / 主题党日活动<br><small>党建风采 · 16:9</small>', imgSize: '16:9 横幅'
+      },
+      roleModels: [
+        { id:'r1', name:'[待补充]', title:'年度优秀护士 · 30年护龄', dept:'护理部', desc:'三十年如一日坚守临床一线，以爱心耐心赢得患者广泛赞誉。', photo:'' },
+        { id:'r2', name:'[待补充]', title:'科研标兵 · 博士', dept:'中心实验室', desc:'主持国自然面上项目1项，发表SCI一区论文4篇。', photo:'' },
+        { id:'r3', name:'[待补充]', title:'优秀教师 · 省级教学比赛一等奖', dept:'临床教学部', desc:'连续5年被评为学生最喜爱教师，培养住院医师规范化培训学员120人。', photo:'' },
+        { id:'r4', name:'[待补充]', title:'优秀管理工作者', dept:'医务部', desc:'优化门诊流程，患者平均候诊时间缩短40%，满意度提升至98%。', photo:'' }
+      ],
       gallery: [
         { icon:'👥', label:'历任院领导集体合影' }, { icon:'👤', label:'首任院长工作照' },
-        { icon:'👨‍⚕️', label:'学科带头人群像' }, { icon:'🎗', label:'年度优秀员工表彰' },
+        { icon:'👨‍⚕️', label:'专家群像馆' }, { icon:'🎗', label:'年度优秀员工表彰' },
         { icon:'🚩', label:'党建主题活动' }, { icon:'👩‍⚕️', label:'护理团队风采' },
         { icon:'🎓', label:'教学名师授课' }, { icon:'🤝', label:'新老传承交接' }
       ]
@@ -465,7 +488,7 @@ function renderDashboard() {
   var contentItems=0;
   for(var k in content){
     var c=content[k];
-    ['leaders','profiles','profiles2','timeline','blocks','gallery','dataCards'].forEach(function(t){
+    ['leaders','profiles','profiles2','roleModels','statsCards','timeline','blocks','gallery','dataCards'].forEach(function(t){
       if(Array.isArray(c[t])) contentItems+=c[t].length;
     });
   }
@@ -488,7 +511,7 @@ function renderDashboard() {
     var statusText=d.status==='published'?'已发布':(d.status==='review'?'审核中':'草稿');
     var c=content[s.id]||{};
     var itemCount=0;
-    ['leaders','profiles','profiles2','timeline','blocks','gallery','dataCards'].forEach(function(t){
+    ['leaders','profiles','profiles2','roleModels','statsCards','timeline','blocks','gallery','dataCards'].forEach(function(t){
       if(Array.isArray(c[t])) itemCount+=c[t].length;
     });
     html+='<tr>';
@@ -611,17 +634,26 @@ function renderSectionEditor(sec) {
   // ---- 自动补全缺失字段（兼容旧数据）----
   var seed=seedContent()[sec.id]||{};
   var needSave=false;
-  ['gallery','dataCards','blocks','profiles','leaders','leadership','timeline'].forEach(function(field){
+  ['gallery','dataCards','statsCards','blocks','profiles','profiles2','roleModels','leaders','leadership','timeline'].forEach(function(field){
     if(sec.types.indexOf(field.replace('Card',''))<0 &&
        sec.types.indexOf('dataCard')<0 && field==='dataCards') return; // 跳过不在types中的field
+    if(field==='statsCards' && sec.types.indexOf('dataCard')<0) return;
     // gallery 和 dataCards 需根据 types 判断
     if(field==='gallery' && sec.types.indexOf('gallery')<0) return;
     if(field==='dataCards' && sec.types.indexOf('dataCard')<0) return;
+    if(field==='roleModels' && sec.types.indexOf('roleModel')<0) return;
     if(!Array.isArray(content[field]) && Array.isArray(seed[field])) {
       content[field]=seed[field];
       needSave=true;
     }
   });
+  // party 对象补全
+  if(sec.types.indexOf('party')>=0 && typeof seed.party === 'object') {
+    if(!content.party || typeof content.party !== 'object') {
+      content.party = JSON.parse(JSON.stringify(seed.party));
+      needSave = true;
+    }
+  }
   if(needSave) {
     allContent[sec.id]=content;
     saveContent(allContent);
@@ -696,7 +728,7 @@ function renderSectionEditor(sec) {
     html+='</div>';
   }
 
-  // ---- Profiles 编辑区（学科带头人/医学人才） ----
+  // ---- Profiles 编辑区（专家群像/医学人才） ----
   if (sec.types.indexOf('profile')>=0) {
     // profiles (p1)
     // 职工名录：始终渲染（即使 profiles 为空），靠 initStaffAdmin() 填充表格
@@ -728,7 +760,53 @@ function renderSectionEditor(sec) {
     }
   }
 
-  // ---- Leadership 编辑区（12-领导团队） ----
+  // ---- StatsCards 编辑区（people: 专家群像数据卡片） ----
+  if (sec.types.indexOf('dataCard')>=0 && sec.id==='people' && Array.isArray(content.statsCards)) {
+    html+='<div class="content-section"><h5 class="content-section-title"><i class="fas fa-chart-pie text-info mr-2"></i>专家群像数据卡片';
+    html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-statscard" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 新增</button></h5>';
+    content.statsCards.forEach(function(d,i){
+      html+='<div class="form-row statscard-row"><div class="col-md-2"><label>数值</label><input class="form-control form-control-sm sc-value" value="'+escHtml(d.value||'')+'"></div>';
+      html+='<div class="col-md-4"><label>标签</label><input class="form-control form-control-sm sc-label" value="'+escHtml(d.label||'')+'"></div>';
+      html+='<div class="col-md-2"><label>&nbsp;</label><button class="btn btn-sm btn-outline-danger btn-block btn-del-statscard" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div>';
+    });
+    html+='</div>';
+  }
+
+  // ---- Party 党建力量编辑区 ----
+  if (sec.types.indexOf('party')>=0 && sec.id==='people') {
+    var party = content.party || seedContent().people.party || {};
+    html+='<div class="content-section"><h5 class="content-section-title"><i class="fas fa-flag text-danger mr-2"></i>党建力量 · 先锋模范</h5>';
+    html+='<div class="form-row"><div class="col-md-2"><label>党总支数</label><input class="form-control form-control-sm py-branches" value="'+escHtml(party.branches||'')+'"></div>';
+    html+='<div class="col-md-2"><label>党支部数</label><input class="form-control form-control-sm py-subBranches" value="'+escHtml(party.subBranches||'')+'"></div>';
+    html+='<div class="col-md-2"><label>党员总数</label><input class="form-control form-control-sm py-members" value="'+escHtml(party.members||'')+'"></div>';
+    html+='<div class="col-md-2"><label>教工党员</label><input class="form-control form-control-sm py-staffMembers" value="'+escHtml(party.staffMembers||'')+'"></div>';
+    html+='<div class="col-md-2"><label>研究生党员</label><input class="form-control form-control-sm py-gradMembers" value="'+escHtml(party.gradMembers||'')+'"></div></div>';
+    html+='<div class="form-row mt-2"><div class="col-md-6"><label>正文标题1</label><input class="form-control form-control-sm py-textTitle" value="'+escHtml(party.textTitle||'')+'"></div>';
+    html+='<div class="col-md-6"><label>正文标题2</label><input class="form-control form-control-sm py-textTitle2" value="'+escHtml(party.textTitle2||'')+'"></div></div>';
+    html+='<div class="form-row mt-2"><div class="col-md-6"><label>正文内容1</label><textarea class="form-control form-control-sm py-text" rows="3">'+(party.text||'')+'</textarea></div>';
+    html+='<div class="col-md-6"><label>正文内容2</label><textarea class="form-control form-control-sm py-text2" rows="3">'+(party.text2||'')+'</textarea></div></div>';
+    html+='<div class="form-row mt-2"><div class="col-md-2"><label>配图图标</label><input class="form-control form-control-sm py-imgIcon" value="'+escHtml(party.imgIcon||'')+'"></div>';
+    html+='<div class="col-md-5"><label>配图标签</label><input class="form-control form-control-sm py-imgLabel" value="'+escHtml(party.imgLabel||'')+'"></div>';
+    html+='<div class="col-md-3"><label>配图尺寸</label><input class="form-control form-control-sm py-imgSize" value="'+escHtml(party.imgSize||'')+'"></div></div>';
+    html+='</div>';
+  }
+
+  // ---- RoleModels 榜样的力量编辑区 ----
+  if (sec.types.indexOf('roleModel')>=0 && sec.id==='people' && Array.isArray(content.roleModels)) {
+    html+='<div class="content-section"><h5 class="content-section-title"><i class="fas fa-star text-warning mr-2"></i>榜样的力量 · 优秀员工';
+    html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-rolemodel" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 新增</button></h5>';
+    content.roleModels.forEach(function(r,i){
+      html+='<div class="rolemodel-item-editor border rounded p-2 mb-2">';
+      html+='<div class="form-row"><div class="col-md-3"><label>姓名</label><input class="form-control form-control-sm rm-name" value="'+escHtml(r.name||'')+'"></div>';
+      html+='<div class="col-md-3"><label>荣誉/头衔</label><input class="form-control form-control-sm rm-title" value="'+escHtml(r.title||'')+'"></div>';
+      html+='<div class="col-md-2"><label>科室</label><input class="form-control form-control-sm rm-dept" value="'+escHtml(r.dept||'')+'"></div>';
+      html+='<div class="col-md-2"><label>简介</label><div class="input-group input-group-sm"><input class="form-control rm-desc" value="'+escHtml(r.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-rolemodel" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
+      html+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
+      html+='<input class="form-control form-control-sm rm-photo" value="'+escHtml(r.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
   if (sec.types.indexOf('leadership')>=0 && Array.isArray(content.leaders)) {
     html+='<div class="content-section"><h5 class="content-section-title"><i class="fas fa-crown text-danger mr-2"></i>领导班子成员';
     html+=' <button class="btn btn-xs btn-outline-success ml-2 btn-add-leadership" data-section="'+sec.id+'"><i class="fas fa-plus"></i> 新增</button></h5>';
@@ -1021,6 +1099,53 @@ function saveSectionContent(secId) {
     });
   }
 
+  // StatsCards (people: 专家群像数据)
+  if(secId==='people') {
+    content[secId].statsCards=[];
+    $('#section-editor-body .statscard-row').each(function(){
+      content[secId].statsCards.push({
+        value: $(this).find('.sc-value').val()||'',
+        label: $(this).find('.sc-label').val()||''
+      });
+    });
+  }
+
+  // Party (people: 党建力量)
+  if(secId==='people') {
+    var pyBranches = $('#section-editor-body .py-branches').val();
+    if(typeof pyBranches !== 'undefined') {
+      content[secId].party = {
+        branches: pyBranches||'',
+        subBranches: $('#section-editor-body .py-subBranches').val()||'',
+        members: $('#section-editor-body .py-members').val()||'',
+        staffMembers: $('#section-editor-body .py-staffMembers').val()||'',
+        gradMembers: $('#section-editor-body .py-gradMembers').val()||'',
+        textTitle: $('#section-editor-body .py-textTitle').val()||'',
+        text: $('#section-editor-body .py-text').val()||'',
+        textTitle2: $('#section-editor-body .py-textTitle2').val()||'',
+        text2: $('#section-editor-body .py-text2').val()||'',
+        imgIcon: $('#section-editor-body .py-imgIcon').val()||'',
+        imgLabel: $('#section-editor-body .py-imgLabel').val()||'',
+        imgSize: $('#section-editor-body .py-imgSize').val()||''
+      };
+    }
+  }
+
+  // RoleModels (people: 榜样的力量)
+  if(secId==='people') {
+    content[secId].roleModels=[];
+    $('#section-editor-body .rolemodel-item-editor').each(function(){
+      content[secId].roleModels.push({
+        id: 'r'+Date.now()+Math.random(),
+        name: $(this).find('.rm-name').val()||'',
+        title: $(this).find('.rm-title').val()||'',
+        dept: $(this).find('.rm-dept').val()||'',
+        desc: $(this).find('.rm-desc').val()||'',
+        photo: $(this).find('.rm-photo').val()||''
+      });
+    });
+  }
+
   // Gallery
   if(sec.types.indexOf('gallery')>=0) {
     content[secId].gallery=[];
@@ -1245,7 +1370,11 @@ function importDataJs(file) {
       if (c.gallery && c.gallery.length) parts.push('Gallery×' + c.gallery.length);
       if (c.timeline && c.timeline.length) parts.push('Timeline×' + c.timeline.length);
       if (c.leaders && c.leaders.length) parts.push('Leaders×' + c.leaders.length);
-      if (c.profiles && c.profiles.length) parts.push('Profiles×' + c.profiles.length);
+      if (c.profiles && c.profiles.length) parts.push('Profiles1×' + c.profiles.length);
+      if (c.profiles2 && c.profiles2.length) parts.push('Profiles2×' + c.profiles2.length);
+      if (c.roleModels && c.roleModels.length) parts.push('RoleModels×' + c.roleModels.length);
+      if (c.statsCards && c.statsCards.length) parts.push('StatsCards×' + c.statsCards.length);
+      if (c.party && typeof c.party === 'object') parts.push('Party');
       if (c.dataCards && c.dataCards.length) parts.push('Cards×' + c.dataCards.length);
       if (parts.length) stats.push(key + ': ' + parts.join(', '));
     });
@@ -1320,7 +1449,11 @@ function renderDataManager() {
     if (c.dataCards)  counts.push('数据×' + c.dataCards.length);
     if (c.timeline)   counts.push('时间线×' + c.timeline.length);
     if (c.leaders)    counts.push('领导×' + c.leaders.length);
-    if (c.profiles)   counts.push('人物×' + c.profiles.length);
+    if (c.profiles)   counts.push('人物1×' + c.profiles.length);
+    if (c.profiles2)  counts.push('人物2×' + c.profiles2.length);
+    if (c.roleModels) counts.push('榜样×' + c.roleModels.length);
+    if (c.statsCards) counts.push('学科统计×' + c.statsCards.length);
+    if (c.party && typeof c.party === 'object') counts.push('党建');
     rows += '<tr><td><i class="' + sec.icon + ' mr-1" style="color:' + sec.color + '"></i>' + sec.name + '</td>'
           + '<td>' + (c.hero && c.hero.title ? escHtml(c.hero.title) : '<span class="text-muted">-</span>') + '</td>'
           + '<td>' + (counts.length ? counts.join(', ') : '<span class="text-muted">无数据</span>') + '</td></tr>';
@@ -1459,6 +1592,42 @@ $(document).ready(function() {
     var group=$(this).data('group')||'profiles';
     var content=getContent();
     content[currentPage][group].splice(idx,1);
+    saveContent(content);
+    navigateTo(currentPage);
+  });
+
+  // 新增/删除 StatsCard（people: 专家群像数据）
+  $(document).on('click','.btn-add-statscard',function(){
+    var secId=$(this).data('section');
+    var content=getContent();
+    if(!content[secId]) content[secId]={};
+    if(!content[secId].statsCards) content[secId].statsCards=[];
+    content[secId].statsCards.push({value:'0',label:'新指标'});
+    saveContent(content);
+    navigateTo(secId);
+  });
+  $(document).on('click','.btn-del-statscard',function(){
+    var idx=parseInt($(this).data('idx'));
+    var content=getContent();
+    content[currentPage].statsCards.splice(idx,1);
+    saveContent(content);
+    navigateTo(currentPage);
+  });
+
+  // 新增/删除 RoleModel（people: 榜样的力量）
+  $(document).on('click','.btn-add-rolemodel',function(){
+    var secId=$(this).data('section');
+    var content=getContent();
+    if(!content[secId]) content[secId]={};
+    if(!content[secId].roleModels) content[secId].roleModels=[];
+    content[secId].roleModels.push({id:'r'+Date.now(),name:'新姓名',title:'荣誉/头衔',dept:'科室',desc:'简介',photo:''});
+    saveContent(content);
+    navigateTo(secId);
+  });
+  $(document).on('click','.btn-del-rolemodel',function(){
+    var idx=parseInt($(this).data('idx'));
+    var content=getContent();
+    content[currentPage].roleModels.splice(idx,1);
     saveContent(content);
     navigateTo(currentPage);
   });
@@ -2536,7 +2705,7 @@ $(document).ready(function() {
 
       var itemCount = 0;
       var c = content[s.id] || {};
-      ['leaders','profiles','profiles2','timeline','blocks','gallery','dataCards'].forEach(function(t) {
+      ['leaders','profiles','profiles2','roleModels','statsCards','timeline','blocks','gallery','dataCards'].forEach(function(t) {
         if (Array.isArray(c[t])) itemCount += c[t].length;
       });
 

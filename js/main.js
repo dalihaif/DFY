@@ -286,90 +286,145 @@
       }
     }
 
-    // ---- Profiles (人物简介) ----
-    ['profiles','profiles2'].forEach(function(group) {
-      if (Array.isArray(sectionContent[group])) {
-        var cards = document.querySelectorAll('.profile-card');
-        // Find the right subset of cards for this group
-        var offset = group === 'profiles2' ? (sectionContent.profiles ? sectionContent.profiles.length : 0) : 0;
-        sectionContent[group].forEach(function(p, i) {
-          var card = cards[offset + i];
-          if (!card) return;
-          var nameEl = card.querySelector('.profile-name');
-          var titleEl = card.querySelector('.profile-title');
-          var deptEl = card.querySelector('.profile-dept');
-          var descEl = card.querySelector('.profile-desc');
-          var photoEl = card.querySelector('.profile-photo');
-          if (nameEl) nameEl.textContent = p.name;
-          if (titleEl) titleEl.textContent = p.title;
-          if (deptEl) deptEl.textContent = p.dept;
-          if (descEl) descEl.textContent = p.desc;
-          // 照片URL：有则显示真实图片，无则显示姓名首字占位
-          if (photoEl) {
-            var existingImg = photoEl.querySelector('.profile-real-img');
-            var charEl = photoEl.querySelector('.profile-photo-char');
-            if (p.photo && p.photo.trim()) {
-              // 有照片URL → 显示真实图片
-              photoEl.classList.add('has-real-img');
-              if (!existingImg) {
-                var img = document.createElement('img');
-                img.className = 'profile-real-img';
-                img.src = p.photo.trim();
-                img.alt = p.name || '';
-                img.setAttribute('data-lightbox', p.photo.trim());
-                img.setAttribute('data-lightbox-caption', p.name || '');
-                img.style.cursor = 'zoom-in';
-                photoEl.appendChild(img);
-              } else {
-                existingImg.src = p.photo.trim();
-                existingImg.alt = p.name || '';
-                existingImg.setAttribute('data-lightbox', p.photo.trim());
-                existingImg.setAttribute('data-lightbox-caption', p.name || '');
-                existingImg.style.cursor = 'zoom-in';
-              }
-              if (charEl) charEl.remove();
-            } else {
-              // 无照片URL → 姓名首字占位
-              photoEl.classList.remove('has-real-img');
-              if (existingImg) existingImg.remove();
-              var iconEl = photoEl.querySelector('.profile-photo-icon');
-              var hintEl = photoEl.querySelector('.profile-photo-hint');
-              if (p.name && p.name !== '[待补充]') {
-                // 已有char元素则更新，否则插入
-                if (!charEl) {
-                  charEl = document.createElement('span');
-                  charEl.className = 'profile-photo-char';
-                  photoEl.insertBefore(charEl, iconEl);
-                }
-                charEl.textContent = p.name.charAt(0);
-                if (iconEl) iconEl.style.display = 'none';
-                if (hintEl) hintEl.style.display = 'none';
-              } else {
-                if (charEl) charEl.remove();
-              }
-            }
-          }
+    // ====== Profiles 专家群像 (02-people) - 动态渲染 ======
+    if (Array.isArray(sectionContent.profiles) && sectionContent.profiles.length > 0) {
+      var acGrid = document.getElementById('profile-grid-academic');
+      if (acGrid) {
+        var ach = '';
+        sectionContent.profiles.forEach(function(p, i) {
+          ach += renderProfileCard(p, i);
         });
+        acGrid.innerHTML = ach;
       }
-    });
+    }
 
-    // ---- Data Cards ----
-    if (Array.isArray(sectionContent.dataCards) && sectionContent.dataCards.length > 0) {
-      var dcContainers = document.querySelectorAll('.data-grid, .matrix-grid, .people-stats-banner');
-      dcContainers.forEach(function(container) {
-        var cards = container.querySelectorAll('.data-card, .matrix-item, .people-stat');
-        cards.forEach(function(card, i) {
-          if (sectionContent.dataCards[i]) {
-            var d = sectionContent.dataCards[i];
-            var valEl = card.querySelector('.data-card-value, .matrix-num, span');
-            var labelEl = card.querySelector('.data-card-label, label, .matrix-label');
-            var noteEl = card.querySelector('.data-card-note, small');
-            if (valEl) valEl.textContent = d.value;
-            if (labelEl) labelEl.textContent = d.label;
-            if (noteEl && d.note) noteEl.textContent = d.note;
-          }
+    // ====== Profiles2 医学人才 (02-people) - 动态渲染 ======
+    if (Array.isArray(sectionContent.profiles2) && sectionContent.profiles2.length > 0) {
+      var tlGrid = document.getElementById('profile-grid-talent');
+      if (tlGrid) {
+        var tlh = '';
+        sectionContent.profiles2.forEach(function(p, i) {
+          tlh += renderProfileCard(p, i);
         });
+        tlGrid.innerHTML = tlh;
+      }
+    }
+
+    // ====== StatsCards 专家群像数据 (02-people) - 动态渲染 ======
+    if (Array.isArray(sectionContent.statsCards) && sectionContent.statsCards.length > 0) {
+      var scGrid = document.getElementById('data-grid-academic');
+      if (scGrid) {
+        var sch = '';
+        sectionContent.statsCards.forEach(function(d, i) {
+          sch += '<div class="data-card fade-in stagger-' + (i + 1) + '">' +
+            '<div class="data-card-value">' + esc(d.value) + '</div>' +
+            '<div class="data-card-label">' + esc(d.label) + '</div></div>';
+        });
+        scGrid.innerHTML = sch;
+      }
+    }
+
+    // ====== DataCards 医学人才统计 (02-people) - 动态渲染 ======
+    if (Array.isArray(sectionContent.dataCards) && sectionContent.dataCards.length > 0) {
+      var psBanner = document.getElementById('people-stats-banner');
+      if (psBanner) {
+        var psh = '';
+        sectionContent.dataCards.forEach(function(d, i) {
+          psh += '<div class="people-stat">' +
+            '<span>' + esc(d.value) + '</span>' +
+            '<label>' + esc(d.label) + '</label>' +
+            (d.note ? '<small>' + esc(d.note) + '</small>' : '') +
+            '</div>';
+        });
+        psBanner.innerHTML = psh;
+        // 更新副标题
+        var altBlock = psBanner.closest('.section-block');
+        if (altBlock && sectionContent.dataCards.length >= 4) {
+          var pSub = altBlock.querySelector('.block-sub');
+          if (pSub) {
+            var dc = sectionContent.dataCards;
+            pSub.textContent = '全院职工' + (dc[0] ? dc[0].value : '') + '人 · 卫技人员' + (dc[1] ? dc[1].value : '') + '人 · 博士' + (dc[2] ? dc[2].value : '') + '人 · 硕士' + (dc[3] ? dc[3].value : '') + '人';
+          }
+        }
+      }
+    }
+
+    // ---- Party 党建力量 (02-people) ----
+    if (sectionContent.party && typeof sectionContent.party === 'object') {
+      var p = sectionContent.party;
+      // 更新副标题
+      var partyBlock = document.querySelector('.section-body > .section-block:nth-of-type(4)');
+      if (partyBlock) {
+        var partySub = partyBlock.querySelector('.block-sub');
+        if (partySub && p.branches && p.subBranches && p.members) {
+          partySub.textContent = p.branches + '个党总支 · ' + p.subBranches + '个党支部 · ' + p.members + '名党员 · 汇聚发展磅礴力量';
+        }
+      }
+      var partyCards = document.querySelectorAll('.party-card');
+      var partyNums = [p.branches, p.subBranches, p.members];
+      var partyLabels = [
+        p.branches ? '党总支' : null,
+        p.subBranches ? '党支部' : null,
+        p.members ? '党员' : null
+      ];
+      var partyNotes = [
+        '覆盖全院各系统',
+        '含1个直属党支部',
+        '教工' + (p.staffMembers || '') + ' · 研究生' + (p.gradMembers || '')
+      ];
+      partyCards.forEach(function(card, i) {
+        var numEl = card.querySelector('.party-card-num');
+        var labelEl = card.querySelector('.party-card-label');
+        var noteEl = card.querySelector('.party-card-note');
+        if (numEl && partyNums[i]) numEl.textContent = partyNums[i];
+        if (labelEl && partyLabels[i]) labelEl.textContent = partyLabels[i];
+        if (noteEl && partyNotes[i]) noteEl.textContent = partyNotes[i];
       });
+      // 正文标题和内容
+      var contentPairs = document.querySelectorAll('.section-block .content-pair');
+      contentPairs.forEach(function(cp) {
+        var h4s = cp.querySelectorAll('h4');
+        var ps = cp.querySelectorAll('p');
+        // 党建力量 section: 第4个 section-block 内的 content-pair
+        var sectionBlocks = document.querySelectorAll('.section-body > .section-block');
+        if (sectionBlocks.length >= 4) {
+          var partyBlock = sectionBlocks[3]; // 第4个 (0-indexed: 3) = 党建力量
+          var partyCP = partyBlock.querySelector('.content-pair');
+          if (partyCP && cp === partyCP) {
+            var cp_h4s = partyCP.querySelectorAll('h4');
+            var cp_ps = partyCP.querySelectorAll('p');
+            if (cp_h4s[0] && p.textTitle) cp_h4s[0].textContent = p.textTitle;
+            if (cp_ps[0] && p.text) cp_ps[0].textContent = p.text;
+            if (cp_h4s[1] && p.textTitle2) cp_h4s[1].textContent = p.textTitle2;
+            if (cp_ps[1] && p.text2) cp_ps[1].textContent = p.text2;
+          }
+        }
+      });
+      // 配图区域
+      var partyBlock = document.querySelector('.section-body > .section-block:nth-of-type(4)');
+      if (partyBlock) {
+        var imgSlot = partyBlock.querySelector('.img-slot');
+        if (imgSlot) {
+          var iconEl = imgSlot.querySelector('.img-slot-icon');
+          var labelEl = imgSlot.querySelector('.img-slot-label');
+          var sizeEl = imgSlot.querySelector('.img-slot-size');
+          if (iconEl && p.imgIcon) iconEl.textContent = p.imgIcon;
+          if (labelEl && p.imgLabel) labelEl.innerHTML = p.imgLabel;
+          if (sizeEl && p.imgSize) sizeEl.textContent = p.imgSize;
+        }
+      }
+    }
+
+    // ====== RoleModels 榜样的力量 (02-people) - 动态渲染 ======
+    if (Array.isArray(sectionContent.roleModels) && sectionContent.roleModels.length > 0) {
+      var rmGrid = document.getElementById('profile-grid-rolemodel');
+      if (rmGrid) {
+        var rmh = '';
+        sectionContent.roleModels.forEach(function(r, i) {
+          rmh += renderProfileCard(r, i);
+        });
+        rmGrid.innerHTML = rmh;
+      }
     }
 
     // ---- Gallery ----
@@ -426,6 +481,36 @@
     var d = document.createElement('div');
     d.textContent = s;
     return d.innerHTML;
+  }
+
+  // 通用 profile 卡片 HTML 生成（专家群像/医学人才/榜样人物共用）
+  function renderProfileCard(p, i) {
+    var staggerN = (i % 4) + 1;
+    var hasPhoto = !!(p.photo && p.photo.trim());
+    var hasName = !!(p.name && p.name !== '[待补充]');
+    var h = '<div class="profile-card fade-in stagger-' + staggerN + '">';
+    // 照片区
+    h += '<div class="profile-photo' + (hasPhoto ? ' has-real-img' : '') + '" style="position:relative;overflow:hidden;">';
+    if (hasPhoto) {
+      h += '<img class="profile-real-img" src="' + esc(p.photo.trim()) + '" alt="' + esc(p.name || '') + '" data-lightbox="' + esc(p.photo.trim()) + '" data-lightbox-caption="' + esc(p.name || '') + '" style="cursor:zoom-in;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;">';
+    }
+    if (hasName && !hasPhoto) {
+      h += '<span class="profile-photo-char">' + esc(p.name.charAt(0)) + '</span>';
+    }
+    h += '<span class="profile-photo-icon"' + (hasName && !hasPhoto ? ' style="display:none"' : '') + '>👨‍⚕️</span>';
+    if (!hasPhoto) {
+      h += '<span class="profile-photo-hint">照片 3:4</span>';
+    }
+    h += '</div>';
+    // 信息
+    h += '<div class="profile-info">';
+    h += '<div class="profile-name">' + esc(p.name || '[待补充]') + '</div>';
+    h += '<div class="profile-title">' + esc(p.title || '') + '</div>';
+    h += '<span class="profile-dept">' + esc(p.dept || '') + '</span>';
+    h += '<p class="profile-desc">' + esc(p.desc || '') + '</p>';
+    h += '</div>';
+    h += '</div>';
+    return h;
   }
 
   // -------- Navbar scroll --------
