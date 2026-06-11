@@ -121,9 +121,14 @@ function readTable(tableName) {
 
 async function writeTable(tableName, data) {
   if (!db) return false;
-  db.data[tableName] = data;
-  await db.write();
-  return true;
+  try {
+    db.data[tableName] = data;
+    await db.write();
+    return true;
+  } catch (err) {
+    console.error('[Server] 写入表 ' + tableName + ' 失败:', err.message);
+    return false;
+  }
 }
 
 // ============ API 路由 ============
@@ -148,12 +153,17 @@ app.post('/api/login', (req, res) => {
 
 // 前端设置密码
 app.post('/api/setup-password', async (req, res) => {
+  try {
   const { hash } = req.body || {};
   if (!hash || hash.length < 10) {
     return res.status(400).json({ success: false, error: '密码太短' });
   }
   await writeTable('hm_admin_hash', hash);
   res.json({ success: true });
+  } catch (err) {
+    console.error('[Server] /api/setup-password 处理失败:', err.message);
+    res.status(500).json({ success: false, error: '服务器错误' });
+  }
 });
 
 // 密码设置状态
@@ -177,8 +187,13 @@ app.get('/api/content', (req, res) => {
   res.json(readTable('hm_content') ?? {});
 });
 app.post('/api/content', async (req, res) => {
+  try {
   const success = await writeTable('hm_content', req.body);
   res.json({ success });
+  } catch (err) {
+    console.error('[Server] /api/content 处理失败:', err.message);
+    res.status(500).json({ success: false, error: '服务器错误' });
+  }
 });
 
 // 设置管理 API
@@ -186,8 +201,13 @@ app.get('/api/settings', (req, res) => {
   res.json(readTable('hm_settings') ?? {});
 });
 app.post('/api/settings', async (req, res) => {
+  try {
   const success = await writeTable('hm_settings', req.body);
   res.json({ success });
+  } catch (err) {
+    console.error('[Server] /api/settings 处理失败:', err.message);
+    res.status(500).json({ success: false, error: '服务器错误' });
+  }
 });
 
 // 板块管理 API
@@ -195,8 +215,13 @@ app.get('/api/sections', (req, res) => {
   res.json(readTable('hm_admin_sections') ?? []);
 });
 app.post('/api/sections', async (req, res) => {
+  try {
   const success = await writeTable('hm_admin_sections', req.body);
   res.json({ success });
+  } catch (err) {
+    console.error('[Server] /api/sections 处理失败:', err.message);
+    res.status(500).json({ success: false, error: '服务器错误' });
+  }
 });
 
 // 公告管理 API
@@ -204,8 +229,13 @@ app.get('/api/announcements', (req, res) => {
   res.json(readTable('hm_announcements') ?? []);
 });
 app.post('/api/announcements', async (req, res) => {
+  try {
   const success = await writeTable('hm_announcements', req.body);
   res.json({ success });
+  } catch (err) {
+    console.error('[Server] /api/announcements 处理失败:', err.message);
+    res.status(500).json({ success: false, error: '服务器错误' });
+  }
 });
 
 // 职工管理 API
@@ -213,8 +243,13 @@ app.get('/api/staff', (req, res) => {
   res.json(readTable('hm_staff') ?? []);
 });
 app.post('/api/staff', async (req, res) => {
+  try {
   const success = await writeTable('hm_staff', req.body);
   res.json({ success });
+  } catch (err) {
+    console.error('[Server] /api/staff 处理失败:', err.message);
+    res.status(500).json({ success: false, error: '服务器错误' });
+  }
 });
 
 // ============ 图片上传 API ============
@@ -284,6 +319,12 @@ app.get('/api/health', (req, res) => {
 });
 
 // ============ 启动服务器 ============
+// ============ 全局错误处理中间件 ============
+app.use((err, req, res, next) => {
+  console.error('[Server] 未处理的错误:', err.message || err);
+  res.status(500).json({ success: false, error: '服务器内部错误' });
+});
+ 
 initDB().then(() => {
   app.listen(PORT, () => {
     console.log('�� 服务器运行在 http://localhost:' + PORT);
