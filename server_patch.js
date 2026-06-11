@@ -3,13 +3,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
- 
- // 全局未捕获异常处理 - 防止服务器在后台无声崩溃
- process.on('unhandledRejection', (reason, promise) => {
-   console.error('[Server] 未捕获的 Promise 拒绝:', reason?.message || reason);
- });
- 
- const app = express();
+
+const app = express();
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, 'server', 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
