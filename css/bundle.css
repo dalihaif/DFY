@@ -1000,6 +1000,12 @@ button { font-family: inherit; }
   .page-nav { flex-wrap:wrap; gap:12px; padding:28px var(--pad-x); }
   .gallery-grid { grid-template-columns:repeat(2,1fr); }
   .block-title { font-size:26px; }
+  /* Timeline mobile fix */
+  .timeline::before { left:20px; }
+  .tl-node { grid-template-columns:0 40px 1fr; gap:0 12px; margin-bottom:40px; }
+  .tl-year { font-size:28px; }
+  .tl-dot { width:36px; height:36px; font-size:11px; }
+  .tl-content { padding:20px 16px; }
 }
 @media (max-width:480px) {
   :root { --pad-x:20px; }
@@ -1010,6 +1016,12 @@ button { font-family: inherit; }
   .gallery-grid { grid-template-columns:1fr 1fr; }
   .data-row { grid-template-columns:1fr 1fr; }
   .sections-grid-title { font-size:32px; }
+  /* Timeline small phone */
+  .timeline::before { left:16px; }
+  .tl-node { grid-template-columns:0 32px 1fr; gap:0 8px; margin-bottom:32px; }
+  .tl-year { font-size:24px; }
+  .tl-dot { width:28px; height:28px; font-size:10px; }
+  .tl-content { padding:16px 12px; }
 }
 /* sections.css — 板块页面专属组件样式 */
 
