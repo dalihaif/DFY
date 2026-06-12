@@ -137,9 +137,7 @@ hospital-museum/
 │       ├── admin.js            #   后台 CMS 核心逻辑（约 3000 行）
 │       └── adminlte.min.js     #   AdminLTE 框架
 ├── css/
-│   ├── style.css               # 全局样式
-│   ├── sections.css            # 板块布局样式
-│   └── visuals.css             # 视觉特效样式
+│   └── bundle.css              # 全局样式合并（style+sections+visuals, 69KB, 1次请求）
 ├── modules/                    # 🧩 可复用 HTML 模块
 │   ├── culture.html            #   文化建设子模块
 │   ├── culture-detail.html     #   文化详情

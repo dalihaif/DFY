@@ -201,7 +201,7 @@
             existImg.alt = b.imgLabel || '';
             existImg.setAttribute('data-lightbox', b.imgUrl);
             existImg.setAttribute('data-lightbox-caption', b.imgLabel || '');
-            existImg.style.cursor = 'zoom-in';
+            existImg.setAttribute('loading', 'lazy');
             // 隐藏占位内容（图标/标签/尺寸文字）
             [iconEl, labelEl, sizeEl].forEach(function(el) { if (el) el.style.display = 'none'; });
           }
@@ -226,7 +226,7 @@
           // 照片区
           lh += '<div class="leader-photo' + (hasPhoto ? ' has-real-img' : '') + '" style="position:relative;overflow:hidden;">';
           if (hasPhoto) {
-            lh += '<img class="leader-real-img" src="' + esc(l.photo.trim()) + '" alt="' + esc(l.name || '') + '" data-lightbox="' + esc(l.photo.trim()) + '" data-lightbox-caption="' + esc(l.name || '') + '" style="cursor:zoom-in;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;">';
+            lh += '<img class="leader-real-img" loading="lazy" src="' + esc(l.photo.trim()) + '" alt="' + esc(l.name || '') + '" data-lightbox="' + esc(l.photo.trim()) + '" data-lightbox-caption="' + esc(l.name || '') + '" style="cursor:zoom-in;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;">';
           }
           lh += '<span class="leader-photo-icon"' + (hasName && !hasPhoto ? ' style="font-size:36px;opacity:0.85"' : '') + '>' + (hasName && !hasPhoto ? l.name.charAt(0) : '👤') + '</span>';
           if (!hasPhoto) {
@@ -263,7 +263,7 @@
           lsh += '<div class="leadership-card fade-in stagger-' + staggerN + '">';
           lsh += '<div class="leadership-photo' + (hasPhoto ? ' has-real-img' : '') + '" style="position:relative;overflow:hidden;">';
           if (hasPhoto) {
-            lsh += '<img class="leadership-real-img" src="' + esc(l.photo.trim()) + '" alt="' + esc(l.name || '') + '" data-lightbox="' + esc(l.photo.trim()) + '" data-lightbox-caption="' + esc(l.name + (l.role ? ' · ' + l.role : '')) + '" style="cursor:zoom-in;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;">';
+            lsh += '<img class="leadership-real-img" loading="lazy" src="' + esc(l.photo.trim()) + '" alt="' + esc(l.name || '') + '" data-lightbox="' + esc(l.photo.trim()) + '" data-lightbox-caption="' + esc(l.name + (l.role ? ' · ' + l.role : '')) + '" style="cursor:zoom-in;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;">';
           }
           if (hasName && !hasPhoto) {
             lsh += '<span class="leadership-photo-char">' + l.name.charAt(0) + '</span>';
@@ -440,7 +440,7 @@
             if (isImg) {
               // 图片：显示真实图片缩略图，支持 lightbox 点击放大
               gHTML += '<div class="gallery-item fade-in stagger-' + stagger + '" data-src="' + esc(g.url) + '" style="cursor:zoom-in;padding:0;overflow:hidden;">' +
-                '<img src="' + esc(g.url) + '" alt="' + esc(g.label) + '" style="width:100%;height:180px;object-fit:cover;border-radius:inherit;" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">' +
+                '<img loading="lazy" src="' + esc(g.url) + '" alt="' + esc(g.label) + '" style="width:100%;height:180px;object-fit:cover;border-radius:inherit;" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">' +
                 '<div style="display:none;align-items:center;justify-content:center;height:180px;font-size:2.5rem;">' + esc(g.icon || '📷') + '</div>' +
                 '<div class="gallery-item-label" style="padding:8px 12px;">' + esc(g.label) + '</div></div>';
             } else {
@@ -492,7 +492,7 @@
     // 照片区
     h += '<div class="profile-photo' + (hasPhoto ? ' has-real-img' : '') + '" style="position:relative;overflow:hidden;">';
     if (hasPhoto) {
-      h += '<img class="profile-real-img" src="' + esc(p.photo.trim()) + '" alt="' + esc(p.name || '') + '" data-lightbox="' + esc(p.photo.trim()) + '" data-lightbox-caption="' + esc(p.name || '') + '" style="cursor:zoom-in;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;">';
+      h += '<img class="profile-real-img" loading="lazy" src="' + esc(p.photo.trim()) + '" alt="' + esc(p.name || '') + '" data-lightbox="' + esc(p.photo.trim()) + '" data-lightbox-caption="' + esc(p.name || '') + '" style="cursor:zoom-in;width:100%;height:100%;object-fit:cover;border-radius:inherit;position:absolute;top:0;left:0;">';
     }
     if (hasName && !hasPhoto) {
       h += '<span class="profile-photo-char">' + esc(p.name.charAt(0)) + '</span>';
@@ -737,7 +737,7 @@
           if (g.url && g.url.trim()) {
             // 有图片URL → 显示缩略图+底部标签+点击放大
             return '<div class="gallery-item fade-in stagger-' + staggerN + '" data-lightbox="' + g.url.trim() + '" data-lightbox-caption="' + cleanLabel + '">' +
-              '<img src="' + g.url.trim() + '" alt="' + cleanLabel + '">' +
+              '<img loading="lazy" src="' + g.url.trim() + '" alt="' + cleanLabel + '">' +
               '<div class="gallery-item-label" style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;padding:6px 10px;z-index:2">' + cleanLabel + '</div></div>';
           }
           // 无图片 → 图标+文字占位
@@ -1022,7 +1022,7 @@
       var h = '<div class="profile-card staff-card fade-in">';
       h += '<div class="profile-photo' + (hasPhoto ? ' has-real-img' : '') + '">';
       if (hasPhoto) {
-        h += '<img class="profile-real-img" src="' + escHtml2(ph) + '" alt="' + escHtml2(s.name || '') + '" loading="lazy" data-lightbox="' + escHtml2(ph) + '" data-lightbox-caption="' + escHtml2(s.name || '') + '">';
+        h += '<img class="profile-real-img staff-lazy-img" data-src="' + escHtml2(ph) + '" alt="' + escHtml2(s.name || '') + '" data-lightbox="' + escHtml2(ph) + '" data-lightbox-caption="' + escHtml2(s.name || '') + '">';
       }
       h += '<span class="profile-photo-icon">👤</span>';
       if (!hasPhoto) {
@@ -1107,9 +1107,33 @@
       // 页码
       pageNavEl.innerHTML = paginationHtml(totalPages, currentPage);
 
-      // Observer + lightbox
+      // Observer + lightbox + 图片懒加载
       grid.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+      // 职工图片 IntersectionObserver 懒加载
+      lazyLoadStaffImages();
       setTimeout(bindStaticPhotos, 100);
+    }
+
+    // 职工名录图片懒加载（IntersectionObserver）
+    var staffImgObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var img = entry.target;
+          var src = img.getAttribute('data-src');
+          if (src) {
+            img.src = src;
+            img.removeAttribute('data-src');
+            img.classList.add('loaded');
+          }
+          staffImgObserver.unobserve(img);
+        }
+      });
+    }, { rootMargin: '200px 0px' });
+
+    function lazyLoadStaffImages() {
+      grid.querySelectorAll('.staff-lazy-img[data-src]').forEach(function(img) {
+        staffImgObserver.observe(img);
+      });
     }
 
     // 切换到指定页
