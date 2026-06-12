@@ -435,17 +435,21 @@
         sectionContent.gallery.forEach(function(g, i) {
           var stagger = ((i % 4) + 1);
           if (g.url) {
+            // 路径规范化：去掉开头 /（绝对路径在 GitHub Pages 子目录下失效）
+            var gUrl = g.url.trim().replace(/^\.?\//, '');
+            // 从 pages/ 子目录访问，需加 ../ 前缀
+            gUrl = '../' + gUrl;
             // 有真实图片/资料URL：渲染为可点击的图片卡片
             var isImg = /\.(jpg|jpeg|png|gif|webp|svg|bmp)(\?.*)?$/i.test(g.url);
             if (isImg) {
               // 图片：显示真实图片缩略图，支持 lightbox 点击放大
-              gHTML += '<div class="gallery-item fade-in stagger-' + stagger + '" data-src="' + esc(g.url) + '" style="cursor:zoom-in;padding:0;overflow:hidden;">' +
-                '<img loading="lazy" src="' + esc(g.url) + '" alt="' + esc(g.label) + '" style="width:100%;height:180px;object-fit:cover;border-radius:inherit;" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">' +
+              gHTML += '<div class="gallery-item fade-in stagger-' + stagger + '" data-src="' + esc(gUrl) + '" style="cursor:zoom-in;padding:0;overflow:hidden;">' +
+                '<img loading="lazy" src="' + esc(gUrl) + '" alt="' + esc(g.label) + '" style="width:100%;height:180px;object-fit:cover;border-radius:inherit;" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">' +
                 '<div style="display:none;align-items:center;justify-content:center;height:180px;font-size:2.5rem;">' + esc(g.icon || '📷') + '</div>' +
                 '<div class="gallery-item-label" style="padding:8px 12px;">' + esc(g.label) + '</div></div>';
             } else {
               // 文件/资料：显示下载图标，点击跳转
-              gHTML += '<a class="gallery-item fade-in stagger-' + stagger + '" href="' + esc(g.url) + '" target="_blank" rel="noopener" style="text-decoration:none;">' +
+              gHTML += '<a class="gallery-item fade-in stagger-' + stagger + '" href="' + esc(gUrl) + '" target="_blank" rel="noopener" style="text-decoration:none;">' +
                 '<div class="gallery-item-icon" style="font-size:2.5rem;">' + esc(g.icon || '📄') + '</div>' +
                 '<div class="gallery-item-label">' + esc(g.label) + '</div>' +
                 '<div style="font-size:10px;color:var(--text-muted,#888);margin-top:4px;word-break:break-all;padding:0 8px;">🔗 ' + esc(g.url.replace(/^https?:\/\//, '').substring(0, 40)) + (g.url.length > 50 ? '…' : '') + '</div></a>';
