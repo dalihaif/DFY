@@ -461,8 +461,6 @@
         });
         galleryGrid.innerHTML = gHTML;
 
-        // 重新注册 fade-in 动画观察器
-        galleryGrid.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
         // 重新绑定图片 lightbox 事件
         galleryGrid.querySelectorAll('.gallery-item[data-src]').forEach(function(item) {
           item.addEventListener('click', function() {
