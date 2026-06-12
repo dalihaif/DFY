@@ -1,13 +1,13 @@
 /**
  * 云端院史馆 · 核心数据文件（不含职工名录）
- * 自动生成于: 2026/6/12 12:06:20
+ * 自动生成于: 2026/6/12 15:45:50
  * 职工数据分离至 data-staff.js，按需加载
  */
 window.HM_DATA = {
   "content": {
     "history": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "/assets/images/2_20.png",
         "num": "板块一 · SECTION 01",
         "title": "历史沿革",
         "subtitle": "医院发展的时光足迹",
@@ -83,42 +83,42 @@ window.HM_DATA = {
         {
           "icon": "📷",
           "label": "1991年 批准文件",
-          "url": "../assets/images/jypw.jpg"
+          "url": "/assets/images/jypw.jpg"
         },
         {
           "icon": "📷",
           "label": "1992年 奠基典礼",
-          "url": "../assets/images/kgdl.jpg"
+          "url": "/assets/images/kgdl.jpg"
         },
         {
           "icon": "📷",
           "label": "1997年 开诊剪彩",
-          "url": "../assets/images/kzys.jpg"
+          "url": "/assets/images/kzys.jpg"
         },
         {
           "icon": "📷",
           "label": "更名大理学院附属医院",
-          "url": "../assets/images/hygl.jpg"
+          "url": "/assets/images/hygl.jpg"
         },
         {
           "icon": "📷",
           "label": "云南省第四人民医院挂牌仪式",
-          "url": "../assets/images/gpys.jpg"
+          "url": "/assets/images/gpys.jpg"
         },
         {
           "icon": "📷",
           "label": "2015年 三甲评审",
-          "url": "../assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.jpg"
         },
         {
           "icon": "📷",
           "label": "省二传院奠基",
-          "url": "../assets/images/ecydj.jpg"
+          "url": "/assets/images/ecydj.jpg"
         },
         {
           "icon": "📷",
           "label": "省二传院开诊",
-          "url": "../assets/images/ecykz.png"
+          "url": "/assets/images/ecykz.png"
         }
       ]
     },
@@ -1381,39 +1381,39 @@ window.HM_DATA = {
       ],
       "leaders": [
         {
-          "id": "ld17811695822380.32882265939355004",
+          "id": "ld17812501353990.7311753162644108",
           "name": "高文理",
           "role": "党委书记",
           "duty": "主持医院党委全面工作",
-          "resume": "曾任[待补充]，分管党政办公室、组织人事等工作。",
+          "resume": "曾任大理大学宣传部部长，分管党政办公室、组织人事等工作。",
           "photo": "../assets/images/gwl.png"
         },
         {
-          "id": "ld17811695822380.1926191191270028",
+          "id": "ld17812501353990.8168383631583704",
           "name": "吴新华",
           "role": "党委副书记、院长",
           "duty": "主持医院行政全面工作",
-          "resume": "医学博士，主任医师，教授，博士生导师。分管医务、科研等工作。",
+          "resume": "二级主任医师，云岭名医，硕士生导师。分管医务、科研等工作。",
           "photo": "../assets/images/wxh.png"
         },
         {
-          "id": "ld17811695822380.45429161538188",
+          "id": "ld17812501353990.8896271650150052",
           "name": "胡林",
           "role": "党委副书记",
           "duty": "分管党建、学生工作",
-          "resume": "协助党委书记负责党的建设、学生管理、共青团、工会等工作。",
+          "resume": "协助党委书记负责党的建设、党政办、宣传科、共青团、工会等工作。",
           "photo": ""
         },
         {
-          "id": "ld17811695822380.08175039952173502",
+          "id": "ld17812501353990.8647052854160299",
           "name": "刘进",
           "role": "副院长",
           "duty": "分管医疗业务",
-          "resume": "分管医务部、护理部、临床科室质量管理等工作。",
+          "resume": "分管医务部、临床科室质量管理等工作。",
           "photo": ""
         },
         {
-          "id": "ld17811695822380.1552076446909777",
+          "id": "ld17812501353990.5334984590529069",
           "name": "吴学东",
           "role": "副院长",
           "duty": "分管科研教学",
@@ -1421,7 +1421,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811695822380.6185346271633756",
+          "id": "ld17812501353990.5485354818941689",
           "name": "张黎明",
           "role": "纪委书记",
           "duty": "分管纪检监察",
@@ -1429,7 +1429,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811695822380.7528973195557801",
+          "id": "ld17812501353990.9531550630190183",
           "name": "田昆仑",
           "role": "副院长",
           "duty": "",
@@ -1437,7 +1437,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811695822380.899870662032788",
+          "id": "ld17812501353990.8043416001241644",
           "name": "李绍波",
           "role": "",
           "duty": "",
@@ -1445,7 +1445,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811695822380.9664466749939473",
+          "id": "ld17812501353990.7514156729351776",
           "name": "张云红",
           "role": "副院长",
           "duty": "",
@@ -1453,7 +1453,7 @@ window.HM_DATA = {
           "photo": ""
         },
         {
-          "id": "ld17811695822380.7074079828789138",
+          "id": "ld17812501353990.8643079501257882",
           "name": "杨林",
           "role": "党委委员",
           "duty": "",
@@ -1655,14 +1655,7 @@ window.HM_DATA = {
       ]
     }
   },
-  "settings": {
-    "siteTitle": "云端院史馆",
-    "siteSubtitle": "大理大学第一附属医院",
-    "officialUrl": "https://www.dfy.dali.edu.cn",
-    "contactEmail": "",
-    "contactPhone": "",
-    "foundedYear": 1991
-  },
+  "settings": {},
   "announcements": [
     {
       "id": 1,
@@ -1729,88 +1722,22 @@ window.HM_DATA = {
     }
   ],
   "sections": {
-    "index": {
-      "title": "网站首页",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "history": {
-      "title": "历史沿革",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "people": {
-      "title": "人物风采",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "disciplines": {
-      "title": "学科建设",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "campus": {
-      "title": "院区建设",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "education": {
-      "title": "教学人才",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "culture": {
-      "title": "文化建设",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "tech": {
-      "title": "科技交流",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "duty": {
-      "title": "责任担当",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "honors": {
-      "title": "荣誉殿堂",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "vision": {
-      "title": "展望未来",
-      "status": "published",
-      "updatedAt": "2026-06-11",
-      "notes": ""
-    },
-    "structure": {
-      "title": "组织架构",
-      "status": "published",
-      "updatedAt": "2026-06-11",
+    "staff": {
+      "title": "职工名录",
+      "status": "draft",
+      "updatedAt": "2026-06-12",
       "notes": ""
     },
     "leadership": {
       "title": "领导团队",
-      "status": "published",
-      "updatedAt": "2026-06-11",
+      "status": "draft",
+      "updatedAt": "2026-06-12",
       "notes": ""
     },
-    "staff": {
-      "title": "职工名录",
-      "status": "published",
-      "updatedAt": "2026-06-11",
+    "history": {
+      "title": "历史沿革",
+      "status": "draft",
+      "updatedAt": "2026-06-12",
       "notes": ""
     }
   }
