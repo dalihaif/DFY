@@ -1220,7 +1220,7 @@ function renderSettings() {
   return html;
 }
 
-// ====== 导出数据为 data.js ======
+// ====== 导出数据为 data-core.js + data-staff.js ======
 function exportDataJs() {
   var content      = localStorage.getItem('hm_content')      || '{}';
   var settings     = localStorage.getItem('hm_settings')     || '{}';
@@ -1228,42 +1228,64 @@ function exportDataJs() {
   var sections     = localStorage.getItem('hm_admin_sections')|| '{}';
   var now          = new Date().toLocaleString('zh-CN');
 
-  // 使用 JSON.stringify 保证输出合法 JSON（属性名带引号）
-  var data;
+  var data, setObj, annArr, secObj;
   try { data = JSON.parse(content); } catch(e) { data = {}; }
-  var setObj;
   try { setObj = JSON.parse(settings); } catch(e) { setObj = {}; }
-  var annArr;
   try { annArr = JSON.parse(announcements); } catch(e) { annArr = []; }
-  var secObj;
   try { secObj = JSON.parse(sections); } catch(e) { secObj = {}; }
 
-  // 构建合法 JSON 字符串（属性名带引号）
-  var jsonStr = JSON.stringify({
+  var fullData = {
     content: data,
     settings: setObj,
     announcements: annArr,
     sections: secObj
-  }, null, '  ');
+  };
 
-  var code = '/**\n'
-    + ' * 云端院史馆 · 持久化数据文件\n'
+  // --- 1. data-core.js（不含职工名录）---
+  var core = JSON.parse(JSON.stringify(fullData));
+  if (core.content && core.content.staff && core.content.staff.profiles) {
+    core.content.staff.profiles = [];
+  }
+  var coreCode = '/**\n'
+    + ' * 云端院史馆 · 核心数据文件（不含职工名录）\n'
     + ' * 自动生成于: ' + now + '\n'
-    + ' * 请勿手动编辑，由后台「导出数据」功能生成\n'
+    + ' * 职工数据分离至 data-staff.js，按需加载\n'
     + ' */\n'
-    + 'window.HM_DATA = ' + jsonStr + ';\n';
+    + 'window.HM_DATA = ' + JSON.stringify(core, null, '  ') + ';\n';
 
-  var blob = new Blob([code], { type: 'text/javascript;charset=utf-8' });
-  var url  = URL.createObjectURL(blob);
-  var a    = document.createElement('a');
-  a.href   = url;
-  a.download = 'data.js';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  // --- 2. data-staff.js（仅职工名录）---
+  var staffCode = '/**\n'
+    + ' * 云端院史馆 · 职工名录数据（按需加载）\n'
+    + ' * 自动生成于: ' + now + '\n'
+    + ' * 仅 13-staff.html 加载，追加到 window.HM_DATA.content.staff\n'
+    + ' */\n'
+    + 'window.HM_DATA.content.staff = ' + JSON.stringify(fullData.content.staff || { profiles: [] }, null, '  ') + ';\n';
 
-  $(document).Toasts('create', { class:'bg-success', title:'导出成功', body:'data.js 已下载，请替换网站 js/data.js 并重新部署', autohide:true, delay:4000 });
+  // 下载 core
+  var blob1 = new Blob([coreCode], { type: 'text/javascript;charset=utf-8' });
+  var url1  = URL.createObjectURL(blob1);
+  var a1    = document.createElement('a');
+  a1.href   = url1;
+  a1.download = 'data-core.js';
+  document.body.appendChild(a1);
+  a1.click();
+  document.body.removeChild(a1);
+  URL.revokeObjectURL(url1);
+
+  // 延迟下载 staff
+  setTimeout(function() {
+    var blob2 = new Blob([staffCode], { type: 'text/javascript;charset=utf-8' });
+    var url2  = URL.createObjectURL(blob2);
+    var a2    = document.createElement('a');
+    a2.href   = url2;
+    a2.download = 'data-staff.js';
+    document.body.appendChild(a2);
+    a2.click();
+    document.body.removeChild(a2);
+    URL.revokeObjectURL(url2);
+  }, 300);
+
+  $(document).Toasts('create', { class:'bg-success', title:'导出成功', body:'data-core.js + data-staff.js 已下载，请替换网站 js/ 目录下对应文件并重新部署', autohide:true, delay:5000 });
 }
 
 // ====== 导入 data.js 文件 ======
@@ -1472,11 +1494,11 @@ function renderDataManager() {
   html += '<div class="card card-primary card-outline"><div class="card-body">';
   html += '<h5><i class="fas fa-database mr-1 text-primary"></i>数据导入/导出</h5>';
   html += '<hr class="mb-2 mt-1">';
-  html += '<p class="mb-2 text-muted"><strong>导出：</strong>将当前全部 CMS 数据固化为 <code>data.js</code> 文件</p>';
-  html += '<button class="btn btn-primary btn-block" id="btn-export-datajs"><i class="fas fa-download mr-1"></i>⬇ 下载 data.js</button>';
+  html += '<p class="mb-2 text-muted"><strong>导出：</strong>将当前全部 CMS 数据固化为 <code>data-core.js</code> + <code>data-staff.js</code> 两个文件</p>';
+  html += '<button class="btn btn-primary btn-block" id="btn-export-datajs"><i class="fas fa-download mr-1"></i>⬇ 下载 data-core.js + data-staff.js</button>';
   html += '<hr class="mb-2 mt-3">';
-  html += '<p class="mb-2 text-muted"><strong>导入：</strong>从之前导出的 <code>data.js</code> 文件恢复全部数据</p>';
-  html += '<button class="btn btn-outline-success btn-block" id="btn-import-datajs"><i class="fas fa-upload mr-1"></i>⬆ 导入 data.js</button>';
+  html += '<p class="mb-2 text-muted"><strong>导入：</strong>从之前导出的 <code>data-core.js</code> 文件恢复全部数据</p>';
+  html += '<button class="btn btn-outline-success btn-block" id="btn-import-datajs"><i class="fas fa-upload mr-1"></i>⬆ 导入 data-core.js</button>';
   html += '<input type="file" id="import-file-input" accept=".js" style="display:none">';
   html += '</div></div></div>';
 
@@ -1485,7 +1507,7 @@ function renderDataManager() {
   html += '<i class="fab fa-github fa-3x text-success mb-2"></i>';
   html += '<p class="mb-2">推送至 GitHub Pages 后全网访问</p>';
   html += '<div class="bg-dark text-light rounded p-2 text-left" style="font-size:12px;font-family:monospace;">';
-  html += 'git add js/data.js<br>git commit -m "update: 更新展馆内容"<br>git push';
+  html += 'git add js/data-core.js js/data-staff.js<br>git commit -m "update: 更新展馆内容"<br>git push';
   html += '</div>';
   html += '</div></div></div>';
 
