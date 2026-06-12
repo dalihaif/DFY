@@ -461,6 +461,8 @@
         });
         galleryGrid.innerHTML = gHTML;
 
+        // 重新注册 fade-in 动画观察器
+        galleryGrid.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
         // 重新绑定图片 lightbox 事件
         galleryGrid.querySelectorAll('.gallery-item[data-src]').forEach(function(item) {
           item.addEventListener('click', function() {
@@ -751,6 +753,8 @@
             '<div class="gallery-item-icon">' + g.icon + '</div>' +
             '<div class="gallery-item-label">' + g.label + '</div></div>';
         }).join('');
+        // 重新注册 IntersectionObserver，确保动态生成的 .fade-in 元素可见
+        galleryGrid.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
       }
     }
     console.log('[Frontend] 首页已从 CMS 数据动态渲染');
