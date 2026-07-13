@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>院史寄语墙 — 云端院史馆</title>
+  <meta name="description" content="大理大学第一附属医院院史寄语墙，职工在线留言互动，共同书写医院历史与祝福。">
+  <meta name="keywords" content="大理大学第一附属医院,云南省第四人民医院,云端院史馆,医院历史,院史,大理医院,三甲医院,滇西医疗">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/sections.css">
+  <link rel="stylesheet" href="../css/visuals.css">
+  <link rel="stylesheet" href="../css/features.css">
+</head>
+<body data-section="messages">
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-logo">
+        <img src="../assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="nav-logo-img">
+      </a>
+      <button class="nav-toggle" aria-label="菜单" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="01-history.html">历史<br>沿革</a></li>
+        <li><a href="02-people.html">人物<br>风采</a></li>
+        <li><a href="03-disciplines.html">学科<br>建设</a></li>
+        <li><a href="04-campus.html">院区<br>建设</a></li>
+        <li><a href="05-education.html">教学<br>人才</a></li>
+        <li><a href="06-culture.html">文化<br>建设</a></li>
+        <li><a href="07-tech.html">科技<br>交流</a></li>
+        <li><a href="08-duty.html">责任<br>担当</a></li>
+        <li><a href="09-honors.html">荣誉<br>殿堂</a></li>
+        <li><a href="10-vision.html">展望<br>未来</a></li>
+        <li><a href="11-structure.html">组织<br>架构</a></li>
+        <li><a href="12-leadership.html">领导<br>团队</a></li>
+        <li><a href="13-staff.html">职工<br>名录</a></li>
+        <li><a href="messages.html">院史<br>寄语</a></li>
+
+      </ul>
+      <div class="nav-actions">
+        <a href="../index.html#announcements" class="btn-announce">📢 公告</a>
+        <a href="https://www.dfy.dali.edu.cn" class="btn-official" target="_blank" rel="noopener">🌐 官网</a>
+        <button class="btn-theme" onclick="toggleTheme()" title="切换主题">☀️</button>
+        <a href="../index.html" class="btn-tour">← 返回主页</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 留言墙页面 -->
+  <div class="message-wall-wrapper">
+    <div class="message-wall-header fade-in">
+      <div class="page-breadcrumb" style="margin-bottom:20px;">
+        <a href="../index.html">云端院史馆</a>
+        <span class="page-breadcrumb-sep">/</span>
+        <span>院史寄语墙</span>
+      </div>
+      <h1 class="message-wall-title">💬 院史寄语墙</h1>
+      <p class="message-wall-sub">
+        每一位大附院人都是历史的书写者。在这里留下你的寄语、感悟或祝福，
+        让我们共同见证医院的成长与荣光。
+      </p>
+    </div>
+
+    <!-- 留言表单 -->
+    <div class="message-form-wrapper fade-in">
+      <form class="message-form" id="messageForm">
+        <div class="message-form-row">
+          <div class="message-form-group">
+            <label for="msgName">姓名</label>
+            <input type="text" id="msgName" name="name" placeholder="请输入您的姓名" maxlength="20">
+          </div>
+          <div class="message-form-group">
+            <label for="msgDept">科室/部门</label>
+            <input type="text" id="msgDept" name="department" placeholder="如：内科 / 党政办" maxlength="30">
+          </div>
+        </div>
+        <div class="message-form-group">
+          <label for="msgContent">寄语内容</label>
+          <textarea id="msgContent" name="content" placeholder="写下您对医院的祝福、感悟或期待..." maxlength="500" required></textarea>
+        </div>
+        <div class="message-form-actions">
+          <span class="message-form-tip">💡 留言保存在本地浏览器，刷新页面不会丢失</span>
+          <button type="submit" class="btn-submit-msg">发布寄语</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 留言列表 -->
+    <div class="messages-grid" id="messagesGrid">
+      <!-- 留言由 JS 动态渲染 -->
+    </div>
+  </div>
+
+  <!-- 翻页导航 -->
+  <div class="page-nav">
+    <a href="search.html" class="page-nav-btn">← 全站搜索</a>
+    <a href="../index.html" class="page-nav-btn home">🏛 院史馆首页</a>
+    <a href="timeline.html" class="page-nav-btn">院史时间轴 →</a>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="margin-top:0;border-top:1px solid var(--border);">
+      © 2026 大理大学第一附属医院（云南省第四人民医院）| 云端院史馆 · 院史寄语墙
+    </div>
+  </footer>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/features.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var mw = window.MuseumFeatures.MessageWall;
+      mw.render('messagesGrid');
+      mw.bindForm('messageForm', 'messagesGrid');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1019 @@
+/* ============================================================
+   院史馆功能增强 - features.js
+   包含：全站搜索、图片灯箱、留言墙、横向时间轴
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  // ======================================
+  // 工具函数
+  // ======================================
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function highlight(text, keyword) {
+    if (!keyword) return esc(text);
+    var regex = new RegExp('(' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return esc(text).replace(regex, '<mark>$1</mark>');
+  }
+
+  // 获取所有内容数据（优先 localStorage，fallback data.js）
+  function getAllContent() {
+    try {
+      var local = JSON.parse(localStorage.getItem('hm_content') || '{}');
+      if (local && Object.keys(local).length > 0) return local;
+    } catch (e) {}
+    if (window.HM_DATA && window.HM_DATA.content) {
+      return window.HM_DATA.content;
+    }
+    return {};
+  }
+
+  // 板块中文名称映射
+  var SECTION_NAMES = {
+    'history': '历史沿革',
+    'people': '人物风采',
+    'disciplines': '学科建设',
+    'campus': '院区建设',
+    'education': '教学人才',
+    'culture': '文化建设',
+    'tech': '科技交流',
+    'duty': '责任担当',
+    'honors': '荣誉殿堂',
+    'vision': '展望未来',
+    'structure': '组织架构',
+    'leadership': '领导团队',
+    'staff': '职工名录'
+  };
+
+  var SECTION_URLS = {
+    'history': '01-history.html',
+    'people': '02-people.html',
+    'disciplines': '03-disciplines.html',
+    'campus': '04-campus.html',
+    'education': '05-education.html',
+    'culture': '06-culture.html',
+    'tech': '07-tech.html',
+    'duty': '08-duty.html',
+    'honors': '09-honors.html',
+    'vision': '10-vision.html',
+    'structure': '11-structure.html',
+    'leadership': '12-leadership.html',
+    'staff': '13-staff.html'
+  };
+
+  // ======================================
+  // 1. 全站搜索功能
+  // ======================================
+  var SiteSearch = {
+    // 构建搜索索引：扁平化所有可搜索内容
+    buildIndex: function () {
+      var content = getAllContent();
+      var index = [];
+
+      for (var sectionId in content) {
+        if (!content.hasOwnProperty(sectionId)) continue;
+        var sec = content[sectionId];
+        var sectionName = SECTION_NAMES[sectionId] || sectionId;
+        var sectionUrl = '../pages/' + (SECTION_URLS[sectionId] || '');
+
+        // Hero 区
+        if (sec.hero) {
+          index.push({
+            section: sectionName,
+            sectionId: sectionId,
+            url: sectionUrl,
+            title: sec.hero.title || sectionName,
+            snippet: sec.hero.desc || sec.hero.subtitle || ''
+          });
+        }
+
+        // Blocks 内容块
+        if (Array.isArray(sec.blocks)) {
+          sec.blocks.forEach(function (blk) {
+            index.push({
+              section: sectionName,
+              sectionId: sectionId,
+              url: sectionUrl,
+              title: blk.title || '',
+              snippet: blk.text || blk.subtitle || ''
+            });
+          });
+        }
+
+        // Timeline 时间节点
+        if (Array.isArray(sec.timeline)) {
+          sec.timeline.forEach(function (t) {
+            index.push({
+              section: sectionName,
+              sectionId: sectionId,
+              url: sectionUrl,
+              title: t.year + ' - ' + (t.title || ''),
+              snippet: t.desc || ''
+            });
+          });
+        }
+
+        // 人物 / 领导
+        var peopleLists = ['leaders', 'profiles', 'profiles2'];
+        peopleLists.forEach(function (key) {
+          if (Array.isArray(sec[key])) {
+            sec[key].forEach(function (p) {
+              index.push({
+                section: sectionName,
+                sectionId: sectionId,
+                url: sectionUrl,
+                title: p.name || '',
+                snippet: (p.role || p.title || p.dept || '') + ' ' + (p.desc || p.duty || p.resume || '')
+              });
+            });
+          }
+        });
+
+        // 数据卡片
+        if (Array.isArray(sec.dataCards)) {
+          sec.dataCards.forEach(function (dc) {
+            index.push({
+              section: sectionName,
+              sectionId: sectionId,
+              url: sectionUrl,
+              title: dc.label || '',
+              snippet: dc.value + ' ' + (dc.note || '')
+            });
+          });
+        }
+
+        // 公告（首页数据）
+        if (sectionId === 'announcements' && Array.isArray(sec)) {
+          sec.forEach(function (a) {
+            index.push({
+              section: '医院公告',
+              sectionId: 'announcements',
+              url: '../index.html#announcements',
+              title: a.title || '',
+              snippet: a.desc || ''
+            });
+          });
+        }
+      }
+
+      return index;
+    },
+
+    // 执行搜索
+    search: function (keyword) {
+      if (!keyword || keyword.trim().length < 1) return [];
+      var kw = keyword.trim().toLowerCase();
+      var index = this.buildIndex();
+      var results = [];
+
+      index.forEach(function (item) {
+        var titleMatch = item.title && item.title.toLowerCase().indexOf(kw) > -1;
+        var snippetMatch = item.snippet && item.snippet.toLowerCase().indexOf(kw) > -1;
+        var sectionMatch = item.section && item.section.toLowerCase().indexOf(kw) > -1;
+
+        if (titleMatch || snippetMatch || sectionMatch) {
+          // 计算权重：标题命中 > 板块命中 > 摘要命中
+          var score = 0;
+          if (titleMatch) score += 10;
+          if (sectionMatch) score += 5;
+          if (snippetMatch) score += 2;
+
+          results.push({
+            section: item.section,
+            sectionId: item.sectionId,
+            url: item.url,
+            title: item.title,
+            snippet: this._extractSnippet(item.snippet, kw),
+            score: score
+          });
+        }
+      }.bind(this));
+
+      // 按权重排序
+      results.sort(function (a, b) { return b.score - a.score; });
+      return results;
+    },
+
+    // 提取关键词附近的摘要片段
+    _extractSnippet: function (text, kw) {
+      if (!text) return '';
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(kw);
+      if (idx === -1) return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+
+      var start = Math.max(0, idx - 40);
+      var end = Math.min(text.length, idx + kw.length + 80);
+      var snippet = text.substring(start, end);
+      if (start > 0) snippet = '...' + snippet;
+      if (end < text.length) snippet = snippet + '...';
+      return snippet;
+    },
+
+    // 渲染搜索结果
+    renderResults: function (containerId, keyword) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+
+      var results = this.search(keyword);
+
+      if (results.length === 0) {
+        container.innerHTML =
+          '<div class="search-empty">' +
+          '<div class="search-empty-icon">🔍</div>' +
+          '<div>未找到与 "<strong>' + esc(keyword) + '</strong>" 相关的内容</div>' +
+          '<div style="font-size:0.85rem;margin-top:8px;opacity:0.7;">试试其他关键词，如：历史、专家、三甲、抗疫等</div>' +
+          '</div>';
+        return;
+      }
+
+      container.innerHTML = results.map(function (r) {
+        return '<a class="search-result-item" href="' + esc(r.url) + '" style="text-decoration:none;display:block;">' +
+          '<span class="search-result-section">' + esc(r.section) + '</span>' +
+          '<div class="search-result-title">' + highlight(r.title, keyword) + '</div>' +
+          '<div class="search-result-snippet">' + highlight(r.snippet, keyword) + '</div>' +
+          '</a>';
+      }).join('');
+    }
+  };
+
+  // ======================================
+  // 2. 图片灯箱 Lightbox
+  // ======================================
+  var Lightbox = {
+    images: [], // 当前灯箱图集 [{src, caption}]
+    currentIndex: 0,
+    overlay: null,
+
+    init: function () {
+      // 创建灯箱 DOM
+      this.overlay = document.createElement('div');
+      this.overlay.className = 'lightbox-overlay';
+      this.overlay.innerHTML =
+        '<div class="lightbox-img-wrapper">' +
+        '<button class="lightbox-close" aria-label="关闭">✕</button>' +
+        '<button class="lightbox-prev" aria-label="上一张">‹</button>' +
+        '<img src="" alt="">' +
+        '<button class="lightbox-next" aria-label="下一张">›</button>' +
+        '<div class="lightbox-caption"></div>' +
+        '</div>';
+      document.body.appendChild(this.overlay);
+
+      // 事件绑定
+      var self = this;
+      this.overlay.querySelector('.lightbox-close').addEventListener('click', function () { self.close(); });
+      this.overlay.querySelector('.lightbox-prev').addEventListener('click', function (e) { e.stopPropagation(); self.prev(); });
+      this.overlay.querySelector('.lightbox-next').addEventListener('click', function (e) { e.stopPropagation(); self.next(); });
+      this.overlay.addEventListener('click', function (e) {
+        if (e.target === self.overlay) self.close();
+      });
+
+      // 键盘控制
+      document.addEventListener('keydown', function (e) {
+        if (!self.overlay.classList.contains('active')) return;
+        if (e.key === 'Escape') self.close();
+        if (e.key === 'ArrowLeft') self.prev();
+        if (e.key === 'ArrowRight') self.next();
+      });
+    },
+
+    // 打开灯箱，images 为数组，index 为起始索引
+    open: function (images, index) {
+      if (!this.overlay) this.init();
+      this.images = images || [];
+      this.currentIndex = index || 0;
+      this._showCurrent();
+      this.overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    },
+
+    close: function () {
+      this.overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    },
+
+    prev: function () {
+      if (this.images.length <= 1) return;
+      this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+      this._showCurrent();
+    },
+
+    next: function () {
+      if (this.images.length <= 1) return;
+      this.currentIndex = (this.currentIndex + 1) % this.images.length;
+      this._showCurrent();
+    },
+
+    _showCurrent: function () {
+      var img = this.overlay.querySelector('img');
+      var caption = this.overlay.querySelector('.lightbox-caption');
+      var item = this.images[this.currentIndex];
+      if (!item) return;
+      img.src = item.src;
+      img.alt = item.caption || '';
+      caption.textContent = item.caption || (this.currentIndex + 1) + ' / ' + this.images.length;
+
+      // 单图隐藏左右按钮
+      var prevBtn = this.overlay.querySelector('.lightbox-prev');
+      var nextBtn = this.overlay.querySelector('.lightbox-next');
+      if (this.images.length <= 1) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+      } else {
+        prevBtn.style.display = '';
+        nextBtn.style.display = '';
+      }
+    },
+
+    // 自动绑定画廊元素
+    bindGallery: function (gallerySelector) {
+      var gallery = document.querySelector(gallerySelector);
+      if (!gallery) return;
+
+      var items = gallery.querySelectorAll('.gallery-item');
+      var images = [];
+
+      items.forEach(function (item, idx) {
+        // 提取背景图或 img 的 src
+        var src = '';
+        var bgImage = item.style.backgroundImage;
+        if (bgImage && bgImage !== 'none') {
+          src = bgImage.replace(/url\(['"]?([^'"]+)['"]?\)/, '$1');
+        } else {
+          var imgEl = item.querySelector('img');
+          if (imgEl) src = imgEl.src;
+        }
+
+        if (!src) return;
+
+        var label = item.querySelector('.gallery-item-label');
+        images.push({
+          src: src,
+          caption: label ? label.textContent.trim() : ''
+        });
+
+        item.classList.add('lightbox-item');
+        item.addEventListener('click', function (e) {
+          e.preventDefault();
+          Lightbox.open(images, idx);
+        });
+      });
+    }
+  };
+
+  // ======================================
+  // 3. 留言墙 Message Wall
+  // ======================================
+  var MessageWall = {
+    STORAGE_KEY: 'hm_messages',
+
+    // 获取所有留言
+    getMessages: function () {
+      try {
+        return JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]');
+      } catch (e) { return []; }
+    },
+
+    // 保存留言
+    saveMessage: function (data) {
+      var messages = this.getMessages();
+      var newMsg = {
+        id: Date.now(),
+        name: data.name || '匿名职工',
+        department: data.department || '',
+        content: data.content || '',
+        createdAt: new Date().toISOString()
+      };
+      messages.unshift(newMsg); // 最新在前
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(messages));
+      return newMsg;
+    },
+
+    // 删除留言（管理员用，预留接口）
+    deleteMessage: function (id) {
+      var messages = this.getMessages();
+      messages = messages.filter(function (m) { return m.id !== id; });
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(messages));
+    },
+
+    // 格式化日期
+    formatDate: function (isoStr) {
+      var d = new Date(isoStr);
+      var y = d.getFullYear();
+      var m = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      var h = String(d.getHours()).padStart(2, '0');
+      var min = String(d.getMinutes()).padStart(2, '0');
+      return y + '-' + m + '-' + day + ' ' + h + ':' + min;
+    },
+
+    // 获取头像文字（姓名首字）
+    getAvatarChar: function (name) {
+      if (!name) return '匿';
+      return name.charAt(0);
+    },
+
+    // 渲染留言列表
+    render: function (containerId) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+
+      var messages = this.getMessages();
+
+      if (messages.length === 0) {
+        container.innerHTML =
+          '<div class="messages-empty">' +
+          '<div class="messages-empty-icon">💬</div>' +
+          '<div>还没有留言，快来写下第一条寄语吧！</div>' +
+          '</div>';
+        return;
+      }
+
+      container.innerHTML = messages.map(function (msg) {
+        var deptHtml = msg.department
+          ? '<span class="message-dept">' + esc(msg.department) + '</span>'
+          : '';
+        return '<div class="message-card">' +
+          '<div class="message-card-header">' +
+          '<div class="message-avatar">' + esc(this.getAvatarChar(msg.name)) + '</div>' +
+          '<div class="message-meta">' +
+          '<div class="message-name">' + esc(msg.name) + '</div>' +
+          '<div class="message-date">' + this.formatDate(msg.createdAt) + '</div>' +
+          '</div>' +
+          '</div>' +
+          '<div class="message-content">' + esc(msg.content).replace(/\n/g, '<br>') + '</div>' +
+          deptHtml +
+          '</div>';
+      }.bind(this)).join('');
+    },
+
+    // 绑定表单提交
+    bindForm: function (formId, listId) {
+      var form = document.getElementById(formId);
+      if (!form) return;
+
+      var self = this;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var nameInput = form.querySelector('input[name="name"]');
+        var deptInput = form.querySelector('input[name="department"]');
+        var contentInput = form.querySelector('textarea[name="content"]');
+
+        var content = contentInput ? contentInput.value.trim() : '';
+        if (!content) {
+          alert('请输入留言内容');
+          return;
+        }
+
+        self.saveMessage({
+          name: nameInput ? nameInput.value.trim() : '',
+          department: deptInput ? deptInput.value.trim() : '',
+          content: content
+        });
+
+        // 重置表单
+        if (contentInput) contentInput.value = '';
+        // 重新渲染
+        self.render(listId);
+
+        // 简单提示
+        var btn = form.querySelector('.btn-submit-msg');
+        if (btn) {
+          var origText = btn.textContent;
+          btn.textContent = '✓ 发布成功';
+          setTimeout(function () { btn.textContent = origText; }, 1500);
+        }
+      });
+    }
+  };
+
+  // ======================================
+  // 4. 横向时间轴渲染
+  // ======================================
+  var HorizontalTimeline = {
+    render: function (containerId, timelineData) {
+      var container = document.getElementById(containerId);
+      if (!container || !Array.isArray(timelineData)) return;
+
+      var nodesHtml = timelineData.map(function (item, idx) {
+        var position = idx % 2 === 0 ? 'ht-top' : 'ht-bottom';
+        var icon = item.icon || '📌';
+        return '<div class="ht-node ' + position + '">' +
+          '<div class="ht-dot"></div>' +
+          '<div class="ht-year">' + esc(item.year) + '</div>' +
+          '<div class="ht-card">' +
+          '<div class="ht-card-icon">' + icon + '</div>' +
+          '<div class="ht-card-title">' + esc(item.title) + '</div>' +
+          '<div class="ht-card-desc">' + esc(item.desc || '') + '</div>' +
+          '</div>' +
+          '</div>';
+      }).join('');
+
+      container.innerHTML =
+        '<div class="ht-track">' +
+        '<div class="ht-line"></div>' +
+        '<div class="ht-nodes">' + nodesHtml + '</div>' +
+        '</div>';
+    },
+
+    // 从现有数据中提取时间轴数据并渲染
+    renderFromContent: function (containerId) {
+      var content = getAllContent();
+      var history = content.history;
+      if (!history || !Array.isArray(history.timeline)) {
+        // 没有数据时使用默认示例数据
+        var defaultData = [
+          { year: '1991', title: '医院获批成立', desc: '经云南省人民政府批准，大理学院附属医院正式立项筹建。', icon: '🏛️' },
+          { year: '1997', title: '正式开诊运营', desc: '医院完成一期建设，正式面向社会提供医疗服务。', icon: '🏥' },
+          { year: '2003', title: '并入大理学院', desc: '正式成为大理学院直属附属医院，教学医疗融合发展。', icon: '🎓' },
+          { year: '2008', title: '二期扩建完成', desc: '住院大楼落成启用，床位规模大幅提升。', icon: '🏗️' },
+          { year: '2015', title: '三甲评审通过', desc: '成功通过三级甲等综合医院评审，迈入高质量发展新阶段。', icon: '🏆' },
+          { year: '2020', title: '驰援抗疫一线', desc: '派出多批医疗队驰援武汉、瑞丽等地，彰显大附院担当。', icon: '🚑' },
+          { year: '2023', title: '凤仪院区启用', desc: '一院两区格局形成，区域医疗中心建设加速推进。', icon: '🌟' },
+          { year: '2026', title: '建院35周年', desc: '三十五载砥砺奋进，向着滇西医疗高地目标持续迈进。', icon: '🎂' }
+        ];
+        this.render(containerId, defaultData);
+        return;
+      }
+      this.render(containerId, history.timeline);
+    }
+  };
+
+  // ======================================
+  // 导航栏搜索框初始化
+  // ======================================
+  function initNavSearch() {
+    var navActions = document.querySelector('.nav-actions');
+    if (!navActions) return;
+    if (document.querySelector('.nav-search-box')) return; // 已初始化
+
+    var searchBox = document.createElement('div');
+    searchBox.className = 'nav-search-box';
+    searchBox.innerHTML =
+      '<span class="nav-search-icon">🔍</span>' +
+      '<input type="text" class="nav-search-input" placeholder="搜索院史..." id="navSearchInput">';
+
+    // 插入到主题切换按钮前面
+    var themeBtn = navActions.querySelector('.btn-theme');
+    if (themeBtn) {
+      navActions.insertBefore(searchBox, themeBtn);
+    } else {
+      navActions.insertBefore(searchBox, navActions.firstChild);
+    }
+
+    var input = searchBox.querySelector('input');
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && input.value.trim()) {
+        window.location.href = '../pages/search.html?q=' + encodeURIComponent(input.value.trim());
+      }
+    });
+  }
+
+  // ======================================
+  // 5. 人物详情弹窗
+  // ======================================
+  var PersonModal = {
+    _overlay: null,
+
+    init: function () {
+      // 自动绑定人物卡片点击
+      var cards = document.querySelectorAll('.leader-card, .profile-card');
+      cards.forEach(function (card) {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', function () {
+          var name = card.querySelector('.leader-name, .profile-name')?.textContent || '';
+          var position = card.querySelector('.leader-position, .profile-position')?.textContent || '';
+          var years = card.querySelector('.leader-years, .profile-years')?.textContent || '';
+          var desc = card.querySelector('.leader-desc, .profile-desc')?.textContent || '';
+          var era = card.querySelector('.leader-era, .profile-era')?.textContent || '';
+          var photo = card.querySelector('img')?.src || '';
+
+          PersonModal.open({
+            name: name,
+            position: position,
+            years: years,
+            desc: desc,
+            era: era,
+            photo: photo
+          });
+        });
+      });
+    },
+
+    open: function (person) {
+      if (!this._overlay) {
+        this._build();
+      }
+
+      // 填充数据
+      var nameEl = this._overlay.querySelector('.person-modal-name');
+      var posEl = this._overlay.querySelector('.person-modal-position');
+      var yearsEl = this._overlay.querySelector('.person-modal-years');
+      var descEl = this._overlay.querySelector('.person-modal-desc');
+      var eraEl = this._overlay.querySelector('.person-modal-era');
+      var avatarEl = this._overlay.querySelector('.person-modal-avatar');
+
+      nameEl.textContent = person.name || '未知';
+      posEl.textContent = person.position || '';
+      yearsEl.textContent = person.years || '';
+      descEl.textContent = person.desc || '暂无详细介绍';
+      eraEl.textContent = person.era || '';
+      eraEl.style.display = person.era ? 'inline-block' : 'none';
+
+      if (person.photo) {
+        avatarEl.innerHTML = '<img src="' + person.photo + '" alt="' + person.name + '">';
+      } else {
+        avatarEl.textContent = person.name ? person.name.charAt(0) : '?';
+      }
+
+      this._overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    },
+
+    close: function () {
+      if (this._overlay) {
+        this._overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    },
+
+    _build: function () {
+      var overlay = document.createElement('div');
+      overlay.className = 'person-modal-overlay';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.innerHTML =
+        '<div class="person-modal">' +
+          '<button class="person-modal-close" aria-label="关闭">✕</button>' +
+          '<div class="person-modal-header">' +
+            '<div class="person-modal-avatar"></div>' +
+            '<div class="person-modal-info">' +
+              '<h3 class="person-modal-name"></h3>' +
+              '<div class="person-modal-position"></div>' +
+              '<div class="person-modal-years"></div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="person-modal-body">' +
+            '<span class="person-modal-era"></span>' +
+            '<p class="person-modal-desc"></p>' +
+            '<div class="person-modal-section">' +
+              '<h4>主要贡献</h4>' +
+              '<p>点击人物卡片查看更多详细信息。可在后台管理系统中补充完善人物履历、学术成就、代表作品等内容。</p>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+      document.body.appendChild(overlay);
+      this._overlay = overlay;
+
+      // 关闭事件
+      overlay.querySelector('.person-modal-close').addEventListener('click', function () {
+        PersonModal.close();
+      });
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) PersonModal.close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') PersonModal.close();
+      });
+    }
+  };
+
+  // ======================================
+  // 6. 视觉增强模块
+  // ======================================
+  var Visuals = {
+    // 数字滚动计数动画
+    animateCounters: function () {
+      var counters = document.querySelectorAll('.stat-value, .dc-value-display, .data-card-value');
+      if (counters.length === 0) return;
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            if (el.dataset.counted) return;
+            el.dataset.counted = 'true';
+            Visuals._countUp(el);
+            observer.unobserve(el);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      counters.forEach(function (el) { observer.observe(el); });
+    },
+
+    _countUp: function (el) {
+      var text = el.textContent;
+      // 提取数字部分
+      var match = text.match(/([\d.]+)/);
+      if (!match) return;
+
+      var target = parseFloat(match[1]);
+      var suffix = text.replace(match[1], '');
+      var isFloat = match[1].indexOf('.') > -1;
+      var duration = 1500;
+      var startTime = null;
+
+      el.classList.add('counting');
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        // easeOutQuart
+        var eased = 1 - Math.pow(1 - progress, 4);
+        var current = target * eased;
+
+        var display = isFloat
+          ? current.toFixed(2)
+          : Math.floor(current).toLocaleString();
+
+        el.innerHTML = display + (suffix ? '<small>' + suffix.replace(/<\/?small>/g, '') + '</small>' : '');
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.classList.remove('counting');
+        }
+      }
+
+      requestAnimationFrame(step);
+    },
+
+    // Hero 背景视差
+    initParallax: function () {
+      var heroBg = document.querySelector('.hero-bg, .page-hero-bg');
+      if (!heroBg) return;
+
+      window.addEventListener('scroll', function () {
+        var scrollY = window.scrollY;
+        if (scrollY < window.innerHeight) {
+          heroBg.style.transform = 'translateY(' + (scrollY * 0.3) + 'px) scale(1.05)';
+        }
+      }, { passive: true });
+    },
+
+    // 打字机效果（替换hero-flip）
+    initTypewriter: function () {
+      var track = document.getElementById('heroFlipTrack');
+      if (!track) return;
+
+      var items = track.querySelectorAll('.hero-flip-item');
+      if (items.length === 0) return;
+
+      var texts = [];
+      items.forEach(function (item) { texts.push(item.textContent.trim()); });
+
+      // 替换为打字机容器
+      var container = document.createElement('span');
+      container.className = 'hero-typewriter';
+      var cursor = document.createElement('span');
+      cursor.className = 'hero-typewriter-cursor';
+      track.parentNode.replaceChild(container, track);
+      track.parentNode.appendChild(cursor);
+
+      var currentIndex = 0;
+      var charIndex = 0;
+      var isDeleting = false;
+
+      function tick() {
+        var currentText = texts[currentIndex];
+
+        if (!isDeleting) {
+          charIndex++;
+          container.textContent = currentText.substring(0, charIndex);
+          if (charIndex === currentText.length) {
+            isDeleting = true;
+            setTimeout(tick, 2000);
+            return;
+          }
+          setTimeout(tick, 80);
+        } else {
+          charIndex--;
+          container.textContent = currentText.substring(0, charIndex);
+          if (charIndex === 0) {
+            isDeleting = false;
+            currentIndex = (currentIndex + 1) % texts.length;
+            setTimeout(tick, 500);
+            return;
+          }
+          setTimeout(tick, 40);
+        }
+      }
+
+      setTimeout(tick, 800);
+    },
+
+    // 滚动渐入动画（IntersectionObserver）
+    initScrollReveal: function () {
+      var elements = document.querySelectorAll('.fade-in, .slide-left, .slide-right, .scale-in');
+      if (elements.length === 0) return;
+
+      // 先把所有元素设为初始状态
+      elements.forEach(function (el) {
+        el.style.opacity = '0';
+      });
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            entry.target.style.opacity = '';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      elements.forEach(function (el) { observer.observe(el); });
+    },
+
+    // 图片懒加载淡入
+    initLazyImages: function () {
+      var images = document.querySelectorAll('img');
+      if (images.length === 0) return;
+
+      images.forEach(function (img) {
+        if (img.complete && img.naturalWidth > 0) {
+          img.classList.add('loaded');
+          return;
+        }
+        img.classList.add('lazy-img');
+        img.addEventListener('load', function () {
+          img.classList.add('loaded');
+        });
+      });
+    },
+
+    // 按钮涟漪效果
+    initRipple: function () {
+      var buttons = document.querySelectorAll('.btn-primary, .btn-outline, .btn-tour, .btn-submit-msg');
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          var rect = btn.getBoundingClientRect();
+          var ripple = document.createElement('span');
+          ripple.className = 'btn-ripple';
+          var size = Math.max(rect.width, rect.height);
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+          ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+          btn.appendChild(ripple);
+          setTimeout(function () { ripple.remove(); }, 600);
+        });
+      });
+    },
+
+    // 导航栏滚动变色
+    initNavScroll: function () {
+      var navbar = document.querySelector('.navbar');
+      if (!navbar) return;
+
+      function onScroll() {
+        if (window.scrollY > 30) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    },
+
+    // 移动端底部导航
+    initMobileNav: function () {
+      if (window.innerWidth > 768) return;
+      if (document.querySelector('.mobile-bottom-nav')) return;
+
+      var nav = document.createElement('div');
+      nav.className = 'mobile-bottom-nav';
+      nav.innerHTML =
+        '<a href="../index.html" class="mobile-nav-item"><span class="icon">🏛</span><span>首页</span></a>' +
+        '<a href="timeline.html" class="mobile-nav-item"><span class="icon">⏳</span><span>时间轴</span></a>' +
+        '<a href="search.html" class="mobile-nav-item"><span class="icon">🔍</span><span>搜索</span></a>' +
+        '<a href="messages.html" class="mobile-nav-item"><span class="icon">💬</span><span>寄语</span></a>' +
+        '<a href="04-campus.html" class="mobile-nav-item"><span class="icon">🏥</span><span>院区</span></a>';
+
+      // 首页路径修正
+      if (location.pathname.indexOf('/pages/') === -1) {
+        nav.innerHTML =
+          '<a href="index.html" class="mobile-nav-item active"><span class="icon">🏛</span><span>首页</span></a>' +
+          '<a href="pages/timeline.html" class="mobile-nav-item"><span class="icon">⏳</span><span>时间轴</span></a>' +
+          '<a href="pages/search.html" class="mobile-nav-item"><span class="icon">🔍</span><span>搜索</span></a>' +
+          '<a href="pages/messages.html" class="mobile-nav-item"><span class="icon">💬</span><span>寄语</span></a>' +
+          '<a href="pages/04-campus.html" class="mobile-nav-item"><span class="icon">🏥</span><span>院区</span></a>';
+      }
+
+      document.body.appendChild(nav);
+    },
+
+    // 无障碍：跳过导航链接
+    initSkipLink: function () {
+      if (document.querySelector('.skip-link')) return;
+      var skip = document.createElement('a');
+      skip.className = 'skip-link';
+      skip.href = '#main-content';
+      skip.textContent = '跳过导航，直达内容';
+      document.body.insertBefore(skip, document.body.firstChild);
+
+      // 给主内容区加id
+      var main = document.querySelector('.section-body, .search-page-wrapper, .timeline-page-wrapper, .message-wall-wrapper');
+      if (main && !main.id) {
+        main.id = 'main-content';
+      }
+    },
+
+    // 无障碍：自动补充图片alt属性
+    initImageAlt: function () {
+      var images = document.querySelectorAll('img:not([alt])');
+      images.forEach(function (img) {
+        // 从src提取文件名作为alt
+        var src = img.getAttribute('src') || '';
+        var name = src.split('/').pop().replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ');
+        img.setAttribute('alt', name || '院史馆图片');
+      });
+    },
+
+    // 一键初始化全部
+    initAll: function () {
+      this.initNavScroll();
+      this.initParallax();
+      this.initScrollReveal();
+      this.initLazyImages();
+      this.initRipple();
+      this.animateCounters();
+      this.initTypewriter();
+      this.initMobileNav();
+      this.initSkipLink();
+      this.initImageAlt();
+    }
+  };
+
+  // ======================================
+  // ======================================
+  // 7. 荣誉殿堂年代筛选
+  // ======================================
+  var HonorsFilter = {
+    init: function () {
+      var filters = document.querySelectorAll('.honor-filter');
+      var groups = document.querySelectorAll('.honor-era-group');
+      if (!filters.length) return;
+
+      filters.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var era = btn.getAttribute('data-era');
+
+          // 更新按钮状态
+          filters.forEach(function (f) { f.classList.remove('active'); });
+          btn.classList.add('active');
+
+          // 显示/隐藏分组
+          groups.forEach(function (g) {
+            if (era === 'all' || g.getAttribute('data-era') === era) {
+              g.classList.remove('hidden');
+            } else {
+              g.classList.add('hidden');
+            }
+          });
+        });
+      });
+    }
+  };
+
+  // 暴露到全局
+  // ======================================
+  window.MuseumFeatures = {
+    SiteSearch: SiteSearch,
+    Lightbox: Lightbox,
+    MessageWall: MessageWall,
+    HorizontalTimeline: HorizontalTimeline,
+    PersonModal: PersonModal,
+    HonorsFilter: HonorsFilter,
+    Visuals: Visuals,
+    initNavSearch: initNavSearch
+  };
+
+  // 自动初始化（页面加载后）
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      initNavSearch();
+      Visuals.initAll();
+      PersonModal.init();
+      HonorsFilter.init();
+    });
+  } else {
+    initNavSearch();
+    Visuals.initAll();
+    PersonModal.init();
+    HonorsFilter.init();
+  }
+
+})();

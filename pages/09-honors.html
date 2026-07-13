@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>荣誉殿堂 · 云端院史馆</title>
+  <meta name="description" content="大理大学第一附属医院荣誉殿堂，国家级、省级、市级荣誉奖项，建院以来重要荣誉成就展示。">
+  <meta name="keywords" content="大理大学第一附属医院,云南省第四人民医院,云端院史馆,医院历史,院史,大理医院,三甲医院,滇西医疗">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/sections.css">
   <link rel="stylesheet" href="../css/visuals.css">
+  <link rel="stylesheet" href="../css/features.css">
 </head>
 <body data-section="honors">
 
@@ -32,6 +36,8 @@
         <li><a href="11-structure.html">组织<br>架构</a></li>
         <li><a href="12-leadership.html">领导<br>团队</a></li>
         <li><a href="13-staff.html">职工<br>名录</a></li>
+        <li><a href="messages.html">院史<br>寄语</a></li>
+
       </ul>
       <div class="nav-actions">
         <a href="../index.html#announcements" class="btn-announce">📢 公告</a>
@@ -142,38 +148,97 @@
       <div class="block-header">
         <div class="block-num">03 · 珍藏 · 重要荣誉</div>
         <h2 class="block-title">重要荣誉一览</h2>
-        <p class="block-sub">国家级、省部级重要荣誉资质</p>
+        <p class="block-sub">按年代分组，见证发展足迹</p>
       </div>
-      <div class="honors-wall">
-        <div class="honor-item fade-in stagger-1">
-          <div class="honor-medal">🏥</div>
-          <h4>国家三级甲等综合医院</h4>
-          <p>2015年</p>
+
+      <!-- 年代筛选标签 -->
+      <div class="honor-filters">
+        <button class="honor-filter active" data-era="all">全部</button>
+        <button class="honor-filter" data-era="2010s">2010年代</button>
+        <button class="honor-filter" data-era="2020s">2020年代</button>
+        <button class="honor-filter" data-era="ongoing">持续建设</button>
+      </div>
+
+      <!-- 2010年代 -->
+      <div class="honor-era-group" data-era="2010s">
+        <div class="honor-era-title">
+          <span class="honor-era-line"></span>
+          <span class="honor-era-text">2010年代 · 跨越升级</span>
+          <span class="honor-era-line"></span>
         </div>
-        <div class="honor-item fade-in stagger-2">
-          <div class="honor-medal">🎓</div>
-          <h4>国家临床教学培训示范中心</h4>
-          <p>国家级</p>
+        <div class="honors-wall">
+          <div class="honor-item fade-in stagger-1">
+            <div class="honor-medal">🏥</div>
+            <h4>国家三级甲等综合医院</h4>
+            <p>2015年 · 国家级认证</p>
+          </div>
+          <div class="honor-item fade-in stagger-2">
+            <div class="honor-medal">🎓</div>
+            <h4>国家临床教学培训示范中心</h4>
+            <p>2018年 · 国家级</p>
+          </div>
+          <div class="honor-item fade-in stagger-3">
+            <div class="honor-medal">🔬</div>
+            <h4>云南省科技进步奖</h4>
+            <p>多项 · 省级科技奖项</p>
+          </div>
+          <div class="honor-item fade-in stagger-4">
+            <div class="honor-medal">📜</div>
+            <h4>省级教学成果一等奖</h4>
+            <p>省级教学最高荣誉</p>
+          </div>
         </div>
-        <div class="honor-item fade-in stagger-3">
-          <div class="honor-medal">🔬</div>
-          <h4>云南省科技进步奖</h4>
-          <p>多项</p>
+      </div>
+
+      <!-- 2020年代 -->
+      <div class="honor-era-group" data-era="2020s">
+        <div class="honor-era-title">
+          <span class="honor-era-line"></span>
+          <span class="honor-era-text">2020年代 · 高质量发展</span>
+          <span class="honor-era-line"></span>
         </div>
-        <div class="honor-item fade-in stagger-4">
-          <div class="honor-medal">📜</div>
-          <h4>省级教学成果一等奖</h4>
-          <p>省级</p>
+        <div class="honors-wall">
+          <div class="honor-item fade-in stagger-1">
+            <div class="honor-medal">🏅</div>
+            <h4>9个省级重点专科</h4>
+            <p>2022年 · 十四五立项</p>
+          </div>
+          <div class="honor-item fade-in stagger-2">
+            <div class="honor-medal">🩺</div>
+            <h4>创伤/危重孕产妇双中心</h4>
+            <p>省级救治中心认证</p>
+          </div>
+          <div class="honor-item fade-in stagger-3">
+            <div class="honor-medal">🧪</div>
+            <h4>8个省医学研究分中心</h4>
+            <p>省卫健委认定</p>
+          </div>
+          <div class="honor-item fade-in stagger-4">
+            <div class="honor-medal">🦠</div>
+            <h4>抗疫先进集体</h4>
+            <p>2020年 · 省级表彰</p>
+          </div>
         </div>
-        <div class="honor-item fade-in stagger-1">
-          <div class="honor-medal">🩺</div>
-          <h4>创伤/危重孕产妇中心</h4>
-          <p>省级双中心</p>
+      </div>
+
+      <!-- 持续建设 -->
+      <div class="honor-era-group" data-era="ongoing">
+        <div class="honor-era-title">
+          <span class="honor-era-line"></span>
+          <span class="honor-era-text">持续积累 · 科研成果</span>
+          <span class="honor-era-line"></span>
         </div>
-        <div class="honor-item fade-in stagger-2">
-          <div class="honor-medal">🧪</div>
-          <h4>8个省医学研究分中心</h4>
-          <p>省卫健委认定</p>
+        <div class="honors-wall">
+          <div class="honor-item fade-in stagger-1">
+            <div class="honor-medal">📄</div>
+            <h4>193篇SCI论文</h4>
+            <p>国际学术影响力</p>
+          </div>
+          <div class="honor-item fade-in stagger-2">
+            <div class="honor-medal">💡</div>
+            <h4>102项专利授权</h4>
+            <p>自主知识产权</p>
+          </div>
         </div>
       </div>
     </div>
@@ -213,5 +278,6 @@
 
   <script src="../js/data.js"></script>
   <script src="../js/main.js"></script>
+  <script src="../js/features.js"></script>
 </body>
 </html>
