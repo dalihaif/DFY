@@ -440,16 +440,183 @@ function getContent() {
   console.log('[Admin getContent] 读取 hm_content，sections=' + Object.keys(obj).length + '，staff.profiles=' + sc + '条');
   return obj;
 }
-function saveContent(data) {
+function saveContent(data, label) {
   try {
     var json = JSON.stringify(data);
     localStorage.setItem('hm_content', json);
     localStorage.setItem('hm_last_edit', Date.now().toString());
     var sc = data && data.staff && Array.isArray(data.staff.profiles) ? data.staff.profiles.length : 0;
     console.log('[Admin saveContent] 已保存 hm_content，大小=' + (json.length/1024).toFixed(1) + 'KB，staff.profiles=' + sc + '条');
+
+    // 创建版本快照
+    createVersionSnapshot(data, label || '手动保存');
+
     return true;
   }
   catch(e) { if (typeof showToast === 'function') showToast('保存失败：存储空间不足，请清理浏览器缓存', 'danger'); console.error('[Admin saveContent] 失败:', e); return false; }
+}
+
+// ====== 版本快照管理 ======
+var VERSION_KEY = 'hm_versions';
+var MAX_VERSIONS = 10;
+
+function createVersionSnapshot(data, label) {
+  try {
+    var versions = getVersionHistory();
+    var snapshot = {
+      id: Date.now(),
+      timestamp: Date.now(),
+      label: label || '自动保存',
+      data: JSON.parse(JSON.stringify(data)), // 深拷贝
+      size: JSON.stringify(data).length
+    };
+    versions.unshift(snapshot); // 最新的放前面
+
+    // 只保留最近 MAX_VERSIONS 个
+    if (versions.length > MAX_VERSIONS) {
+      versions = versions.slice(0, MAX_VERSIONS);
+    }
+
+    localStorage.setItem(VERSION_KEY, JSON.stringify(versions));
+    console.log('[Version] 已创建快照: ' + label + '，共 ' + versions.length + ' 个版本');
+    return true;
+  } catch(e) {
+    console.error('[Version] 创建快照失败:', e);
+    return false;
+  }
+}
+
+function getVersionHistory() {
+  try {
+    var raw = localStorage.getItem(VERSION_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch(e) { return []; }
+}
+
+function restoreVersion(versionId) {
+  try {
+    var versions = getVersionHistory();
+    var ver = versions.find(function(v) { return v.id === versionId; });
+    if (!ver) {
+      $(document).Toasts('create', { class:'bg-danger', title:'回滚失败', body:'找不到对应版本', autohide:true, delay:3000 });
+      return false;
+    }
+
+    // 回滚前先创建当前版本的快照（防止误回滚）
+    var currentData = getContent();
+    createVersionSnapshot(currentData, '回滚前备份');
+
+    // 执行回滚
+    saveContent(ver.data, '回滚至 ' + formatVersionTime(ver.timestamp));
+
+    $(document).Toasts('create', { class:'bg-success', title:'回滚成功', body:'已恢复到 ' + formatVersionTime(ver.timestamp) + ' 的版本', autohide:true, delay:4000 });
+
+    // 刷新当前页面
+    var currentPage = window._currentPage || 'dashboard';
+    navigateTo(currentPage);
+
+    return true;
+  } catch(e) {
+    console.error('[Version] 回滚失败:', e);
+    $(document).Toasts('create', { class:'bg-danger', title:'回滚失败', body:e.message, autohide:true, delay:3000 });
+    return false;
+  }
+}
+
+function deleteVersion(versionId) {
+  try {
+    var versions = getVersionHistory();
+    versions = versions.filter(function(v) { return v.id !== versionId; });
+    localStorage.setItem(VERSION_KEY, JSON.stringify(versions));
+    return true;
+  } catch(e) { return false; }
+}
+
+function formatVersionTime(ts) {
+  var d = new Date(ts);
+  return pad2(d.getMonth()+1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds());
+}
+
+// ====== 富文本编辑器管理 ======
+var _richEditors = []; // 保存所有编辑器实例 {idx, editor, toolbar}
+
+function destroyRichTextEditors() {
+  _richEditors.forEach(function(item) {
+    try {
+      if (item.editor) item.editor.destroy();
+      if (item.toolbar) item.toolbar.destroy();
+    } catch(e) {}
+  });
+  _richEditors = [];
+}
+
+function initRichTextEditors(secId) {
+  // 检查wangEditor是否加载
+  if (!window.wangEditor || !window.wangEditor.createEditor) {
+    console.warn('[RichText] wangEditor 未加载，使用纯文本模式');
+    // 降级：显示textarea
+    $('.bl-text').show();
+    $('.richtext-wrap').hide();
+    return;
+  }
+
+  var { createEditor, createToolbar } = window.wangEditor;
+
+  $('.richtext-wrap').each(function() {
+    var idx = $(this).data('idx');
+    var $wrap = $(this);
+    var $textarea = $wrap.closest('.form-row').find('.bl-text');
+    var initialHtml = $textarea.val() || '<p><br></p>';
+
+    try {
+      var editor = createEditor({
+        selector: $wrap.find('.richtext-body')[0],
+        html: initialHtml,
+        config: {
+          placeholder: '请输入正文内容...',
+          onChange: function(ed) {
+            $textarea.val(ed.getHtml());
+          },
+          MENU_CONF: {
+            uploadImage: {
+              customUpload: function(file, insertFn) {
+                // 简单处理：转base64插入
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                  insertFn(e.target.result, file.name, e.target.result);
+                };
+                reader.readAsDataURL(file);
+              }
+            }
+          }
+        },
+        mode: 'default'
+      });
+
+      var toolbar = createToolbar({
+        editor: editor,
+        selector: $wrap.find('.richtext-toolbar')[0],
+        config: {
+          toolbarKeys: [
+            'headerSelect', 'bold', 'italic', 'underline', 'through',
+            '|', 'color', 'bgColor',
+            '|', 'list', 'justify',
+            '|', 'link', 'image',
+            '|', 'undo', 'redo'
+          ]
+        },
+        mode: 'default'
+      });
+
+      _richEditors.push({ idx: idx, editor: editor, toolbar: toolbar });
+    } catch(e) {
+      console.error('[RichText] 初始化失败:', e);
+      $textarea.show();
+      $wrap.hide();
+    }
+  });
+
+  console.log('[RichText] 初始化完成，共 ' + _richEditors.length + ' 个编辑器');
 }
 function safeSetItem(key, val) {
   try { localStorage.setItem(key, typeof val === 'string' ? val : JSON.stringify(val)); return true; }
@@ -491,11 +658,20 @@ function navigateTo(pageId) {
   if(pageId!=='dashboard') bc+='<li class="breadcrumb-item active">'+pageTitle+'</li>';
   else bc='<li class="breadcrumb-item active">控制台</li>';
   $('#breadcrumb').html(bc);
+
+  // 切换页面前销毁旧的富文本编辑器
+  destroyRichTextEditors();
+
   $('#main-content').html(html);
   $('#breadcrumb a[data-nav]').click(function(e){ e.preventDefault(); navigateTo($(this).data('nav')); });
 
   // 更新侧边栏状态徽章
   updateSidebarBadges();
+
+  // 如果是板块编辑页，初始化富文本编辑器
+  if (currentSection) {
+    setTimeout(function() { initRichTextEditors(pageId); }, 100);
+  }
 
   // 职工名录：通过自定义事件跨作用域触发初始化
   if (pageId === 'staff') {
@@ -691,7 +867,10 @@ function renderSectionEditor(sec) {
 
   // 顶部：板块基础信息
   html+='<div class="row"><div class="col-md-8"><div class="card card-primary card-outline"><div class="card-header"><h3 class="card-title"><i class="'+sec.icon+'" style="color:'+sec.color+'"></i> '+sec.name+' — 内容管理</h3>';
-  html+='<div class="card-tools"><button class="btn btn-sm btn-accent btn-save-content" data-section="'+sec.id+'"><i class="fas fa-save mr-1"></i>保存全部</button></div>';
+  html+='<div class="card-tools">';
+  html+='<a href="../pages/'+sec.page+'" target="_blank" class="btn btn-sm btn-outline-info mr-2"><i class="fas fa-eye mr-1"></i>预览此页</a>';
+  html+='<button class="btn btn-sm btn-accent btn-save-content" data-section="'+sec.id+'"><i class="fas fa-save mr-1"></i>保存全部</button>';
+  html+='</div>';
   html+='</div><div class="card-body" id="section-editor-body">';
 
   // ====== index 首页专属编辑器 ======
@@ -914,8 +1093,17 @@ function renderBlockEditor(secId,b,i){
   var h='<div class="block-item-editor">';
   h+='<div class="form-row"><div class="col-md-4"><label>编号</label><input class="form-control form-control-sm bl-num" value="'+escHtml(b.num||'')+'"></div>';
   h+='<div class="col-md-4"><label>标题</label><input class="form-control form-control-sm bl-title" value="'+escHtml(b.title||'')+'"></div>';
-  h+='<div class="col-md-4"><label>副标题</label><div class="input-group input-group-sm"><input class="form-control bl-subtitle" value="'+escHtml(b.subtitle||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-block" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
-  h+='<div class="form-row mt-1"><div class="col-12"><label>正文</label><textarea class="form-control" rows="6" style="width:100%">'+(b.text||'')+'</textarea></div></div>';
+  h+='<div class="col-md-4"><label>副标题</label><div class="input-group input-group-sm">';
+  h+='<input class="form-control bl-subtitle" value="'+escHtml(b.subtitle||'')+'">';
+  h+='<div class="input-group-append">';
+  h+='<button class="btn btn-outline-secondary btn-move-up" data-idx="'+i+'" title="上移"><i class="fas fa-arrow-up"></i></button>';
+  h+='<button class="btn btn-outline-secondary btn-move-down" data-idx="'+i+'" title="下移"><i class="fas fa-arrow-down"></i></button>';
+  h+='<button class="btn btn-outline-danger btn-del-block" data-idx="'+i+'"><i class="fas fa-trash"></i></button>';
+  h+='</div></div></div></div>';
+  h+='<div class="form-row mt-1"><div class="col-12"><label>正文 <small class="text-muted ml-2">（支持富文本格式）</small></label>';
+  h+='<textarea class="form-control bl-text" rows="6" style="display:none">' + (b.text||'') + '</textarea>';
+  h+='<div class="richtext-wrap" data-idx="'+i+'"><div class="richtext-toolbar" data-idx="'+i+'"></div><div class="richtext-body" data-idx="'+i+'"></div></div>';
+  h+='</div></div>';
   h+='<div class="form-row mt-1"><div class="col-md-2"><label>图片Emoji</label><input class="form-control form-control-sm bl-imgIcon" value="'+escHtml(b.imgIcon||'')+'"></div>';
   h+='<div class="col-md-7"><label>图片描述</label><input class="form-control form-control-sm bl-imgLabel" value="'+escHtml(b.imgLabel||'')+'"></div>';
   h+='<div class="col-md-3"><label>尺寸比例</label><input class="form-control form-control-sm bl-imgSize" value="'+escHtml(b.imgSize||'')+'"></div></div>';
@@ -1226,11 +1414,21 @@ function renderAnnouncements() {
   var catMap={notice:'通知公告',event:'活动事件',hr:'人事信息',academic:'科研学术'};
   var catColor={notice:'info',event:'warning',hr:'success',academic:'primary'};
   var html='<div class="container-fluid"><div class="row"><div class="col-12"><div class="card card-primary card-outline"><div class="card-header">';
-  html+='<h3 class="card-title">公告管理</h3><div class="card-tools"><button class="btn btn-sm btn-accent" id="btn-add-ann"><i class="fas fa-plus mr-1"></i>新增公告</button></div></div>';
+  html+='<h3 class="card-title">公告管理</h3>';
+  html+='<div class="card-tools">';
+  html+='<div class="btn-group btn-group-sm mr-2" id="ann-batch-tools" style="display:none;">';
+  html+='<button class="btn btn-outline-success" id="btn-ann-batch-publish"><i class="fas fa-eye mr-1"></i>批量发布</button>';
+  html+='<button class="btn btn-outline-warning" id="btn-ann-batch-draft"><i class="fas fa-eye-slash mr-1"></i>批量下架</button>';
+  html+='<button class="btn btn-outline-danger" id="btn-ann-batch-del"><i class="fas fa-trash mr-1"></i>批量删除</button>';
+  html+='</div>';
+  html+='<button class="btn btn-sm btn-accent" id="btn-add-ann"><i class="fas fa-plus mr-1"></i>新增公告</button>';
+  html+='</div></div>';
   html+='<div class="card-body p-0"><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr>';
-  html+='<th>ID</th><th>标题</th><th>分类</th><th>日期</th><th>部门</th><th>状态</th><th>操作</th></tr></thead><tbody>';
+  html+='<th width="30"><input type="checkbox" id="ann-check-all"></th>';
+  html+='<th>ID</th><th>标题</th><th>分类</th><th>日期</th><th>部门</th><th>状态</th><th width="120">操作</th></tr></thead><tbody>';
   anns.forEach(function(a){
-    html+='<tr><td>'+a.id+'</td><td>'+escHtml(a.title)+'</td>';
+    html+='<tr data-id="'+a.id+'"><td><input type="checkbox" class="ann-check-item" data-id="'+a.id+'"></td>';
+    html+='<td>'+a.id+'</td><td>'+escHtml(a.title)+'</td>';
     html+='<td><span class="badge badge-'+(catColor[a.category]||'secondary')+'">'+(catMap[a.category]||a.category)+'</span></td>';
     html+='<td>'+a.date+'</td><td>'+escHtml(a.dept)+'</td>';
     html+='<td><span class="status-badge '+(a.published?'status-published':'status-draft')+'">'+(a.published?'已发布':'草稿')+'</span></td>';
@@ -1559,6 +1757,31 @@ function renderDataManager() {
   html += '<li><i class="fas fa-hdd mr-1 text-success"></i>数据大小：' + (total/1024).toFixed(1) + ' KB</li>';
   html += '</ul></div></div></div></div>';
 
+  // ====== 版本历史 ======
+  var versions = getVersionHistory();
+  html += '<div class="row mb-3"><div class="col-12"><div class="card card-info card-outline"><div class="card-header"><h3 class="card-title"><i class="fas fa-history mr-1"></i>版本历史（保留最近 ' + MAX_VERSIONS + ' 个版本）</h3>';
+  html += '<div class="card-tools"><button class="btn btn-tool" id="btn-refresh-versions" title="刷新"><i class="fas fa-sync"></i></button></div></div>';
+  html += '<div class="card-body p-0">';
+  if (versions.length === 0) {
+    html += '<div class="p-4 text-center text-muted"><i class="fas fa-clock fa-2x mb-2"></i><p>暂无版本记录，保存内容后自动创建快照</p></div>';
+  } else {
+    html += '<table class="table table-sm table-hover mb-0"><thead><tr><th width="160">时间</th><th>标签</th><th width="100">数据大小</th><th width="180">操作</th></tr></thead><tbody>';
+    versions.forEach(function(v, idx) {
+      html += '<tr data-vid="' + v.id + '">';
+      html += '<td><i class="far fa-clock mr-1 text-muted"></i>' + formatVersionTime(v.timestamp) + '</td>';
+      html += '<td><span class="badge badge-' + (idx === 0 ? 'primary' : 'secondary') + '">' + escHtml(v.label) + '</span>' + (idx === 0 ? ' <span class="text-success small">（当前）</span>' : '') + '</td>';
+      html += '<td><span class="text-muted">' + (v.size/1024).toFixed(1) + ' KB</span></td>';
+      html += '<td>';
+      if (idx !== 0) {
+        html += '<button class="btn btn-sm btn-outline-primary btn-restore-version mr-1" data-vid="' + v.id + '"><i class="fas fa-undo mr-1"></i>回滚</button>';
+      }
+      html += '<button class="btn btn-sm btn-outline-danger btn-delete-version" data-vid="' + v.id + '"><i class="fas fa-trash"></i></button>';
+      html += '</td></tr>';
+    });
+    html += '</tbody></table>';
+  }
+  html += '</div></div></div></div>';
+
   // 各板块数据概览表
   html += '<div class="row"><div class="col-12"><div class="card"><div class="card-header"><h3 class="card-title">各板块数据概览</h3></div>';
   html += '<div class="card-body p-0"><table class="table table-sm table-hover mb-0"><thead><tr><th>板块</th><th>主标题</th><th>内容概况</th></tr></thead><tbody>' + rows + '</tbody></table></div></div></div></div>';
@@ -1604,8 +1827,38 @@ $(document).ready(function() {
     if(!content[currentPage].blocks) content[currentPage].blocks=[];
     if(idx>=0 && idx<content[currentPage].blocks.length){
       content[currentPage].blocks.splice(idx,1);
-      if(saveContent(content)) toastMsg('已删除', 'success');
+      if(saveContent(content, '删除区块')) toastMsg('已删除', 'success');
     }
+    navigateTo(currentPage);
+  });
+
+  // 区块上移
+  $(document).on('click','.btn-move-up',function(){
+    var idx = parseInt($(this).data('idx'));
+    if (idx === 0) { toastMsg('已经是第一个了', 'warning'); return; }
+    var content = getContent();
+    if (!content[currentPage] || !content[currentPage].blocks) return;
+    var blocks = content[currentPage].blocks;
+    // 交换位置
+    var temp = blocks[idx];
+    blocks[idx] = blocks[idx - 1];
+    blocks[idx - 1] = temp;
+    saveContent(content, '区块上移');
+    navigateTo(currentPage);
+  });
+
+  // 区块下移
+  $(document).on('click','.btn-move-down',function(){
+    var idx = parseInt($(this).data('idx'));
+    var content = getContent();
+    if (!content[currentPage] || !content[currentPage].blocks) return;
+    var blocks = content[currentPage].blocks;
+    if (idx >= blocks.length - 1) { toastMsg('已经是最后一个了', 'warning'); return; }
+    // 交换位置
+    var temp = blocks[idx];
+    blocks[idx] = blocks[idx + 1];
+    blocks[idx + 1] = temp;
+    saveContent(content, '区块下移');
     navigateTo(currentPage);
   });
 
@@ -1935,6 +2188,82 @@ $(document).ready(function() {
     toastMsg('公告已删除', 'success');
   });
 
+  // ====== 公告批量操作 ======
+  // 全选/取消全选
+  $(document).on('change','#ann-check-all',function(){
+    var checked = $(this).prop('checked');
+    $('.ann-check-item').prop('checked', checked);
+    updateAnnBatchTools();
+  });
+
+  // 单个勾选
+  $(document).on('change','.ann-check-item',function(){
+    var total = $('.ann-check-item').length;
+    var checked = $('.ann-check-item:checked').length;
+    $('#ann-check-all').prop('checked', total > 0 && total === checked);
+    updateAnnBatchTools();
+  });
+
+  function updateAnnBatchTools() {
+    var checked = $('.ann-check-item:checked').length;
+    if (checked > 0) {
+      $('#ann-batch-tools').show();
+    } else {
+      $('#ann-batch-tools').hide();
+    }
+  }
+
+  // 获取选中的公告ID
+  function getSelectedAnnIds() {
+    var ids = [];
+    $('.ann-check-item:checked').each(function(){
+      ids.push(parseInt($(this).data('id')));
+    });
+    return ids;
+  }
+
+  // 批量发布
+  $(document).on('click','#btn-ann-batch-publish',function(){
+    var ids = getSelectedAnnIds();
+    if (ids.length === 0) return;
+    if (!confirm('确定发布选中的 ' + ids.length + ' 条公告？')) return;
+    var anns=JSON.parse(localStorage.getItem('hm_announcements')||'[]');
+    anns = anns.map(function(a){
+      if (ids.indexOf(a.id) >= 0) a.published = true;
+      return a;
+    });
+    localStorage.setItem('hm_announcements',JSON.stringify(anns));
+    navigateTo('announcements');
+    toastMsg('已批量发布 ' + ids.length + ' 条公告', 'success');
+  });
+
+  // 批量下架
+  $(document).on('click','#btn-ann-batch-draft',function(){
+    var ids = getSelectedAnnIds();
+    if (ids.length === 0) return;
+    if (!confirm('确定下架选中的 ' + ids.length + ' 条公告？')) return;
+    var anns=JSON.parse(localStorage.getItem('hm_announcements')||'[]');
+    anns = anns.map(function(a){
+      if (ids.indexOf(a.id) >= 0) a.published = false;
+      return a;
+    });
+    localStorage.setItem('hm_announcements',JSON.stringify(anns));
+    navigateTo('announcements');
+    toastMsg('已批量下架 ' + ids.length + ' 条公告', 'success');
+  });
+
+  // 批量删除
+  $(document).on('click','#btn-ann-batch-del',function(){
+    var ids = getSelectedAnnIds();
+    if (ids.length === 0) return;
+    if (!confirm('确定删除选中的 ' + ids.length + ' 条公告？此操作不可恢复！')) return;
+    var anns=JSON.parse(localStorage.getItem('hm_announcements')||'[]');
+    anns = anns.filter(function(a){ return ids.indexOf(a.id) < 0; });
+    localStorage.setItem('hm_announcements',JSON.stringify(anns));
+    navigateTo('announcements');
+    toastMsg('已批量删除 ' + ids.length + ' 条公告', 'success');
+  });
+
   // 保存设置
   $(document).on('click','#btn-save-settings',function(){
     var settings={siteTitle:$('#set-title').val(),siteSubtitle:$('#set-subtitle').val(),officialUrl:$('#set-url').val(),contactEmail:$('#set-email').val(),contactPhone:$('#set-phone').val(),foundedYear:parseInt($('#set-founded-year').val())||1991};
@@ -1951,6 +2280,31 @@ $(document).ready(function() {
   // 导入 data.js
   $(document).on('click','#btn-import-datajs',function(){
     $('#import-file-input').click();
+  });
+
+  // ====== 版本历史事件 ======
+  // 回滚版本
+  $(document).on('click','.btn-restore-version',function(){
+    var vid = parseInt($(this).data('vid'));
+    var label = $(this).closest('tr').find('td:eq(1) .badge').text();
+    if (confirm('确定要回滚到「' + label + '」版本吗？\n\n回滚前会自动备份当前版本，可放心操作。')) {
+      restoreVersion(vid);
+    }
+  });
+
+  // 删除版本
+  $(document).on('click','.btn-delete-version',function(){
+    var vid = parseInt($(this).data('vid'));
+    if (confirm('确定删除这个版本记录吗？删除后无法恢复。')) {
+      deleteVersion(vid);
+      // 刷新列表
+      navigateTo('data-manager');
+    }
+  });
+
+  // 刷新版本列表
+  $(document).on('click','#btn-refresh-versions',function(){
+    navigateTo('data-manager');
   });
   $(document).on('change','#import-file-input',function(){
     var file = this.files && this.files[0];

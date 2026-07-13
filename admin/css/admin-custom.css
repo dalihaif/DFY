@@ -762,3 +762,23 @@
 .btn-workflow-action.act-publish:hover { background: #e8f8f0; color: #27ae60; border-color: #27ae60; }
 .btn-workflow-action.act-draft:hover { background: #fef3e2; color: #e67e22; border-color: #e67e22; }
 .btn-workflow-action.act-review:hover { background: #e8f4fd; color: #2980b9; border-color: #2980b9; }
+
+
+/* ===== 富文本编辑器样式 ===== */
+.richtext-wrap {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.richtext-toolbar {
+  border-bottom: 1px solid #ddd;
+  background: #fafafa;
+}
+.richtext-body {
+  min-height: 120px;
+  padding: 8px 12px;
+}
+.richtext-body p {
+  margin-bottom: 8px;
+}
+
