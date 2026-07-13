@@ -537,6 +537,235 @@ function formatVersionTime(ts) {
   return pad2(d.getMonth()+1) + '-' + pad2(d.getDate()) + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds());
 }
 
+// ====== 全局搜索 ======
+var _gsTimer = null;
+
+function initGlobalSearch() {
+  var $input = $('#global-search-input');
+  var $results = $('#global-search-results');
+  if (!$input.length) return;
+
+  $input.on('input', function() {
+    var kw = $(this).val().trim();
+    clearTimeout(_gsTimer);
+    if (kw.length < 2) {
+      $results.hide();
+      return;
+    }
+    _gsTimer = setTimeout(function() {
+      doGlobalSearch(kw, $results);
+    }, 250);
+  });
+
+  // 点击外部关闭
+  $(document).on('click', function(e) {
+    if (!$(e.target).closest('#global-search-input, #global-search-results, #global-search-btn').length) {
+      $results.hide();
+    }
+  });
+
+  // 回车触发搜索
+  $input.on('keydown', function(e) {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      var kw = $(this).val().trim();
+      if (kw.length >= 2) doGlobalSearch(kw, $results);
+    }
+  });
+}
+
+function doGlobalSearch(keyword, $container) {
+  var content = getContent();
+  var kw = keyword.toLowerCase();
+  var results = [];
+
+  // 遍历所有板块
+  ADMIN_SECTIONS.forEach(function(sec) {
+    var secData = content[sec.id];
+    if (!secData) return;
+    var secName = sec.name;
+
+    // Hero 区域
+    if (secData.hero) {
+      var heroText = (secData.hero.title || '') + ' ' + (secData.hero.subtitle || '') + ' ' + (secData.hero.desc || '');
+      if (heroText.toLowerCase().indexOf(kw) >= 0) {
+        results.push({
+          section: secName,
+          sectionId: sec.id,
+          type: '页面标题',
+          title: secData.hero.title || secName,
+          highlight: highlightText(secData.hero.title || secData.hero.subtitle || '', keyword)
+        });
+      }
+    }
+
+    // 区块 blocks
+    if (Array.isArray(secData.blocks)) {
+      secData.blocks.forEach(function(b, i) {
+        var blockText = (b.title || '') + ' ' + (b.subtitle || '') + ' ' + (b.text || '');
+        if (blockText.toLowerCase().indexOf(kw) >= 0) {
+          results.push({
+            section: secName,
+            sectionId: sec.id,
+            type: '内容区块',
+            title: b.title || ('区块 ' + (i+1)),
+            highlight: highlightText(b.title || b.subtitle || stripHtml(b.text || '').substring(0, 60), keyword)
+          });
+        }
+      });
+    }
+
+    // 人物 profiles
+    if (Array.isArray(secData.profiles)) {
+      secData.profiles.forEach(function(p) {
+        var pText = (p.name || '') + ' ' + (p.title || '') + ' ' + (p.dept || '') + ' ' + (p.desc || '');
+        if (pText.toLowerCase().indexOf(kw) >= 0) {
+          results.push({
+            section: secName,
+            sectionId: sec.id,
+            type: '人物',
+            title: p.name || '未命名',
+            highlight: highlightText((p.name || '') + ' · ' + (p.title || ''), keyword)
+          });
+        }
+      });
+    }
+
+    // 领导团队 leadership
+    if (Array.isArray(secData.leadership)) {
+      secData.leadership.forEach(function(l) {
+        var lText = (l.name || '') + ' ' + (l.position || '') + ' ' + (l.desc || '');
+        if (lText.toLowerCase().indexOf(kw) >= 0) {
+          results.push({
+            section: secName,
+            sectionId: sec.id,
+            type: '领导',
+            title: l.name || '未命名',
+            highlight: highlightText((l.name || '') + ' · ' + (l.position || ''), keyword)
+          });
+        }
+      });
+    }
+
+    // 荣誉 honors
+    if (Array.isArray(secData.honors)) {
+      secData.honors.forEach(function(h) {
+        var hText = (h.title || '') + ' ' + (h.org || '') + ' ' + (h.year || '');
+        if (hText.toLowerCase().indexOf(kw) >= 0) {
+          results.push({
+            section: secName,
+            sectionId: sec.id,
+            type: '荣誉',
+            title: h.title || '荣誉项',
+            highlight: highlightText((h.title || '') + ' (' + (h.year || '') + ')', keyword)
+          });
+        }
+      });
+    }
+
+    // 时间轴 timeline
+    if (Array.isArray(secData.timeline)) {
+      secData.timeline.forEach(function(t) {
+        var tText = (t.title || '') + ' ' + (t.desc || '');
+        if (tText.toLowerCase().indexOf(kw) >= 0) {
+          results.push({
+            section: secName,
+            sectionId: sec.id,
+            type: '时间节点',
+            title: t.title || '节点',
+            highlight: highlightText((t.year || '') + ' · ' + (t.title || ''), keyword)
+          });
+        }
+      });
+    }
+
+    // 数据卡片 dataCards
+    if (Array.isArray(secData.dataCards)) {
+      secData.dataCards.forEach(function(d) {
+        var dText = (d.title || '') + ' ' + (d.label || '');
+        if (dText.toLowerCase().indexOf(kw) >= 0) {
+          results.push({
+            section: secName,
+            sectionId: sec.id,
+            type: '数据卡片',
+            title: d.title || d.label || '数据项',
+            highlight: highlightText(d.title || d.label || '', keyword)
+          });
+        }
+      });
+    }
+  });
+
+  // 公告单独搜
+  try {
+    var anns = JSON.parse(localStorage.getItem('hm_announcements') || '[]');
+    anns.forEach(function(a) {
+      var aText = (a.title || '') + ' ' + (a.content || '') + ' ' + (a.dept || '');
+      if (aText.toLowerCase().indexOf(kw) >= 0) {
+        results.push({
+          section: '公告管理',
+          sectionId: 'announcements',
+          type: '公告',
+          title: a.title || '公告',
+          highlight: highlightText(a.title || '', keyword)
+        });
+      }
+    });
+  } catch(e) {}
+
+  // 渲染结果
+  renderGlobalSearchResults(results, $container, keyword);
+}
+
+function renderGlobalSearchResults(results, $container, keyword) {
+  if (results.length === 0) {
+    $container.html('<div class="global-search-empty">未找到包含「' + escHtml(keyword) + '」的内容</div>').show();
+    return;
+  }
+
+  // 按板块分组
+  var groups = {};
+  results.forEach(function(r) {
+    if (!groups[r.section]) groups[r.section] = [];
+    groups[r.section].push(r);
+  });
+
+  var html = '';
+  Object.keys(groups).forEach(function(secName) {
+    html += '<div class="global-search-group">' + escHtml(secName) + '（' + groups[secName].length + '）</div>';
+    groups[secName].forEach(function(r) {
+      html += '<div class="global-search-item" data-section="' + r.sectionId + '">';
+      html += '<div class="gs-title">' + r.highlight + '</div>';
+      html += '<div class="gs-meta">' + r.type + ' · 点击跳转编辑</div>';
+      html += '</div>';
+    });
+  });
+
+  $container.html(html).show();
+
+  // 绑定点击跳转
+  $container.find('.global-search-item').off('click').on('click', function() {
+    var secId = $(this).data('section');
+    $container.hide();
+    $('#global-search-input').val('');
+    navigateTo(secId);
+  });
+}
+
+function highlightText(text, keyword) {
+  if (!text) return '';
+  var clean = stripHtml(text);
+  var kw = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return escHtml(clean).replace(new RegExp(kw, 'gi'), function(m) { return '<mark>' + m + '</mark>'; });
+}
+
+function stripHtml(html) {
+  if (!html) return '';
+  var tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+}
+
 // ====== 富文本编辑器管理 ======
 var _richEditors = []; // 保存所有编辑器实例 {idx, editor, toolbar}
 
@@ -2386,13 +2615,46 @@ $(document).ready(function() {
   function getStaffFiltered() {
     var profiles = getStaffProfiles();
     var q = (staffAdminState.search || '').toLowerCase();
-    if (!q) return profiles;
+    var dept = staffAdminState.filterDept || '';
+    var title = staffAdminState.filterTitle || '';
+    var status = staffAdminState.filterStatus || '';
+
     return profiles.filter(function(p) {
-      return (p.name||'').toLowerCase().indexOf(q) >= 0
-          || (p.dept||'').toLowerCase().indexOf(q) >= 0
-          || (p.title||'').toLowerCase().indexOf(q) >= 0
-          || (p.position||'').toLowerCase().indexOf(q) >= 0;
+      // 关键词搜索
+      if (q) {
+        var match = (p.name||'').toLowerCase().indexOf(q) >= 0
+                 || (p.dept||'').toLowerCase().indexOf(q) >= 0
+                 || (p.title||'').toLowerCase().indexOf(q) >= 0
+                 || (p.position||'').toLowerCase().indexOf(q) >= 0;
+        if (!match) return false;
+      }
+      // 科室筛选
+      if (dept && (p.dept || '') !== dept) return false;
+      // 职称筛选
+      if (title && (p.title || '') !== title) return false;
+      // 在职状态筛选（默认都算在职）
+      if (status) {
+        var s = p.status || '在职';
+        if (s !== status) return false;
+      }
+      return true;
     });
+  }
+
+  // 获取去重的科室列表
+  function getDeptList() {
+    var profiles = getStaffProfiles();
+    var depts = {};
+    profiles.forEach(function(p) { if (p.dept) depts[p.dept] = true; });
+    return Object.keys(depts).sort();
+  }
+
+  // 获取去重的职称列表
+  function getTitleList() {
+    var profiles = getStaffProfiles();
+    var titles = {};
+    profiles.forEach(function(p) { if (p.title) titles[p.title] = true; });
+    return Object.keys(titles).sort();
   }
 
   function renderStaffTable() {
@@ -2415,6 +2677,32 @@ $(document).ready(function() {
     h += '<button class="btn btn-xs btn-outline-secondary ml-1 btn-staff-batch-clear" disabled id="btn-staff-batch-clear"><i class="fas fa-eraser"></i> 批量清空</button>';
     h += '<button class="btn btn-xs btn-outline-success ml-2 btn-staff-add"><i class="fas fa-plus"></i> 新增职工</button>';
     h += '</span></div>';
+
+    // 高级筛选栏
+    var deptList = getDeptList();
+    var titleList = getTitleList();
+    h += '<div class="staff-filter-bar mb-2">';
+    h += '<select class="form-control form-control-sm staff-filter-dept" style="width:140px;display:inline-block;margin-right:8px;">';
+    h += '<option value="">全部科室</option>';
+    deptList.forEach(function(d) {
+      h += '<option value="' + escHtml(d) + '"' + (staffAdminState.filterDept === d ? ' selected' : '') + '>' + escHtml(d) + '</option>';
+    });
+    h += '</select>';
+    h += '<select class="form-control form-control-sm staff-filter-title" style="width:130px;display:inline-block;margin-right:8px;">';
+    h += '<option value="">全部职称</option>';
+    titleList.forEach(function(t) {
+      h += '<option value="' + escHtml(t) + '"' + (staffAdminState.filterTitle === t ? ' selected' : '') + '>' + escHtml(t) + '</option>';
+    });
+    h += '</select>';
+    h += '<select class="form-control form-control-sm staff-filter-status" style="width:100px;display:inline-block;margin-right:8px;">';
+    h += '<option value="">全部状态</option>';
+    h += '<option value="在职"' + (staffAdminState.filterStatus === '在职' ? ' selected' : '') + '>在职</option>';
+    h += '<option value="离职"' + (staffAdminState.filterStatus === '离职' ? ' selected' : '') + '>离职</option>';
+    h += '<option value="退休"' + (staffAdminState.filterStatus === '退休' ? ' selected' : '') + '>退休</option>';
+    h += '</select>';
+    h += '<input class="form-control form-control-sm staff-filter-search" placeholder="🔍 搜索姓名/工号…" style="width:180px;display:inline-block;" value="' + escHtml(staffAdminState.search || '') + '">';
+    h += '<button class="btn btn-xs btn-outline-secondary ml-1 staff-filter-reset"><i class="fas fa-times"></i> 重置</button>';
+    h += '</div>';
 
     // 表格
     h += '<div class="table-responsive"><table class="table table-sm table-hover staff-admin-table">';
@@ -2475,11 +2763,52 @@ $(document).ready(function() {
   }
 
   function bindStaffAdminEvents() {
-    // 搜索
+    // 顶部搜索框
     $('#staffAdminSearch').off('input').on('input', function() {
       staffAdminState.search = this.value;
       staffAdminState.page = 1;
       renderStaffTable();
+    });
+
+    // 筛选栏 - 科室
+    $(document).off('change.staffFilterDept').on('change.staffFilterDept', '.staff-filter-dept', function() {
+      staffAdminState.filterDept = this.value;
+      staffAdminState.page = 1;
+      renderStaffTable();
+    });
+
+    // 筛选栏 - 职称
+    $(document).off('change.staffFilterTitle').on('change.staffFilterTitle', '.staff-filter-title', function() {
+      staffAdminState.filterTitle = this.value;
+      staffAdminState.page = 1;
+      renderStaffTable();
+    });
+
+    // 筛选栏 - 在职状态
+    $(document).off('change.staffFilterStatus').on('change.staffFilterStatus', '.staff-filter-status', function() {
+      staffAdminState.filterStatus = this.value;
+      staffAdminState.page = 1;
+      renderStaffTable();
+    });
+
+    // 筛选栏 - 搜索框
+    $(document).off('input.staffFilterSearch').on('input.staffFilterSearch', '.staff-filter-search', function() {
+      staffAdminState.search = this.value;
+      staffAdminState.page = 1;
+      renderStaffTable();
+      // 同步到顶部搜索框
+      $('#staffAdminSearch').val(this.value);
+    });
+
+    // 筛选栏 - 重置
+    $(document).off('click.staffFilterReset').on('click.staffFilterReset', '.staff-filter-reset', function() {
+      staffAdminState.search = '';
+      staffAdminState.filterDept = '';
+      staffAdminState.filterTitle = '';
+      staffAdminState.filterStatus = '';
+      staffAdminState.page = 1;
+      renderStaffTable();
+      $('#staffAdminSearch').val('');
     });
 
     // 分页
@@ -2672,7 +3001,7 @@ $(document).ready(function() {
   function openStaffEditor(idx) {
     var profiles = getStaffProfiles();
     var isNew = (idx < 0 || idx >= profiles.length);
-    var p = isNew ? {employeeId:'',name:'',title:'',dept:'',position:'',desc:'',photo:''} : profiles[idx];
+    var p = isNew ? {employeeId:'',name:'',title:'',dept:'',position:'',desc:'',photo:'',status:'在职'} : profiles[idx];
 
     var modalHtml = [
       '<div class="modal fade show" id="staffEditModal" style="display:block;background:rgba(0,0,0,0.5)" tabindex="-1">',
@@ -2682,9 +3011,14 @@ $(document).ready(function() {
       '<div class="modal-body">',
       '<div class="form-group"><label>工号 <span class="text-danger">*</span><small class="text-muted ml-2">唯一标识，不可重复</small></label><input class="form-control" id="se-employeeId" value="' + escHtml(p.employeeId || '') + '" placeholder="如：001"></div>',
       '<div class="form-group"><label>姓名 <span class="text-danger">*</span></label><input class="form-control" id="se-name" value="' + escHtml(p.name) + '"></div>',
-      '<div class="form-group"><label>职称/称号</label><input class="form-control" id="se-title" value="' + escHtml(p.title) + '"></div>',
-      '<div class="form-group"><label>科室</label><input class="form-control" id="se-dept" value="' + escHtml(p.dept) + '"></div>',
-      '<div class="form-group"><label>职位</label><input class="form-control" id="se-position" value="' + escHtml(p.position) + '"></div>',
+      '<div class="form-row">',
+      '<div class="col-md-6"><div class="form-group"><label>职称/称号</label><input class="form-control" id="se-title" value="' + escHtml(p.title) + '"></div></div>',
+      '<div class="col-md-6"><div class="form-group"><label>在职状态</label><select class="form-control" id="se-status"><option value="在职"' + ((p.status||'在职')==='在职'?' selected':'') + '>在职</option><option value="离职"' + (p.status==='离职'?' selected':'') + '>离职</option><option value="退休"' + (p.status==='退休'?' selected':'') + '>退休</option></select></div></div>',
+      '</div>',
+      '<div class="form-row">',
+      '<div class="col-md-6"><div class="form-group"><label>科室</label><input class="form-control" id="se-dept" value="' + escHtml(p.dept) + '"></div></div>',
+      '<div class="col-md-6"><div class="form-group"><label>职位</label><input class="form-control" id="se-position" value="' + escHtml(p.position) + '"></div></div>',
+      '</div>',
       '<div class="form-group"><label>简介/贡献</label><textarea class="form-control" id="se-desc" rows="3">' + escHtml(p.desc) + '</textarea></div>',
       '<div class="form-group"><label>照片URL</label><input class="form-control" id="se-photo" value="' + escHtml(p.photo) + '" placeholder="https://..."></div>',
       '</div>',
@@ -2713,6 +3047,7 @@ $(document).ready(function() {
         title: $('#se-title').val().trim(),
         dept: $('#se-dept').val().trim(),
         position: $('#se-position').val().trim(),
+        status: $('#se-status').val() || '在职',
         desc: $('#se-desc').val().trim(),
         photo: $('#se-photo').val().trim()
       };
@@ -3541,6 +3876,8 @@ $(document).ready(function() {
   updateMediaCount();
   // 初始化侧边栏徽章
   setTimeout(updateSidebarBadges, 200);
+  // 初始化全局搜索
+  initGlobalSearch();
 
   navigateTo('dashboard');
 });
