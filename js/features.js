@@ -331,6 +331,43 @@
       }
     },
 
+    // 绑定全站内容图片
+    bindAllContentImages: function () {
+      var selectors = [
+        '.section-body img',
+        '.gallery-section img',
+        '.content-pair img',
+        '.page-hero-bg',
+        '.img-slot img',
+        '.data-card img',
+        '.honor-item img',
+        '.leader-card img',
+        '.profile-card img'
+      ];
+      var allImgs = [];
+      selectors.forEach(function (sel) {
+        var found = document.querySelectorAll(sel);
+        found.forEach(function (img) {
+          // 跳过小图标和logo
+          if (img.classList.contains('nav-logo-img')) return;
+          var src = img.getAttribute('src') || '';
+          if (src.indexOf('logo') > -1 || src.indexOf('icon') > -1) return;
+          if (allImgs.indexOf(img) === -1) allImgs.push(img);
+        });
+      });
+
+      allImgs.forEach(function (img, idx) {
+        img.style.cursor = 'zoom-in';
+        img.style.transition = 'transform 0.3s ease';
+        img.addEventListener('mouseenter', function () { img.style.transform = 'scale(1.02)'; });
+        img.addEventListener('mouseleave', function () { img.style.transform = 'scale(1)'; });
+        img.addEventListener('click', function (e) {
+          e.stopPropagation();
+          Lightbox.open(allImgs, idx);
+        });
+      });
+    },
+
     // 自动绑定画廊元素
     bindGallery: function (gallerySelector) {
       var gallery = document.querySelector(gallerySelector);
@@ -388,7 +425,10 @@
         name: data.name || '匿名职工',
         department: data.department || '',
         content: data.content || '',
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        likes: 0,
+        likedBy: [],
+        replies: []
       };
       messages.unshift(newMsg); // 最新在前
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(messages));
@@ -439,7 +479,7 @@
         var deptHtml = msg.department
           ? '<span class="message-dept">' + esc(msg.department) + '</span>'
           : '';
-        return '<div class="message-card">' +
+        return '<div class="message-card" data-id="' + msg.id + '">' +
           '<div class="message-card-header">' +
           '<div class="message-avatar">' + esc(this.getAvatarChar(msg.name)) + '</div>' +
           '<div class="message-meta">' +
@@ -449,8 +489,118 @@
           '</div>' +
           '<div class="message-content">' + esc(msg.content).replace(/\n/g, '<br>') + '</div>' +
           deptHtml +
+          '<div class="message-actions">' +
+            '<button class="message-like-btn" data-action="like">' +
+              '<span class="like-icon">♡</span> ' +
+              '<span class="like-count">' + (msg.likes || 0) + '</span>' +
+            '</button>' +
+            '<button class="message-reply-btn" data-action="reply">💬 回复 ' + ((msg.replies || []).length || '') + '</button>' +
+          '</div>' +
+          '<div class="reply-form" data-reply-form>' +
+            '<input type="text" placeholder="写下你的回复..." maxlength="100">' +
+            '<button data-reply-submit>发送</button>' +
+          '</div>' +
+          '<div class="message-replies" data-replies>' + this._renderReplies(msg.replies || []) + '</div>' +
           '</div>';
       }.bind(this)).join('');
+
+      // 绑定点赞和回复事件
+      this._bindCardEvents(container);
+    },
+
+    // 渲染回复列表
+    _renderReplies: function (replies) {
+      if (!replies || replies.length === 0) return '';
+      return replies.map(function (r) {
+        return '<div class="message-reply-item">' +
+          '<span class="reply-name">' + this._esc(r.name || '匿名') + '</span>' +
+          this._esc(r.content) +
+          '<span class="reply-time">' + this.formatDate(r.createdAt) + '</span>' +
+          '</div>';
+      }.bind(this)).join('');
+    },
+
+    // 绑定卡片事件
+    _bindCardEvents: function (container) {
+      var self = this;
+      container.querySelectorAll('.message-card').forEach(function (card) {
+        var id = parseInt(card.getAttribute('data-id'));
+
+        // 点赞
+        card.querySelector('[data-action="like"]').addEventListener('click', function () {
+          self.toggleLike(id);
+        });
+
+        // 回复按钮
+        card.querySelector('[data-action="reply"]').addEventListener('click', function () {
+          var form = card.querySelector('[data-reply-form]');
+          form.classList.toggle('open');
+          if (form.classList.contains('open')) {
+            form.querySelector('input').focus();
+          }
+        });
+
+        // 回复提交
+        card.querySelector('[data-reply-submit]').addEventListener('click', function () {
+          var input = card.querySelector('input');
+          var content = input.value.trim();
+          if (!content) return;
+          self.addReply(id, { name: '访客', content: content });
+          input.value = '';
+          card.querySelector('[data-reply-form]').classList.remove('open');
+        });
+      });
+    },
+
+    // 切换点赞
+    toggleLike: function (msgId) {
+      var messages = this.getMessages();
+      var msg = messages.find(function (m) { return m.id === msgId; });
+      if (!msg) return;
+
+      msg.likes = (msg.likes || 0) + 1;
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(messages));
+
+      // 更新UI
+      var card = document.querySelector('.message-card[data-id="' + msgId + '"]');
+      if (card) {
+        var btn = card.querySelector('[data-action="like"]');
+        btn.classList.add('liked');
+        btn.querySelector('.like-count').textContent = msg.likes;
+        btn.querySelector('.like-icon').textContent = '♥';
+      }
+    },
+
+    // 添加回复
+    addReply: function (msgId, reply) {
+      var messages = this.getMessages();
+      var msg = messages.find(function (m) { return m.id === msgId; });
+      if (!msg) return;
+
+      if (!msg.replies) msg.replies = [];
+      msg.replies.push({
+        id: Date.now(),
+        name: reply.name || '访客',
+        content: reply.content,
+        createdAt: new Date().toISOString()
+      });
+
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(messages));
+
+      // 更新UI
+      var card = document.querySelector('.message-card[data-id="' + msgId + '"]');
+      if (card) {
+        var repliesEl = card.querySelector('[data-replies]');
+        repliesEl.innerHTML = this._renderReplies(msg.replies);
+        var replyBtn = card.querySelector('[data-action="reply"]');
+        replyBtn.textContent = '💬 回复 ' + msg.replies.length;
+      }
+    },
+
+    _esc: function (str) {
+      var div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
     },
 
     // 绑定表单提交
@@ -836,18 +986,35 @@
       elements.forEach(function (el) { observer.observe(el); });
     },
 
-    // 图片懒加载淡入
+    // 图片懒加载淡入 + 原生lazy
     initLazyImages: function () {
       var images = document.querySelectorAll('img');
       if (images.length === 0) return;
 
       images.forEach(function (img) {
+        // 跳过首屏Hero大图（不lazy，保证首屏体验）
+        var isHero = img.classList.contains('page-hero-bg') ||
+                     img.classList.contains('hero-bg-image') ||
+                     img.closest('.hero, .page-hero');
+
+        if (!isHero && !img.hasAttribute('loading')) {
+          img.setAttribute('loading', 'lazy');
+        }
+
+        // 淡入效果
         if (img.complete && img.naturalWidth > 0) {
           img.classList.add('loaded');
           return;
         }
         img.classList.add('lazy-img');
         img.addEventListener('load', function () {
+          img.classList.add('loaded');
+        });
+        img.addEventListener('error', function () {
+          img.classList.add('loaded');
+        });
+      });
+    },
           img.classList.add('loaded');
         });
       });
@@ -935,10 +1102,43 @@
     initImageAlt: function () {
       var images = document.querySelectorAll('img:not([alt])');
       images.forEach(function (img) {
-        // 从src提取文件名作为alt
         var src = img.getAttribute('src') || '';
         var name = src.split('/').pop().replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ');
         img.setAttribute('alt', name || '院史馆图片');
+      });
+    },
+
+    // 悬浮快捷按钮
+    initQuickActions: function () {
+      if (document.querySelector('.quick-actions')) return;
+
+      var isHome = location.pathname.indexOf('/pages/') === -1;
+      var prefix = isHome ? 'pages/' : '';
+
+      var wrap = document.createElement('div');
+      wrap.className = 'quick-actions';
+      wrap.innerHTML =
+        '<a href="' + prefix + 'search.html" class="quick-btn quick-btn-search" title="搜索">🔍</a>' +
+        '<a href="' + prefix + 'messages.html" class="quick-btn quick-btn-message" title="留言">💬</a>' +
+        '<button class="quick-btn quick-btn-top" title="返回顶部">↑</button>';
+
+      document.body.appendChild(wrap);
+
+      // 滚动显示
+      var topBtn = wrap.querySelector('.quick-btn-top');
+      window.addEventListener('scroll', function () {
+        if (window.scrollY > 400) {
+          wrap.classList.add('visible');
+          topBtn.classList.add('visible');
+        } else {
+          topBtn.classList.remove('visible');
+          if (window.scrollY < 100) wrap.classList.remove('visible');
+        }
+      }, { passive: true });
+
+      // 返回顶部
+      topBtn.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     },
 
@@ -954,12 +1154,165 @@
       this.initMobileNav();
       this.initSkipLink();
       this.initImageAlt();
+      this.initQuickActions();
     }
   };
 
   // ======================================
   // ======================================
-  // 7. 荣誉殿堂年代筛选
+  // 8. 时间轴详情弹窗
+  // ======================================
+  var TimelineModal = {
+    _overlay: null,
+    _data: [],
+
+    init: function (timelineData) {
+      if (timelineData) this._data = timelineData;
+
+      // 自动绑定横向时间轴节点
+      var nodes = document.querySelectorAll('.ht-node');
+      nodes.forEach(function (node, idx) {
+        node.style.cursor = 'pointer';
+        node.addEventListener('click', function () {
+          var data = timelineData ? timelineData[idx] : null;
+          if (!data) {
+            // 从DOM提取
+            data = {
+              year: node.querySelector('.ht-year')?.textContent || '',
+              title: node.querySelector('.ht-title')?.textContent || '',
+              desc: node.querySelector('.ht-desc')?.textContent || '',
+              tag: node.querySelector('.ht-tag')?.textContent || ''
+            };
+          }
+          TimelineModal.open(data);
+        });
+      });
+    },
+
+    open: function (item) {
+      if (!this._overlay) this._build();
+
+      this._overlay.querySelector('.timeline-modal-year').textContent = item.year || '';
+      this._overlay.querySelector('.timeline-modal-title').textContent = item.title || '';
+      this._overlay.querySelector('.timeline-modal-desc').textContent = item.desc || '暂无详细介绍';
+      var tagEl = this._overlay.querySelector('.timeline-modal-tag');
+      if (item.tag) {
+        tagEl.textContent = item.tag;
+        tagEl.style.display = 'inline-block';
+      } else {
+        tagEl.style.display = 'none';
+      }
+
+      this._overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    },
+
+    close: function () {
+      if (this._overlay) {
+        this._overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    },
+
+    _build: function () {
+      var overlay = document.createElement('div');
+      overlay.className = 'timeline-modal-overlay';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.innerHTML =
+        '<div class="timeline-modal">' +
+          '<button class="timeline-modal-close" aria-label="关闭">✕</button>' +
+          '<div class="timeline-modal-header">' +
+            '<h2 class="timeline-modal-year"></h2>' +
+            '<h3 class="timeline-modal-title"></h3>' +
+            '<span class="timeline-modal-tag"></span>' +
+          '</div>' +
+          '<div class="timeline-modal-body">' +
+            '<p class="timeline-modal-desc"></p>' +
+            '<div class="timeline-modal-section">' +
+              '<h4>历史意义</h4>' +
+              '<p>该事件是医院发展历程中的重要里程碑，标志着医院在对应时期迈上了新的发展台阶，为后续建设奠定了坚实基础。</p>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+      document.body.appendChild(overlay);
+      this._overlay = overlay;
+
+      overlay.querySelector('.timeline-modal-close').addEventListener('click', function () {
+        TimelineModal.close();
+      });
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay) TimelineModal.close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') TimelineModal.close();
+      });
+    }
+  };
+
+  // ======================================
+  // 10. 侧边目录导航
+  // ======================================
+  var SidebarTOC = {
+    init: function () {
+      // 只在板块页面启用
+      var blocks = document.querySelectorAll('.section-block');
+      if (blocks.length < 3) return;
+
+      var toc = document.createElement('nav');
+      toc.className = 'sidebar-toc';
+      toc.setAttribute('aria-label', '页面目录');
+
+      var listHtml = '<div class="toc-title">目录</div><ul class="toc-list">';
+      var count = 0;
+
+      blocks.forEach(function (block, idx) {
+        var titleEl = block.querySelector('.block-title');
+        if (!titleEl) return;
+        var title = titleEl.textContent.trim();
+        var id = 'section-' + idx;
+        block.id = id;
+        count++;
+        listHtml += '<li class="toc-item" data-target="' + id + '">' + title + '</li>';
+      });
+
+      listHtml += '</ul>';
+      if (count < 3) return; // 少于3个不显示
+
+      toc.innerHTML = listHtml;
+      document.body.appendChild(toc);
+      toc.classList.add('visible');
+
+      // 点击跳转
+      toc.querySelectorAll('.toc-item').forEach(function (item) {
+        item.addEventListener('click', function () {
+          var target = document.getElementById(item.getAttribute('data-target'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      // 滚动高亮
+      var tocItems = toc.querySelectorAll('.toc-item');
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var id = entry.target.id;
+            tocItems.forEach(function (it) {
+              it.classList.toggle('active', it.getAttribute('data-target') === id);
+            });
+          }
+        });
+      }, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+
+      blocks.forEach(function (b) { observer.observe(b); });
+    }
+  };
+
+  // ======================================
+  // 11. 荣誉殿堂年代筛选
   // ======================================
   var HonorsFilter = {
     init: function () {
@@ -1008,12 +1361,18 @@
       Visuals.initAll();
       PersonModal.init();
       HonorsFilter.init();
+      Lightbox.bindAllContentImages();
+      TimelineModal.init();
+      SidebarTOC.init();
     });
   } else {
     initNavSearch();
     Visuals.initAll();
     PersonModal.init();
     HonorsFilter.init();
+    Lightbox.bindAllContentImages();
+    TimelineModal.init();
+    SidebarTOC.init();
   }
 
 })();
