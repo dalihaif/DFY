@@ -1735,6 +1735,9 @@ function renderDataManager() {
   html += '<p class="mb-2 text-muted"><strong>导入：</strong>从之前导出的 <code>data.js</code> 文件恢复全部数据</p>';
   html += '<button class="btn btn-outline-success btn-block" id="btn-import-datajs"><i class="fas fa-upload mr-1"></i>⬆ 导入 data.js</button>';
   html += '<input type="file" id="import-file-input" accept=".js" style="display:none">';
+  html += '<hr class="mb-2 mt-3">';
+  html += '<p class="mb-2 text-muted"><strong>完整备份：</strong>导出全部 localStorage（含版本、设置、留言等）为 JSON</p>';
+  html += '<button class="btn btn-outline-warning btn-block" id="btn-export-backup"><i class="fas fa-archive mr-1"></i>📦 一键完整备份</button>';
   html += '</div></div></div>';
 
   html += '<div class="col-md-3">';
@@ -2280,6 +2283,42 @@ $(document).ready(function() {
   // 导入 data.js
   $(document).on('click','#btn-import-datajs',function(){
     $('#import-file-input').click();
+  });
+
+  // ====== 一键完整备份 ======
+  function exportFullBackup() {
+    var backup = {
+      meta: {
+        exportedAt: new Date().toISOString(),
+        version: 'dfy-museum-v4-backup',
+        count: localStorage.length
+      },
+      data: {}
+    };
+    for (var i = 0; i < localStorage.length; i++) {
+      var key = localStorage.key(i);
+      try {
+        backup.data[key] = JSON.parse(localStorage.getItem(key));
+      } catch(e) {
+        backup.data[key] = localStorage.getItem(key);
+      }
+    }
+    var json = JSON.stringify(backup, null, 2);
+    var blob = new Blob([json], {type: 'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var d = new Date();
+    var fname = 'dfy-backup-' + d.getFullYear() + pad2(d.getMonth()+1) + pad2(d.getDate())
+      + '-' + pad2(d.getHours()) + pad2(d.getMinutes()) + '.json';
+    a.href = url;
+    a.download = fname;
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+    toastMsg('完整备份已导出：' + fname, 'success');
+  }
+
+  $(document).on('click','#btn-export-backup', function() {
+    exportFullBackup();
   });
 
   // ====== 版本历史事件 ======
@@ -3072,16 +3111,67 @@ $(document).ready(function() {
     });
   }
 
-  // 将图片文件转为 Base64
+  // 将图片文件转为 Base64（自动压缩）
   function fileToBase64(file, callback) {
     var reader = new FileReader();
     reader.onload = function(e) {
-      callback(null, e.target.result, file.name);
+      // 自动压缩后返回
+      compressImage(e.target.result, 500, function(compressedBase64) {
+        callback(null, compressedBase64, file.name);
+      });
     };
     reader.onerror = function() {
       callback('文件读取失败: ' + file.name);
     };
     reader.readAsDataURL(file);
+  }
+
+  // Canvas 图片压缩（目标大小 KB，默认 500KB）
+  function compressImage(base64, maxSizeKB, callback) {
+    maxSizeKB = maxSizeKB || 500;
+    var maxWidth = 1920; // 最大宽度
+
+    var img = new Image();
+    img.onload = function() {
+      var w = img.width;
+      var h = img.height;
+
+      // 宽度超限则等比缩放
+      if (w > maxWidth) {
+        h = Math.round(h * (maxWidth / w));
+        w = maxWidth;
+      }
+
+      var canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff'; // PNG透明背景填白
+      ctx.fillRect(0, 0, w, h);
+      ctx.drawImage(img, 0, 0, w, h);
+
+      // 逐步降低质量直到满足大小
+      var quality = 0.85;
+      var result = canvas.toDataURL('image/jpeg', quality);
+
+      function tryLowerQuality() {
+        var sizeKB = Math.round(result.length * 3 / 4 / 1024);
+        if (sizeKB <= maxSizeKB || quality <= 0.3) {
+          callback(result);
+          return;
+        }
+        quality -= 0.15;
+        if (quality < 0.3) quality = 0.3;
+        result = canvas.toDataURL('image/jpeg', quality);
+        tryLowerQuality();
+      }
+      tryLowerQuality();
+    };
+    img.onerror = function() {
+      // 压缩失败返回原图
+      callback(base64);
+    };
+    img.src = base64;
   }
 
   // 媒体上传处理
@@ -3199,19 +3289,20 @@ $(document).ready(function() {
     function doUpload(files) {
       if (!files || !files.length) return;
       var $prog = $('#media-upload-progress');
-      $prog.html('<span class="text-info"><i class="fas fa-spinner fa-spin mr-1"></i>上传中…</span>');
+      $prog.html('<span class="text-info"><i class="fas fa-spinner fa-spin mr-1"></i>上传中（自动压缩至500KB以内）…</span>');
       var done = 0;
       for (var i = 0; i < files.length; i++) {
         (function(file) {
           if (!file.type.match(/^image\//)) { done++; return; }
           var reader = new FileReader();
           reader.onload = function(e) {
-            addMedia(file.name, e.target.result);
-            done++;
-            if (done >= files.length) {
-              $prog.html('<span class="text-success"><i class="fas fa-check mr-1"></i>上传完成！</span>');
-              setTimeout(function() { $prog.empty(); }, 2000);
-              $('#mediaGalleryModal').remove();
+            compressImage(e.target.result, 500, function(compressed) {
+              addMedia(file.name, compressed);
+              done++;
+              if (done >= files.length) {
+                $prog.html('<span class="text-success"><i class="fas fa-check mr-1"></i>上传完成！已自动压缩</span>');
+                setTimeout(function() { $prog.empty(); }, 2000);
+                $('#mediaGalleryModal').remove();
               showMediaGallery(onSelect);
             }
           };
