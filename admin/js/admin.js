@@ -1749,7 +1749,7 @@ function exportDataJs() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 
-  $(document).Toasts('create', { class:'bg-success', title:'导出成功', body:'data.js 已下载，请替换网站 js/data.js 并重新部署', autohide:true, delay:4000 });
+  $(document).Toasts('create', { class:'bg-success', title:'导出成功', body:'data.js 已下载。请替换 js/data.js，然后在项目根目录运行 node split-data.js 拆分板块文件，再部署', autohide:true, delay:6000 });
 }
 
 // ====== 导入 data.js 文件 ======

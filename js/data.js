@@ -7,7 +7,7 @@ window.HM_DATA = {
   "content": {
     "history": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块一 · SECTION 01",
         "title": "历史沿革",
         "subtitle": "医院发展的时光足迹",
@@ -22,7 +22,7 @@ window.HM_DATA = {
           "imgIcon": "📷",
           "imgLabel": "1991年批准文件 / 医院蓝图规划",
           "imgSize": "16:9",
-          "imgUrl": "../assets/images/jypw.jpg"
+          "imgUrl": "../assets/images/jypw.webp"
         },
         {
           "num": "02 · 启航 · 奠基盛典",
@@ -32,7 +32,7 @@ window.HM_DATA = {
           "imgIcon": "📷",
           "imgLabel": "1992年奠基典礼 / 1997年开诊剪彩",
           "imgSize": "4:3",
-          "imgUrl": "../assets/images/kgdl.jpg"
+          "imgUrl": "../assets/images/kgdl.webp"
         }
       ],
       "timeline": [
@@ -131,48 +131,48 @@ window.HM_DATA = {
         {
           "icon": "📷",
           "label": "1991年 批准文件",
-          "url": "../assets/images/jypw.jpg"
+          "url": "../assets/images/jypw.webp"
         },
         {
           "icon": "📷",
           "label": "1992年 奠基典礼",
-          "url": "../assets/images/kgdl.jpg"
+          "url": "../assets/images/kgdl.webp"
         },
         {
           "icon": "📷",
           "label": "1997年 开诊剪彩",
-          "url": "../assets/images/kzys.jpg"
+          "url": "../assets/images/kzys.webp"
         },
         {
           "icon": "📷",
           "label": "更名大理学院附属医院",
-          "url": "../assets/images/hygl.jpg"
+          "url": "../assets/images/hygl.webp"
         },
         {
           "icon": "📷",
           "label": "云南省第四人民医院挂牌仪式",
-          "url": "../assets/images/gpys.jpg"
+          "url": "../assets/images/gpys.webp"
         },
         {
           "icon": "📷",
           "label": "2015年 三甲评审",
-          "url": "../assets/images/sjzp.jpg"
+          "url": "../assets/images/sjzp.webp"
         },
         {
           "icon": "📷",
           "label": "省二传院奠基",
-          "url": "../assets/images/ecydj.jpg"
+          "url": "../assets/images/ecydj.webp"
         },
         {
           "icon": "📷",
           "label": "省二传院开诊",
-          "url": "../assets/images/ecykz.png"
+          "url": "../assets/images/ecykz.webp"
         }
       ]
     },
     "people": {
       "hero": {
-        "bgImage": "/assets/images/2_20.png",
+        "bgImage": "/assets/images/2_20.webp",
         "num": "板块二 · SECTION 02",
         "title": "人物风采",
         "subtitle": "医院发展的核心力量",
@@ -544,42 +544,42 @@ window.HM_DATA = {
         {
           "icon": "👥",
           "label": "历任院领导集体合影",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.webp"
         },
         {
           "icon": "👤",
           "label": "首任院长工作照",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.webp"
         },
         {
           "icon": "👨‍⚕️",
           "label": "学科带头人群像",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.webp"
         },
         {
           "icon": "🎗",
           "label": "年度优秀员工表彰",
-          "url": "/assets/images/kzys.jpg"
+          "url": "/assets/images/kzys.webp"
         },
         {
           "icon": "🚩",
           "label": "党建主题活动",
-          "url": "/assets/images/kzys.jpg"
+          "url": "/assets/images/kzys.webp"
         },
         {
           "icon": "👩‍⚕️",
           "label": "护理团队风采",
-          "url": "/assets/images/jypw.jpg"
+          "url": "/assets/images/jypw.webp"
         },
         {
           "icon": "🎓",
           "label": "教学名师授课",
-          "url": "/assets/images/jypw.jpg"
+          "url": "/assets/images/jypw.webp"
         },
         {
           "icon": "🤝",
           "label": "新老传承交接",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.webp"
         }
       ],
       "statsCards": [
@@ -753,7 +753,7 @@ window.HM_DATA = {
     },
     "disciplines": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块三 · SECTION 03",
         "title": "学科建设",
         "subtitle": "构筑滇西医学高地",
@@ -834,7 +834,7 @@ window.HM_DATA = {
     },
     "campus": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块四 · SECTION 04",
         "title": "院区建设",
         "subtitle": "一院两区 · 双核驱动",
@@ -849,7 +849,7 @@ window.HM_DATA = {
           "imgIcon": "🏥",
           "imgLabel": "主院区航拍图",
           "imgSize": "16:9",
-          "imgUrl": "/assets/images/fsyy.jpg"
+          "imgUrl": "/assets/images/fsyy.webp"
         },
         {
           "num": "02 · 凤仪院区",
@@ -898,7 +898,7 @@ window.HM_DATA = {
         {
           "icon": "🏥",
           "label": "主院区全景",
-          "url": "/assets/images/fy.jpg"
+          "url": "/assets/images/fy.webp"
         },
         {
           "icon": "🏗",
@@ -919,7 +919,7 @@ window.HM_DATA = {
     },
     "education": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块五 · SECTION 05",
         "title": "教学与人才",
         "subtitle": "医教协同 · 人才兴院",
@@ -1020,7 +1020,7 @@ window.HM_DATA = {
     },
     "culture": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块六 · SECTION 06",
         "title": "文化建设",
         "subtitle": "诚信 · 进取 · 和谐 · 奉献",
@@ -1050,28 +1050,28 @@ window.HM_DATA = {
         {
           "icon": "🎭",
           "label": "文化活动",
-          "url": "/assets/images/kgdl.jpg"
+          "url": "/assets/images/kgdl.webp"
         },
         {
           "icon": "🎨",
           "label": "职工书画",
-          "url": "/assets/images/jypw.jpg"
+          "url": "/assets/images/jypw.webp"
         },
         {
           "icon": "🎵",
           "label": "文艺汇演",
-          "url": "/assets/images/kzys.jpg"
+          "url": "/assets/images/kzys.webp"
         },
         {
           "icon": "🤝",
           "label": "志愿服务",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.webp"
         }
       ]
     },
     "tech": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块七 · SECTION 07",
         "title": "科技与交流",
         "subtitle": "创新驱动 · 开放合作",
@@ -1140,7 +1140,7 @@ window.HM_DATA = {
     },
     "duty": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块八 · SECTION 08",
         "title": "责任与担当",
         "subtitle": "医者仁心 · 大爱无疆",
@@ -1209,7 +1209,7 @@ window.HM_DATA = {
     },
     "honors": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块九 · SECTION 09",
         "title": "荣誉殿堂",
         "subtitle": "辉煌成就 · 荣耀时刻",
@@ -1245,33 +1245,33 @@ window.HM_DATA = {
         {
           "icon": "🏆",
           "label": "荣誉奖牌",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.webp"
         },
         {
           "icon": "🎖",
           "label": "表彰证书",
-          "url": "/assets/images/kgdl.jpg"
+          "url": "/assets/images/kgdl.webp"
         },
         {
           "icon": "📜",
           "label": "资质认定",
-          "url": "/assets/images/kzys.jpg"
+          "url": "/assets/images/kzys.webp"
         },
         {
           "icon": "⭐",
           "label": "五星好评",
-          "url": "/assets/images/jypw.jpg"
+          "url": "/assets/images/jypw.webp"
         },
         {
           "icon": "📷",
           "label": "新图片",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.webp"
         }
       ]
     },
     "vision": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块十 · SECTION 10",
         "title": "展望未来",
         "subtitle": "踔厉奋发 · 勇毅前行",
@@ -1366,7 +1366,7 @@ window.HM_DATA = {
     },
     "structure": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块十一 · SECTION 11",
         "title": "组织架构",
         "subtitle": "科学管理 · 高效运行",
@@ -1381,7 +1381,7 @@ window.HM_DATA = {
           "imgIcon": "🏛",
           "imgLabel": "组织架构图",
           "imgSize": "4:3",
-          "imgUrl": "../assets/images/zzjgt.png"
+          "imgUrl": "../assets/images/zzjgt.webp"
         }
       ],
       "gallery": [
@@ -1409,7 +1409,7 @@ window.HM_DATA = {
     },
     "leadership": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块十二 · SECTION 12",
         "title": "领导团队",
         "subtitle": "领航定向，掌舵前行",
@@ -1434,7 +1434,7 @@ window.HM_DATA = {
           "role": "党委书记",
           "duty": "主持医院党委全面工作",
           "resume": "曾任[待补充]，分管党政办公室、组织人事等工作。",
-          "photo": "../assets/images/gwl.png"
+          "photo": "../assets/images/gwl.webp"
         },
         {
           "id": "ld17811695822380.1926191191270028",
@@ -1442,7 +1442,7 @@ window.HM_DATA = {
           "role": "党委副书记、院长",
           "duty": "主持医院行政全面工作",
           "resume": "医学博士，主任医师，教授，博士生导师。分管医务、科研等工作。",
-          "photo": "../assets/images/wxh.png"
+          "photo": "../assets/images/wxh.webp"
         },
         {
           "id": "ld17811695822380.45429161538188",
@@ -1534,7 +1534,7 @@ window.HM_DATA = {
     },
     "staff": {
       "hero": {
-        "bgImage": "../assets/images/2_20.png",
+        "bgImage": "../assets/images/2_20.webp",
         "num": "板块十三 · SECTION 13",
         "title": "职工名录",
         "subtitle": "每一位职工，都是医院发展的基石",
@@ -26466,42 +26466,42 @@ window.HM_DATA = {
         {
           "icon": "👥",
           "label": "全院职工合影",
-          "url": "../assets/images/kzys.jpg"
+          "url": "../assets/images/kzys.webp"
         },
         {
           "icon": "🏥",
           "label": "临床科室查房",
-          "url": "../assets/images/jypw.jpg"
+          "url": "../assets/images/jypw.webp"
         },
         {
           "icon": "🎓",
           "label": "教学带教日常",
-          "url": "../assets/images/jypw.jpg"
+          "url": "../assets/images/jypw.webp"
         },
         {
           "icon": "🎗",
           "label": "护士节表彰",
-          "url": "../assets/images/sjzp.jpg"
+          "url": "../assets/images/sjzp.webp"
         },
         {
           "icon": "🤝",
           "label": "多学科会诊MDT",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.webp"
         },
         {
           "icon": "🔬",
           "label": "科研团队实验室",
-          "url": "../assets/images/jypw.jpg"
+          "url": "../assets/images/jypw.webp"
         },
         {
           "icon": "🏆",
           "label": "年度表彰先进职工",
-          "url": "../assets/images/kzys.jpg"
+          "url": "../assets/images/kzys.webp"
         },
         {
           "icon": "📸",
           "label": "医院文化活动",
-          "url": "../assets/images/sjzp.jpg"
+          "url": "../assets/images/sjzp.webp"
         }
       ]
     },
@@ -26510,17 +26510,17 @@ window.HM_DATA = {
         {
           "icon": "📷",
           "label": "1992年奠基典礼<br><small>历史影像</small>",
-          "url": "../assets/images/kgdl.jpg"
+          "url": "../assets/images/kgdl.webp"
         },
         {
           "icon": "📷",
           "label": "1997年正式开诊<br><small>珍贵历史</small>",
-          "url": "../assets/images/kzys.jpg"
+          "url": "../assets/images/kzys.webp"
         },
         {
           "icon": "📷",
           "label": "2015年三甲评审<br><small>里程碑时刻</small>",
-          "url": "/assets/images/sjzp.jpg"
+          "url": "/assets/images/sjzp.webp"
         },
         {
           "icon": "📷",

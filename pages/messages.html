@@ -6,9 +6,13 @@
   <title>院史寄语墙 — 云端院史馆</title>
   <meta name="description" content="大理大学第一附属医院院史寄语墙，职工在线留言互动，共同书写医院历史与祝福。">
   <meta name="keywords" content="大理大学第一附属医院,云南省第四人民医院,云端院史馆,医院历史,院史,大理医院,三甲医院,滇西医疗">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap"></noscript>
+  <link rel="preload" as="style" href="../css/style.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/sections.css">
   <link rel="stylesheet" href="../css/visuals.css">
@@ -19,7 +23,7 @@
   <nav class="navbar">
     <div class="container">
       <a href="../index.html" class="nav-logo">
-        <img src="../assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="nav-logo-img">
+        <img src="../assets/images/logo-hospital.webp" alt="大理大学第一附属医院" class="nav-logo-img" width="183" height="42">
       </a>
       <button class="nav-toggle" aria-label="菜单" onclick="toggleMenu()"><span></span><span></span><span></span></button>
       <ul class="nav-menu" id="navMenu">
@@ -106,9 +110,10 @@
     </div>
   </footer>
 
-  <script src="../js/data.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../js/features.js"></script>
+  <script src="../js/data/core.js" defer></script>
+  <script src="../js/data-loader.js" defer></script>
+  <script src="../js/main.js" defer></script>
+  <script src="../js/features.js" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var mw = window.MuseumFeatures.MessageWall;

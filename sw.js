@@ -1,5 +1,5 @@
 // 云端院史馆 Service Worker
-const CACHE_VERSION = 'dfy-museum-v4';
+const CACHE_VERSION = 'dfy-museum-v6';
 const CACHE_NAME = 'dfy-museum-' + CACHE_VERSION;
 
 // 核心资源 - 安装时预缓存
@@ -10,14 +10,16 @@ const CORE_ASSETS = [
   '/css/sections.css',
   '/css/visuals.css',
   '/css/features.css',
-  '/js/data.js',
+  '/js/data/core.js',
+  '/js/data-loader.js',
   '/js/main.js',
   '/js/features.js',
   '/js/data-service.js',
   '/pages/timeline.html',
   '/pages/search.html',
   '/pages/messages.html',
-  '/assets/images/logo-hospital.png'
+  '/assets/images/logo-hospital.webp',
+  '/assets/images/2_20.webp'
 ];
 
 // 安装：预缓存核心资源

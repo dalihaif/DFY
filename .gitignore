@@ -1,2 +1,7 @@
 node_modules/
 .workbuddy/
+__pycache__/
+*.htmlX
+*.jsX
+*.webpX
+*.pyc

@@ -6,9 +6,13 @@
   <title>职工名录 — 大理大学第一附属医院 · 云端院史馆</title>
   <meta name="description" content="大理大学第一附属医院职工名录，全院1946名职工基本信息，41个临床科室人员构成。">
   <meta name="keywords" content="大理大学第一附属医院,云南省第四人民医院,云端院史馆,医院历史,院史,大理医院,三甲医院,滇西医疗">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap"></noscript>
+  <link rel="preload" as="style" href="../css/style.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/sections.css">
   <link rel="stylesheet" href="../css/visuals.css">
@@ -19,7 +23,7 @@
   <nav class="navbar">
     <div class="container">
       <a href="../index.html" class="nav-logo">
-        <img src="../assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="nav-logo-img">
+        <img src="../assets/images/logo-hospital.webp" alt="大理大学第一附属医院" class="nav-logo-img" width="183" height="42">
       </a>
       <button class="nav-toggle" aria-label="菜单" onclick="toggleMenu()"><span></span><span></span><span></span></button>
       <ul class="nav-menu" id="navMenu">
@@ -50,7 +54,7 @@
 
   <!-- Page Hero -->
   <section class="page-hero">
-    <img loading="lazy" class="page-hero-bg" src="../assets/images/2_20.png" alt="大理大学第一附属医院" onerror="this.style.display='none'">
+    <img class="page-hero-bg" src="../assets/images/2_20.webp" fetchpriority="high" width="2230" height="762" alt="大理大学第一附属医院" onerror="this.style.display='none'">
     <div class="page-hero-overlay"></div>
     <div class="page-hero-content">
       <div class="page-breadcrumb">
@@ -175,8 +179,9 @@
     </div>
   </footer>
 
-  <script src="../js/data.js"></script>
-  <script src="../js/main.js"></script>
-  <script src="../js/features.js"></script>
+  <script src="../js/data/core.js" defer></script>
+  <script src="../js/data-loader.js" defer></script>
+  <script src="../js/main.js" defer></script>
+  <script src="../js/features.js" defer></script>
 </body>
 </html>

@@ -4,9 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="大理大学第一附属医院（云南省第四人民医院）云端院史馆。立足大理、辐射滇西，三级甲等综合医院，建院<span class="hospital-age"></span>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap"></noscript>
+  <link rel="preload" as="style" href="css/style.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/sections.css">
   <link rel="stylesheet" href="css/visuals.css">
@@ -18,7 +22,7 @@
   <nav class="navbar">
     <div class="container">
       <a href="index.html" class="nav-logo">
-        <img src="assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="nav-logo-img">
+        <img src="assets/images/logo-hospital.webp" alt="大理大学第一附属医院" class="nav-logo-img" width="183" height="42">
              </a>
 
       <button class="nav-toggle" aria-label="菜单" onclick="toggleMenu()">
@@ -53,7 +57,7 @@
 
   <!-- ====== Hero ====== -->
   <section class="hero" id="hero">
-    <img loading="lazy" class="hero-bg" src="assets/images/2_20.png" alt="大理大学第一附属医院" onerror="this.style.display='none'">
+    <img class="hero-bg" src="assets/images/2_20.webp" fetchpriority="high" width="2230" height="762" alt="大理大学第一附属医院" onerror="this.style.display='none'">
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-tag">
@@ -374,7 +378,7 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <div class="footer-logo">
-          <img src="assets/images/logo-hospital.png" alt="大理大学第一附属医院" class="footer-logo-img">
+          <img src="assets/images/logo-hospital.webp" alt="大理大学第一附属医院" class="footer-logo-img" width="192" height="44">
         </div>
         <p class="footer-slogan">诚信 · 进取 · 和谐 · 奉献<br>云南省第四人民医院 · 云端院史馆</p>
         <div class="footer-addr">
@@ -423,14 +427,15 @@
       </div>
     </div>
     <div class="footer-bottom">
-      © 2026 大理大学第一附属医院（云南省第四人民医院）版权所有 | 云端院史馆 v4.0 | 本网站非官方站点，信息仅供参考
+      © 2026 大理大学第一附属医院（云南省第四人民医院）版权所有 | 云端院史馆 v4.2 | 本网站非官方站点，信息仅供参考
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
-  <script src="js/data-service.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/features.js"></script>
+  <script src="js/data/core.js" defer></script>
+  <script src="js/data-loader.js" defer></script>
+  <script src="js/data-service.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/features.js" defer></script>
   <script>
     // Service Worker 离线缓存
     if ('serviceWorker' in navigator) {

@@ -22,9 +22,16 @@
   }
 
   function getContent() {
+    // 合并 window.HM_DATA.content（板块文件）和 localStorage（CMS 编辑）
+    var merged = {};
+    if (window.HM_DATA && window.HM_DATA.content) {
+      for (var k in window.HM_DATA.content) merged[k] = window.HM_DATA.content[k];
+    }
     try {
-      return JSON.parse(localStorage.getItem('hm_content') || '{}');
-    } catch (e) { return {}; }
+      var local = JSON.parse(localStorage.getItem('hm_content') || '{}');
+      if (local) { for (var k in local) merged[k] = local[k]; }
+    } catch (e) {}
+    return merged;
   }
 
   function getSettings() {
@@ -391,7 +398,11 @@
       renderPage();
     }
 
-    // 监听服务器数据加载完毕事件（localStorage-sync.js 触发）
+    // 监听按需数据加载完毕事件（data-loader.js 触发）
+    document.addEventListener('hm:dataready', renderPage);
+    document.addEventListener('hm:staffready', renderPage);
+
+    // 兼容旧事件（localStorage-sync.js 触发）
     window.addEventListener('serverDataLoaded', function () {
       renderPage();
     });

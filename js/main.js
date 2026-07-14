@@ -30,9 +30,12 @@
   // expose
   window.toggleTheme = toggleTheme;
 
-  // -------- 数据读取（优先 data.js，fallback localStorage）--------
-  // data.js 注入 window.HM_DATA，包含 content/settings/announcements/sections
-  // 若 data.js 字段为空对象/空数组，则回退到 localStorage（本地编辑预览）
+  // -------- 等待按需数据加载完成 --------
+  // data-loader.js 根据当前页面动态加载所需板块，完成后派发 hm:dataready
+  // core.js (defer) 已提供 settings/announcements/sections/content.index
+  document.addEventListener('hm:dataready', function () {
+
+  // -------- 数据读取（合并 window.HM_DATA 和 localStorage）--------
   var _hmData = (window.HM_DATA && typeof window.HM_DATA === 'object') ? window.HM_DATA : {};
 
   function _hasData(obj) {
@@ -42,7 +45,6 @@
   }
 
   // -------- Hospital age auto-calc --------
-  // Read founding year from admin settings if available, else default 1991
   var hmSettings = {};
   try {
     if (_hasData(_hmData.settings)) {
@@ -55,52 +57,33 @@
   var nowYear = new Date().getFullYear();
   var hospitalAge = nowYear - FOUNDED_YEAR;
 
-  // Fill all .hospital-age spans
   document.querySelectorAll('.hospital-age').forEach(function (el) {
     el.textContent = '' + hospitalAge;
   });
-
-  // Fill all .hospital-year-now spans
   document.querySelectorAll('.hospital-year-now').forEach(function (el) {
     el.textContent = '' + nowYear;
   });
 
-  // Also update meta description
   var metaDesc = document.querySelector('meta[name="description"]');
   if (metaDesc && hospitalAge) {
     metaDesc.setAttribute('content',
       metaDesc.getAttribute('content').replace(/\d+年/, hospitalAge + '\u5E74'));
   }
 
-  // -------- Content from localStorage (主) or data.js (备) --------
-  // 后台 CMS 编辑后保存到 localStorage → 前台自动生效
-  // data.js 作为发布版本的快照，localStorage 优先于 data.js
+  // -------- Content: 合并板块文件数据和 localStorage CMS 编辑 --------
+  // window.HM_DATA.content 来自按需加载的板块文件（data-loader.js 动态加载）
+  // localStorage.hm_content 来自后台 CMS 编辑（覆盖板块文件数据）
   var hmContent = {};
+  if (_hmData.content) {
+    for (var _k in _hmData.content) hmContent[_k] = _hmData.content[_k];
+  }
   try {
-    var localContent = JSON.parse(localStorage.getItem('hm_content') || 'null');
-    var dataJsContent = _hmData && _hmData.content || null;
-    var localHasData = localContent && typeof localContent === 'object' && _hasData(localContent);
-    var dataJsHasData = _hasData(dataJsContent);
-
-    // 获取后台最后编辑时间
-    var lastEdit = localStorage.getItem('hm_last_edit') || '0';
-    console.log('[Frontend] localStorage hm_content: ' + (localHasData ? '存在(' + Object.keys(localContent).length + '个section, 编辑时间=' + lastEdit + ')' : '无数据'));
-    console.log('[Frontend] data.js content: ' + (dataJsHasData ? '存在(' + Object.keys(dataJsContent).length + '个section)' : '无数据'));
-
-    if (localHasData) {
-      // localStorage 有数据 → 优先使用（后台 CMS 刚编辑过的）
-      hmContent = localContent;
-      console.log('[Frontend] 数据源: localStorage (CMS 编辑数据)');
-    } else if (dataJsHasData) {
-      // 无本地编辑 → 使用 data.js（发布版本/首次加载）
-      hmContent = dataJsContent;
-      // 同步到 localStorage 作为初始数据
-      try { localStorage.setItem('hm_content', JSON.stringify(hmContent)); localStorage.setItem('hm_last_edit', Date.now().toString()); } catch(e) {}
-      console.log('[Frontend] 数据源: data.js (初始化本地缓存)');
-    } else {
-      console.log('[Frontend] 数据源: 无数据 (hmContent = {})');
+    var localContent = JSON.parse(localStorage.getItem('hm_content') || '{}');
+    if (localContent && typeof localContent === 'object') {
+      for (var _lk in localContent) hmContent[_lk] = localContent[_lk];
     }
   } catch(e) { console.error('[Frontend] 数据读取异常:', e); }
+  console.log('[Frontend] 数据就绪，已加载板块: ' + Object.keys(hmContent).join(', '));
 
   // 打印 staff 数据
   try {
@@ -1161,5 +1144,7 @@
     // 初始渲染
     renderPage();
   })();
+
+  }); // end hm:dataready
 
 })();

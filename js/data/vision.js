@@ -1,0 +1,6 @@
+/* vision.js - vision section data
+ * Auto-split from data.js
+ */
+window.HM_DATA = window.HM_DATA || {};
+window.HM_DATA.content = window.HM_DATA.content || {};
+window.HM_DATA.content.vision = {"hero": {"bgImage": "../assets/images/2_20.webp", "num": "板块十 · SECTION 10", "title": "展望未来", "subtitle": "踔厉奋发 · 勇毅前行", "desc": "立足新起点，锚定新目标，奋力建设滇西区域医疗中心。"}, "blocks": [{"num": "01 · 战略 · 发展目标", "title": "战略目标", "subtitle": "建设滇西区域医疗中心", "text": "<h4>核心目标</h4><p>建成集医疗、教学、科研、预防、康复于一体的滇西区域医疗中心。</p>", "imgIcon": "🎯", "imgLabel": "发展愿景图", "imgSize": "16:9", "imgUrl": ""}], "dataCards": [{"icon": "", "value": "区域", "label": "医疗中心建设目标", "note": "滇西高水平医疗中心"}, {"icon": "", "value": "9", "label": "十四五省级重点专科", "note": "在建+新立项"}, {"icon": "", "value": "AI", "label": "智能诊断", "note": "智慧医院全面深化"}, {"icon": "", "value": "16国", "label": "国际合作", "note": "南亚东南亚拓展"}], "gallery": [{"icon": "🎯", "label": "战略规划", "url": ""}, {"icon": "🚀", "label": "未来蓝图", "url": ""}, {"icon": "🌟", "label": "远景目标", "url": ""}, {"icon": "📈", "label": "发展路径", "url": ""}], "timeline": [{"year": "1991", "title": "奠基起步", "desc": "大理医学院附属医院获批成立，开启奋斗征程。", "dot": "起"}, {"year": "2015", "title": "三甲跨越", "desc": "获评三级甲等综合医院，跻身高水平医院行列。", "dot": "甲"}, {"year": "2020", "title": "抗疫担当", "desc": "157名医护驰援一线，展现大附院人责任担当。", "dot": "战"}, {"year": "未来", "title": "愿景展望", "desc": "建成滇西区域医疗中心，辐射南亚东南亚。", "dot": "梦"}]};
