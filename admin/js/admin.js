@@ -56,7 +56,7 @@ function initAllData() {
 function seedContent() {
   return {
     history: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块一 · SECTION 01', title:'历史沿革', subtitle:'医院发展的时光足迹', desc:'追溯医院源头，呈现从无到有、逐步成长的关键节点。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块一 · SECTION 01', title:'历史沿革', subtitle:'医院发展的时光足迹', desc:'追溯医院源头，呈现从无到有、逐步成长的关键节点。' },
       blocks: [
         { id:'b1', num:'01 · 源起 · 历史定格', title:'源起与奠基', subtitle:'1991年始建 — 云南省人民政府批准成立',
           text:'<h4>建院缘起</h4><p>1991年，云南省人民政府正式批准成立大理医学院附属医院，这是大理高等医学教育与临床医疗事业发展的里程碑。</p><p>彼时，云南大理地处偏远，优质医疗资源严重匮乏，医院的批准成立，标志着大理人民就医水平将迎来质的飞跃。</p>',
@@ -80,7 +80,7 @@ function seedContent() {
       ]
     },
     people: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块二 · SECTION 02', title:'人物风采', subtitle:'医院发展的核心力量', desc:'历任院长、党委书记、学科带头人、医学名家……每一位为医院发展倾注心血的人都值得被铭记。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块二 · SECTION 02', title:'人物风采', subtitle:'医院发展的核心力量', desc:'历任院长、党委书记、学科带头人、医学名家……每一位为医院发展倾注心血的人都值得被铭记。' },
       blocks: [
         { id:'pb1', num:'01 · 薪火 · 传承接力', title:'薪火相传', subtitle:'一棒接一棒，精神永相传',
           text:'<h4>薪火相传</h4><p>从首任院长到现任领导，一代代大附院人接过接力棒，赓续百年薪火，书写新时代高质量发展新篇章。</p>',
@@ -171,7 +171,7 @@ function seedContent() {
       ]
     },
     disciplines: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块三 · SECTION 03', title:'学科建设', subtitle:'构筑滇西医学高地', desc:'以重点专科为核心，以人才培养为基础，全面构建医教研协同发展的学科体系。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块三 · SECTION 03', title:'学科建设', subtitle:'构筑滇西医学高地', desc:'以重点专科为核心，以人才培养为基础，全面构建医教研协同发展的学科体系。' },
       blocks: [
         { id:'b1', num:'01 · 重点 · 省级重点专科', title:'十四五省级重点专科', subtitle:'9个专科入围十四五省级临床重点专科建设项目',
           text:'<h4>在建项目</h4><p>神经外科、康复科、神经内科、检验科、重症医学科——5个专科进入十四五在建重点项目。</p><h4>首次/复评立项</h4><p>呼吸科、老年病科首次立项；普外科、麻醉科复评立项——共4个专科获得省级认定。</p>',
@@ -189,7 +189,7 @@ function seedContent() {
       ]
     },
     campus: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块四 · SECTION 04', title:'院区建设', subtitle:'一院两区 · 双核驱动', desc:'主院区与凤仪院区协同发展，构筑滇西区域医疗中心。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块四 · SECTION 04', title:'院区建设', subtitle:'一院两区 · 双核驱动', desc:'主院区与凤仪院区协同发展，构筑滇西区域医疗中心。' },
       blocks: [
         { id:'b1', num:'01 · 主院区', title:'主院区', subtitle:'大理市核心区位',
           text:'<h4>地理位置</h4><p>位于大理市核心区域，交通便利，服务人口覆盖大理及周边地区。</p><h4>院区规模</h4><p>编制床位1500张，开放床位XXX张，年门急诊量超80万人次。</p>',
@@ -211,7 +211,7 @@ function seedContent() {
       ]
     },
     education: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块五 · SECTION 05', title:'教学与人才', subtitle:'医教协同 · 人才兴院', desc:'国家临床教学示范中心，住培基地，为滇西培养输送医学人才。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块五 · SECTION 05', title:'教学与人才', subtitle:'医教协同 · 人才兴院', desc:'国家临床教学示范中心，住培基地，为滇西培养输送医学人才。' },
       blocks: [
         { id:'b1', num:'01 · 教学 · 临床教学', title:'医学教育体系', subtitle:'国家临床教学示范中心 · 住培基地',
           text:'<h4>教学体系</h4><p>承担大理大学临床医学院教学任务，涵盖本科、硕士、博士多层次培养。</p>',
@@ -234,7 +234,7 @@ function seedContent() {
       ]
     },
     culture: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块六 · SECTION 06', title:'文化建设', subtitle:'诚信 · 进取 · 和谐 · 奉献', desc:'以文化人，以文润心，构建有温度的人文医院。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块六 · SECTION 06', title:'文化建设', subtitle:'诚信 · 进取 · 和谐 · 奉献', desc:'以文化人，以文润心，构建有温度的人文医院。' },
       blocks: [
         { id:'b1', num:'01 · 灵魂 · 医院精神', title:'医院精神与文化', subtitle:'诚信 · 进取 · 和谐 · 奉献',
           text:'<h4>医院精神</h4><p>"诚信、进取、和谐、奉献"——四字精神凝聚了大附院人的价值追求。</p>',
@@ -249,7 +249,7 @@ function seedContent() {
       ]
     },
     tech: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块七 · SECTION 07', title:'科技与交流', subtitle:'创新驱动 · 开放合作', desc:'科研创新与国际交流双轮驱动，不断提升医院学术影响力。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块七 · SECTION 07', title:'科技与交流', subtitle:'创新驱动 · 开放合作', desc:'科研创新与国际交流双轮驱动，不断提升医院学术影响力。' },
       blocks: [
         { id:'b1', num:'01 · 科研 · 科研创新', title:'科研平台与成果', subtitle:'院士工作站 · 重点实验室',
           text:'<h4>科研平台</h4><p>建有院士工作站1个、省级重点实验室3个、省级医学研究分中心8个。</p>',
@@ -267,7 +267,7 @@ function seedContent() {
       ]
     },
     duty: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块八 · SECTION 08', title:'责任与担当', subtitle:'医者仁心 · 大爱无疆', desc:'在急难险重面前，大附院人始终冲锋在前，以行动诠释医者担当。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块八 · SECTION 08', title:'责任与担当', subtitle:'医者仁心 · 大爱无疆', desc:'在急难险重面前，大附院人始终冲锋在前，以行动诠释医者担当。' },
       blocks: [
         { id:'b1', num:'01 · 抗疫 · 驰援一线', title:'抗疫驰援', subtitle:'157名医护驰援抗疫一线',
           text:'<h4>逆行出征</h4><p>新冠疫情暴发后，医院先后派出157名医护人员驰援武汉、上海、瑞丽等地。</p>',
@@ -285,7 +285,7 @@ function seedContent() {
       ]
     },
     honors: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块九 · SECTION 09', title:'荣誉殿堂', subtitle:'辉煌成就 · 荣耀时刻', desc:'三十余载奋斗，硕果累累，每一份荣誉都凝聚着大附院人的汗水与智慧。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块九 · SECTION 09', title:'荣誉殿堂', subtitle:'辉煌成就 · 荣耀时刻', desc:'三十余载奋斗，硕果累累，每一份荣誉都凝聚着大附院人的汗水与智慧。' },
       blocks: [
         { id:'b1', num:'01 · 荣誉 · 辉煌成就', title:'主要荣誉成就', subtitle:'大附院35年辉煌成就',
           text:'<h4>国家级荣誉</h4><p>全国文明单位、全国百姓放心示范医院、全国医院文化建设先进单位…</p>',
@@ -301,7 +301,7 @@ function seedContent() {
       ]
     },
     vision: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块十 · SECTION 10', title:'展望未来', subtitle:'踔厉奋发 · 勇毅前行', desc:'立足新起点，锚定新目标，奋力建设滇西区域医疗中心。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块十 · SECTION 10', title:'展望未来', subtitle:'踔厉奋发 · 勇毅前行', desc:'立足新起点，锚定新目标，奋力建设滇西区域医疗中心。' },
       blocks: [
         { id:'b1', num:'01 · 战略 · 发展目标', title:'战略目标', subtitle:'建设滇西区域医疗中心',
           text:'<h4>核心目标</h4><p>建成集医疗、教学、科研、预防、康复于一体的滇西区域医疗中心。</p>',
@@ -325,7 +325,7 @@ function seedContent() {
       ]
     },
     structure: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块十一 · SECTION 11', title:'组织架构', subtitle:'科学管理 · 高效运行', desc:'完善的组织管理体系，保障医院高效运转。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块十一 · SECTION 11', title:'组织架构', subtitle:'科学管理 · 高效运行', desc:'完善的组织管理体系，保障医院高效运转。' },
       blocks: [
         { id:'b1', num:'01 · 架构 · 组织体系', title:'医院组织架构', subtitle:'党委领导下的院长负责制',
           text:'<h4>管理体系</h4><p>院党委—院行政—党政管理部门—临床医技科室—教研室/实验室，五级管理体系。</p>',
@@ -337,7 +337,7 @@ function seedContent() {
       ]
     },
     leadership: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块十二 · SECTION 12', title:'领导团队', subtitle:'领航定向，掌舵前行', desc:'党委领导下的院长负责制，党政工团齐心协力。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块十二 · SECTION 12', title:'领导团队', subtitle:'领航定向，掌舵前行', desc:'党委领导下的院长负责制，党政工团齐心协力。' },
       blocks: [
         { id:'b1', num:'01 · 领航 · 现任领导班子', title:'院党政领导班子', subtitle:'团结务实、开拓创新的领导核心',
           text:'<h4>大理大学第一附属医院（云南省第四人民医院）现任领导班子</h4><p>在云南省委教育工委、省卫健委和大理大学党委的领导下，医院党政领导班子坚持"党委领导下的院长负责制"。</p>',
@@ -358,7 +358,7 @@ function seedContent() {
     },
     index: {
       hero: {
-        bgImage:'assets/images/2_20.png',
+        bgImage:'assets/images/2_20.webp',
         title:'大理大学第一附属医院',
         tag:'云南省卫健委直管 · 非省会三甲综合高校附属医院',
         flipItems: ['云南省第四人民医院','三级甲等综合医院','国家临床教学示范中心','滇西区域医疗高地'],
@@ -402,7 +402,7 @@ function seedContent() {
       ]
     },
     staff: {
-      hero: { bgImage:'../assets/images/2_20.png', num:'板块十三 · SECTION 13', title:'职工名录', subtitle:'每一位职工，都是医院发展的基石', desc:'1946名在册职工，41个临床科室，来自五湖四海，汇聚于此。铭记每一位大附院人的名字与贡献。' },
+      hero: { bgImage:'../assets/images/2_20.webp', num:'板块十三 · SECTION 13', title:'职工名录', subtitle:'每一位职工，都是医院发展的基石', desc:'1946名在册职工，41个临床科室，来自五湖四海，汇聚于此。铭记每一位大附院人的名字与贡献。' },
       blocks: [
         { id:'b1', num:'01 · 根基 · 职工名录', title:'全院职工名录', subtitle:'铭记每一位为大附院发展贡献力量的人',
           text:'<h4>大理大学第一附属医院职工名录</h4><p>自1991年建院至今，一代代大附院人秉承"诚信、进取、和谐、奉献"的医院精神，在各自的岗位上默默耕耘。</p><p>本名录记录全院职工的姓名、科室、职称、职位等基本信息，旨在铭记每一位职工为医院发展所做出的贡献。</p>',
@@ -1048,7 +1048,7 @@ function renderIndexEditor(content) {
     h += '<div class="idx-gallery-item border rounded p-2 mb-2">';
     h += '<div class="form-row"><div class="col-md-1"><label>图标</label><input class="form-control form-control-sm ig-icon" value="' + escHtml(g.icon || '') + '" style="font-size:18px"></div>';
     h += '<div class="col-md-4"><label>标签 (支持&lt;br&gt;)</label><input class="form-control form-control-sm ig-label" value="' + escHtml(g.label || '') + '"></div>';
-    h += '<div class="col-md-5"><label>图片URL</label><input class="form-control form-control-sm ig-url" value="' + escHtml(g.url || '') + '" placeholder="https://... 或 ../assets/images/xxx.jpg"></div>';
+    h += '<div class="col-md-5"><label>图片URL</label><input class="form-control form-control-sm ig-url" value="' + escHtml(g.url || '') + '" placeholder="https://... 或 ../assets/images/xxx.webp"></div>';
     h += '<div class="col-md-2"><label>&nbsp;</label><button class="btn btn-outline-danger btn-sm btn-del-idx-gallery"><i class="fas fa-trash"></i> 删除</button></div></div>';
     h += '</div>';
   });
@@ -1158,7 +1158,7 @@ function renderSectionEditor(sec) {
       html+='<div class="col-md-2"><label>治院标签</label><input class="form-control form-control-sm ld-era" value="'+escHtml(l.era||'')+'"></div>';
       html+='<div class="col-md-2"><label>简介</label><div class="input-group input-group-sm"><input class="form-control ld-desc" value="'+escHtml(l.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-leader" data-gidx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
       html+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
-      html+='<input class="form-control form-control-sm ld-photo" value="'+escHtml(l.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
+      html+='<input class="form-control form-control-sm ld-photo" value="'+escHtml(l.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.webp"></div></div>';
       html+='</div>';
     });
     html+='</div>';
@@ -1239,7 +1239,7 @@ function renderSectionEditor(sec) {
       html+='<div class="col-md-2"><label>科室</label><input class="form-control form-control-sm rm-dept" value="'+escHtml(r.dept||'')+'"></div>';
       html+='<div class="col-md-2"><label>简介</label><div class="input-group input-group-sm"><input class="form-control rm-desc" value="'+escHtml(r.desc||'')+'"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-rolemodel" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
       html+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
-      html+='<input class="form-control form-control-sm rm-photo" value="'+escHtml(r.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
+      html+='<input class="form-control form-control-sm rm-photo" value="'+escHtml(r.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.webp"></div></div>';
       html+='</div>';
     });
     html+='</div>';
@@ -1255,7 +1255,7 @@ function renderSectionEditor(sec) {
       html+='<div class="form-row mt-1"><div class="col-md-10"><label>简历</label><textarea class="form-control form-control-sm" rows="4" style="width:100%">'+(l.resume||'')+'</textarea></div>';
       html+='<div class="col-md-2 d-flex flex-column justify-content-end"><button class="btn btn-outline-danger btn-sm btn-del-leadership" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div>';
       html+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
-      html+='<input class="form-control form-control-sm lsh-photo" value="'+escHtml(l.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
+      html+='<input class="form-control form-control-sm lsh-photo" value="'+escHtml(l.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.webp"></div></div>';
       html+='</div>';
     });
     html+='</div>';
@@ -1288,7 +1288,7 @@ function renderSectionEditor(sec) {
       html+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-link mr-1 text-primary"></i>图片或资料URL <small class="text-muted">(可填图片URL或文件链接，留空则显示占位Emoji图标)</small></label>';
       html+='<div class="input-group input-group-sm">';
       html+='<div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-image"></i></span></div>';
-      html+='<input class="form-control ga-url" value="'+escHtml(g.url||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg">';
+      html+='<input class="form-control ga-url" value="'+escHtml(g.url||'')+'" placeholder="https://... 或 ../assets/images/xxx.webp">';
       html+='</div></div></div>';
       // 预览缩略图（如有URL）
       if(g.url) {
@@ -1337,7 +1337,7 @@ function renderBlockEditor(secId,b,i){
   h+='<div class="col-md-7"><label>图片描述</label><input class="form-control form-control-sm bl-imgLabel" value="'+escHtml(b.imgLabel||'')+'"></div>';
   h+='<div class="col-md-3"><label>尺寸比例</label><input class="form-control form-control-sm bl-imgSize" value="'+escHtml(b.imgSize||'')+'"></div></div>';
   h+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-link text-primary mr-1"></i>图片URL <small class="text-muted">(填入后前台将显示真实图片，留空则显示占位图标)</small> <button class="btn-img-picker ml-2" onclick="openMediaPickerFor(this)" data-target=".bl-imgUrl"><i class="fas fa-image mr-1"></i>从媒体库选择</button></label>';
-  h+='<input class="form-control form-control-sm bl-imgUrl" value="'+escHtml(b.imgUrl||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg" style="word-break:break-all;"></div></div>';
+  h+='<input class="form-control form-control-sm bl-imgUrl" value="'+escHtml(b.imgUrl||'')+'" placeholder="https://... 或 ../assets/images/xxx.webp" style="word-break:break-all;"></div></div>';
   h+='</div>';
   return h;
 }
@@ -1351,7 +1351,7 @@ function renderProfileRow(group,p,i){
   h+='<div class="form-row mt-1"><div class="col-md-6"><label>职位 <small class="text-muted">(如：科室主任、护理部主任)</small></label><input class="form-control form-control-sm pr-position" value="'+escHtml(p.position||'')+'" placeholder="科主任 / 护士长 / 组长 …"></div>';
   h+='<div class="col-md-6"><label>简介/贡献</label><div class="input-group input-group-sm"><input class="form-control pr-desc" value="'+escHtml(p.desc||'')+'" placeholder="简述该职工的贡献…"><div class="input-group-append"><button class="btn btn-outline-danger btn-del-profile" data-group="'+group+'" data-idx="'+i+'"><i class="fas fa-trash"></i></button></div></div></div></div>';
   h+='<div class="form-row mt-1"><div class="col-12"><label><i class="fas fa-portrait text-warning mr-1"></i>照片URL <small class="text-muted">(留空则显示姓名首字占位)</small></label>';
-  h+='<input class="form-control form-control-sm pr-photo" value="'+escHtml(p.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.jpg"></div></div>';
+  h+='<input class="form-control form-control-sm pr-photo" value="'+escHtml(p.photo||'')+'" placeholder="https://... 或 ../assets/images/xxx.webp"></div></div>';
   h+='</div>';
   return h;
 }
@@ -1749,7 +1749,73 @@ function exportDataJs() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 
-  $(document).Toasts('create', { class:'bg-success', title:'导出成功', body:'data.js 已下载。请替换 js/data.js，然后在项目根目录运行 node split-data.js 拆分板块文件，再部署', autohide:true, delay:6000 });
+  $(document).Toasts('create', { class:'bg-success', title:'导出成功', body:'data.js 已下载。请替换 js/data.js，然后点击「导出拆分文件」或运行 node split-data.js', autohide:true, delay:5000 });
+}
+
+// ====== 导出拆分数据文件（core.js + 13个板块文件）======
+function exportSplitData() {
+  var content      = localStorage.getItem('hm_content')      || '{}';
+  var settings     = localStorage.getItem('hm_settings')     || '{}';
+  var announcements= localStorage.getItem('hm_announcements')|| '[]';
+  var sections     = localStorage.getItem('hm_admin_sections')|| '{}';
+
+  var data;
+  try { data = JSON.parse(content); } catch(e) { data = {}; }
+  var setObj;
+  try { setObj = JSON.parse(settings); } catch(e) { setObj = {}; }
+  var annArr;
+  try { annArr = JSON.parse(announcements); } catch(e) { annArr = []; }
+  var secObj;
+  try { secObj = JSON.parse(sections); } catch(e) { secObj = {}; }
+
+  var files = [];
+  var now = new Date().toLocaleString('zh-CN');
+
+  // 1. core.js
+  var coreContent = '/* core.js - meta data + index section\n * Auto-generated: ' + now + '\n */\n';
+  coreContent += 'window.HM_DATA = window.HM_DATA || {};\n';
+  coreContent += 'window.HM_DATA.settings = ' + JSON.stringify(setObj) + ';\n';
+  coreContent += 'window.HM_DATA.announcements = ' + JSON.stringify(annArr) + ';\n';
+  coreContent += 'window.HM_DATA.sections = ' + JSON.stringify(secObj) + ';\n';
+  coreContent += 'window.HM_DATA.content = window.HM_DATA.content || {};\n';
+  if (data.index) {
+    coreContent += 'window.HM_DATA.content.index = ' + JSON.stringify(data.index) + ';\n';
+  }
+  files.push({ name: 'core.js', content: coreContent });
+
+  // 2. 每个板块一个文件
+  for (var sectionId in data) {
+    if (sectionId === 'index') continue;
+    var sc = '/* ' + sectionId + '.js - ' + sectionId + ' section data\n * Auto-generated: ' + now + '\n */\n';
+    sc += 'window.HM_DATA = window.HM_DATA || {};\n';
+    sc += 'window.HM_DATA.content = window.HM_DATA.content || {};\n';
+    sc += 'window.HM_DATA.content.' + sectionId + ' = ' + JSON.stringify(data[sectionId]) + ';\n';
+    files.push({ name: sectionId + '.js', content: sc });
+  }
+
+  // 逐个下载（间隔 300ms 避免浏览器拦截）
+  files.forEach(function(f, i) {
+    setTimeout(function() {
+      var blob = new Blob([f.content], { type: 'text/javascript;charset=utf-8' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href   = url;
+      a.download = f.name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, i * 300);
+  });
+
+  var totalSize = files.reduce(function(s, f) { return s + f.content.length; }, 0);
+  $(document).Toasts('create', {
+    class: 'bg-success',
+    title: '拆分文件导出中',
+    body: '正在下载 ' + files.length + ' 个文件（core.js + ' + (files.length - 1) + ' 个板块）到 js/data/ 目录，总计 ' + (totalSize / 1024).toFixed(1) + ' KB',
+    autohide: true,
+    delay: 6000
+  });
 }
 
 // ====== 导入 data.js 文件 ======
@@ -1950,15 +2016,18 @@ function renderDataManager() {
   html += '<div class="row"><div class="col-12"><div class="callout callout-info">';
   html += '<h5><i class="fas fa-info-circle mr-1"></i>数据持久化说明</h5>';
   html += '<p class="mb-1">当前所有内容编辑后保存在 <strong>浏览器 localStorage</strong> 中（仅本机可见）。</p>';
-  html += '<p class="mb-1">点击下方「<strong>⬇ 下载 data.js</strong>」将所有数据固化为文件 → 替换网站 <code>js/data.js</code> → 重新部署后 <strong>所有访客</strong> 均可看到最新内容。</p>';
-  html += '<p class="mb-0 text-muted">提示：若网站部署在 GitHub Pages，push 更新后即可自动同步。</p>';
+  html += '<p class="mb-1"><strong>推荐流程：</strong>点击「<strong>导出拆分文件</strong>」→ 下载 14 个文件到 <code>js/data/</code> 目录 → 推送到 GitHub → 全网生效。</p>';
+  html += '<p class="mb-0 text-muted">提示：也可下载完整 data.js 作为备份，或运行 node split-data.js 手动拆分。</p>';
   html += '</div></div></div>';
 
   html += '<div class="row mb-3"><div class="col-md-6">';
   html += '<div class="card card-primary card-outline"><div class="card-body">';
   html += '<h5><i class="fas fa-database mr-1 text-primary"></i>数据导入/导出</h5>';
   html += '<hr class="mb-2 mt-1">';
-  html += '<p class="mb-2 text-muted"><strong>导出：</strong>将当前全部 CMS 数据固化为 <code>data.js</code> 文件</p>';
+  html += '<p class="mb-2 text-muted"><strong>推荐 · 导出拆分文件：</strong>直接生成 core.js + 13 个板块文件，放入 <code>js/data/</code> 目录即可</p>';
+  html += '<button class="btn btn-success btn-block" id="btn-export-split"><i class="fas fa-file-export mr-1"></i>导出拆分文件（14个）</button>';
+  html += '<hr class="mb-2 mt-3">';
+  html += '<p class="mb-2 text-muted"><strong>导出完整 data.js：</strong>将全部数据固化为单个文件（备份用）</p>';
   html += '<button class="btn btn-primary btn-block" id="btn-export-datajs"><i class="fas fa-download mr-1"></i>⬇ 下载 data.js</button>';
   html += '<hr class="mb-2 mt-3">';
   html += '<p class="mb-2 text-muted"><strong>导入：</strong>从之前导出的 <code>data.js</code> 文件恢复全部数据</p>';
@@ -1974,7 +2043,7 @@ function renderDataManager() {
   html += '<i class="fab fa-github fa-3x text-success mb-2"></i>';
   html += '<p class="mb-2">推送至 GitHub Pages 后全网访问</p>';
   html += '<div class="bg-dark text-light rounded p-2 text-left" style="font-size:12px;font-family:monospace;">';
-  html += 'git add js/data.js<br>git commit -m "update: 更新展馆内容"<br>git push';
+  html += 'git add js/data/<br>git commit -m "update: 更新展馆内容"<br>git push';
   html += '</div>';
   html += '</div></div></div>';
 
@@ -2289,7 +2358,7 @@ $(document).ready(function() {
     var h = '<div class="idx-gallery-item border rounded p-2 mb-2">';
     h += '<div class="form-row"><div class="col-md-1"><label>图标</label><input class="form-control form-control-sm ig-icon" value="📷" style="font-size:18px"></div>';
     h += '<div class="col-md-4"><label>标签 (支持&lt;br&gt;)</label><input class="form-control form-control-sm ig-label" value="" placeholder="例如: 1992年奠基典礼<small>历史影像</small>"></div>';
-    h += '<div class="col-md-5"><label>图片URL</label><input class="form-control form-control-sm ig-url" value="" placeholder="https://... 或 ../assets/images/xxx.jpg"></div>';
+    h += '<div class="col-md-5"><label>图片URL</label><input class="form-control form-control-sm ig-url" value="" placeholder="https://... 或 ../assets/images/xxx.webp"></div>';
     h += '<div class="col-md-2"><label>&nbsp;</label><button class="btn btn-outline-danger btn-sm btn-del-idx-gallery"><i class="fas fa-trash"></i> 删除</button></div></div>';
     h += '</div>';
     $('#idx-gallery-container').append(h);
@@ -2503,10 +2572,22 @@ $(document).ready(function() {
     $(document).Toasts('create',{class:'bg-success',title:'已保存',body:'网站设置已更新',autohide:true,delay:2000});
   });
 
-  // 导出数据为 data.js（页面内按钮 + 顶部快捷按钮）
-  $(document).on('click','#btn-export-datajs, #btn-quick-export',function(e){
+  // 导出数据为 data.js（页面内按钮）
+  $(document).on('click','#btn-export-datajs',function(e){
     e.preventDefault();
     exportDataJs();
+  });
+
+  // 顶部快捷导出拆分文件
+  $(document).on('click','#btn-quick-export',function(e){
+    e.preventDefault();
+    exportSplitData();
+  });
+
+  // 导出拆分文件（core.js + 板块文件）
+  $(document).on('click','#btn-export-split',function(e){
+    e.preventDefault();
+    exportSplitData();
   });
 
   // 导入 data.js
@@ -2519,7 +2600,7 @@ $(document).ready(function() {
     var backup = {
       meta: {
         exportedAt: new Date().toISOString(),
-        version: 'dfy-museum-v4-backup',
+        version: 'dfy-museum-v6-backup',
         count: localStorage.length
       },
       data: {}
@@ -3638,8 +3719,9 @@ $(document).ready(function() {
                 $prog.html('<span class="text-success"><i class="fas fa-check mr-1"></i>上传完成！已自动压缩</span>');
                 setTimeout(function() { $prog.empty(); }, 2000);
                 $('#mediaGalleryModal').remove();
-              showMediaGallery(onSelect);
-            }
+                showMediaGallery(onSelect);
+              }
+            });
           };
           reader.onerror = function() { done++; };
           reader.readAsDataURL(file);

@@ -1,17 +1,18 @@
 /**
- * 鏁版嵁鏈嶅姟灞?v2 - 娣峰悎瀛樺偍鏂规
- * 鍔熻兘锛氬悓鏃朵繚瀛樺埌鏈嶅姟鍣紙鎸佷箙鍖栵級鍜?localStorage锛堝揩閫熻鍙栵級
- * 璇诲彇鏃朵紭鍏堜粠 localStorage 璇诲彇锛屽け璐ュ啀浠庢湇鍔″櫒璇诲彇
+ * 数据服务层 v3 - 混合存储方案
+ * 功能：同时保存到服务器（持久化）和 localStorage（快速读取）
+ * 读取时优先从 localStorage 读取，失败再从服务器读取
+ * v3: 适配 data.js 拆分架构，加载完成后派发 hm:dataready 事件
  */
 
 const DataService = {
-  API_BASE: window.location.origin.includes('localhost') 
-    ? 'http://localhost:3000/api' 
-    : '/api', // 鐢熶骇鐜浣跨敤鐩稿璺緞
+  API_BASE: window.location.origin.includes('localhost')
+    ? 'http://localhost:3000/api'
+    : '/api', // 生产环境使用相对路径
 
-  USE_SERVER: true, // 鏄惁浣跨敤鏈嶅姟鍣ㄥ瓨鍌?
+  USE_SERVER: false, // 是否使用服务器存储（无后端时设为 false）
 
-  // 浠庢湇鍔″櫒鑾峰彇鏁版嵁
+  // 从服务器获取数据
   async _fetchFromServer(endpoint) {
     if (!this.USE_SERVER) return null;
     try {
@@ -19,12 +20,12 @@ const DataService = {
       if (!response.ok) return null;
       return await response.json();
     } catch (e) {
-      console.warn(`浠庢湇鍔″櫒鑾峰彇鏁版嵁澶辫触: ${endpoint}`, e);
+      console.warn(`从服务器获取数据失败: ${endpoint}`, e);
       return null;
     }
   },
 
-  // 淇濆瓨鏁版嵁鍒版湇鍔″櫒
+  // 保存数据到服务器
   async _saveToServer(endpoint, data) {
     if (!this.USE_SERVER) return false;
     try {
@@ -35,12 +36,12 @@ const DataService = {
       });
       return response.ok;
     } catch (e) {
-      console.warn(`淇濆瓨鏁版嵁鍒版湇鍔″櫒澶辫触: ${endpoint}`, e);
+      console.warn(`保存数据到服务器失败: ${endpoint}`, e);
       return false;
     }
   },
 
-  // 鑾峰彇鎵€鏈夋暟鎹紙鍒濆鍖栫敤锛?
+  // 获取所有数据（初始化用）
   async getAllData() {
     if (!this.USE_SERVER) return null;
     try {
@@ -48,13 +49,15 @@ const DataService = {
       if (!response.ok) return null;
       return await response.json();
     } catch (e) {
-      console.warn('鑾峰彇鎵€鏈夋暟鎹け璐?, e);
+      console.warn('获取所有数据失败', e);
       return null;
     }
   },
 
-  // 鍒濆鍖栵細浠庢湇鍔″櫒鍔犺浇鏁版嵁鍒?localStorage
+  // 初始化：从服务器加载数据到 localStorage
   async initFromServer() {
+    if (!this.USE_SERVER) return false;
+
     const serverData = await this.getAllData();
     if (!serverData) return false;
 
@@ -65,27 +68,31 @@ const DataService = {
       loadedCount++;
     }
 
-    console.log(`鉁?浠庢湇鍔″櫒鍔犺浇浜?${loadedCount} 涓暟鎹」`);
+    console.log(`✅ 从服务器加载了 ${loadedCount} 个数据项`);
+
+    // 通知前端组件重新渲染（兼容旧版 serverDataLoaded 和新版 hm:dataready）
+    window.dispatchEvent(new CustomEvent('serverDataLoaded'));
+    window.dispatchEvent(new CustomEvent('hm:dataready'));
     return true;
   },
 
-  // 淇濆瓨鏁版嵁鍒版湇鍔″櫒鍜?localStorage
+  // 保存数据到服务器和 localStorage
   async saveToServer(key, data) {
     const endpoint = this._getEndpoint(key);
     const success = await this._saveToServer(endpoint, data);
-    
+
     if (success) {
-      console.log(`鉁?鏁版嵁宸蹭繚瀛樺埌鏈嶅姟鍣? ${key}`);
+      console.log(`✅ 数据已保存到服务器: ${key}`);
     } else {
-      console.warn(`鈿狅笍 鏁版嵁淇濆瓨鍒版湇鍔″櫒澶辫触锛屼粎淇濆瓨鍒版湰鍦? ${key}`);
+      console.warn(`⚠️ 数据保存到服务器失败，仅保存到本地: ${key}`);
     }
 
-    // 濮嬬粓淇濆瓨鍒?localStorage
+    // 始终保存到 localStorage
     localStorage.setItem(key, JSON.stringify(data));
     return success;
   },
 
-  // 杈呭姪鍑芥暟锛氭牴鎹?key 鑾峰彇瀵瑰簲鐨?API 绔偣
+  // 辅助函数：根据 key 获取对应的 API 端点
   _getEndpoint(key) {
     const endpointMap = {
       'hm_content': 'content',
@@ -98,11 +105,11 @@ const DataService = {
   }
 };
 
-// 椤甸潰鍔犺浇鏃惰嚜鍔ㄤ粠鏈嶅姟鍣ㄥ垵濮嬪寲鏁版嵁
+// 页面加载时自动从服务器初始化数据
 if (typeof window !== 'undefined') {
   window.DataService = DataService;
-  
-  // 椤甸潰鍔犺浇瀹屾垚鍚庡垵濮嬪寲
+
+  // 页面加载完成后初始化
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       DataService.initFromServer();
@@ -111,4 +118,3 @@ if (typeof window !== 'undefined') {
     DataService.initFromServer();
   }
 }
-

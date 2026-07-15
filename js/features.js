@@ -1016,10 +1016,6 @@
         });
       });
     },
-          img.classList.add('loaded');
-        });
-      });
-    },
 
     // 按钮涟漪效果
     initRipple: function () {
