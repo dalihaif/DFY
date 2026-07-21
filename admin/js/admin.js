@@ -392,7 +392,7 @@ function seedContent() {
         slogan:'诚信 · 进取 · 和谐 · 奉献<br>云南省第四人民医院 · 云端院史馆',
         addr:'<strong>院本部：</strong>云南省大理市嘉士伯大道32号<br><strong>凤仪院区：</strong>大理经开区凤仪镇工业大道西侧、白塔河以东',
         phones:'党政办：0872-2201062 | 门诊部：0872-2201150 | 投诉办：0872-2201309 | 体检中心：0872-2201119 | 医务部：0872-2201168',
-        copyright:'© 2025 大理大学第一附属医院（云南省第四人民医院）版权所有 | 云端院史馆 v4.0 | 本网站非官方站点，信息仅供参考'
+        copyright:'© 2026 大理大学第一附属医院（云南省第四人民医院）版权所有 | 云端院史馆 v7.0 | 本网站非官方站点，信息仅供参考'
       },
       gallery: [
         { icon:'📷', label:'1992年奠基典礼<br><small>历史影像</small>', url:'' },
@@ -2600,7 +2600,7 @@ $(document).ready(function() {
     var backup = {
       meta: {
         exportedAt: new Date().toISOString(),
-        version: 'dfy-museum-v6-backup',
+        version: 'dfy-museum-v7-backup',
         count: localStorage.length
       },
       data: {}

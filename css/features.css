@@ -1041,18 +1041,7 @@
 }
 
 /* ========== 2. 滚动渐入动画优化 ========== */
-
-/* 基础渐入 */
-.fade-in {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* fade-in / stagger 基础定义已在 style.css 中，此处不再重复 */
 
 /* 从左滑入 */
 .slide-left {
@@ -1090,13 +1079,7 @@
   transform: scale(1);
 }
 
-/* stagger 延迟 */
-.stagger-1 { transition-delay: 0.05s; }
-.stagger-2 { transition-delay: 0.15s; }
-.stagger-3 { transition-delay: 0.25s; }
-.stagger-4 { transition-delay: 0.35s; }
-.stagger-5 { transition-delay: 0.45s; }
-.stagger-6 { transition-delay: 0.55s; }
+/* stagger 延迟已在 style.css 中定义，此处不再重复 */
 
 /* ========== 3. 图片懒加载淡入 ========== */
 

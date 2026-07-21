@@ -605,7 +605,7 @@
   margin: 0 0 4px;
 }
 
-/* 职工卡片网格 — 更密集 */
+/* 职工卡片网格 — 覆盖 style.css 的默认布局，职工名录页专用（更密集 6 列） */
 .staff-grid {
   grid-template-columns: repeat(6, 1fr);
   gap: 14px;
