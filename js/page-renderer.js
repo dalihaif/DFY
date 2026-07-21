@@ -22,16 +22,7 @@
   }
 
   function getContent() {
-    // 合并 window.HM_DATA.content（板块文件）和 localStorage（CMS 编辑）
-    var merged = {};
-    if (window.HM_DATA && window.HM_DATA.content) {
-      for (var k in window.HM_DATA.content) merged[k] = window.HM_DATA.content[k];
-    }
-    try {
-      var local = JSON.parse(localStorage.getItem('hm_content') || '{}');
-      if (local) { for (var k in local) merged[k] = local[k]; }
-    } catch (e) {}
-    return merged;
+    return window.hmGetContent ? window.hmGetContent() : {};
   }
 
   function getSettings() {

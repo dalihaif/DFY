@@ -23,17 +23,9 @@
     return esc(text).replace(regex, '<mark>$1</mark>');
   }
 
-  // 获取所有内容数据（合并 window.HM_DATA 板块文件和 localStorage CMS 编辑）
+  // 获取所有内容数据（统一调用 core.js 的全局合并函数）
   function getAllContent() {
-    var merged = {};
-    if (window.HM_DATA && window.HM_DATA.content) {
-      for (var k in window.HM_DATA.content) merged[k] = window.HM_DATA.content[k];
-    }
-    try {
-      var local = JSON.parse(localStorage.getItem('hm_content') || '{}');
-      if (local) { for (var k in local) merged[k] = local[k]; }
-    } catch (e) {}
-    return merged;
+    return window.hmGetContent ? window.hmGetContent() : {};
   }
 
   // 板块中文名称映射

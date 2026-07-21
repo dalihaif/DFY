@@ -70,19 +70,8 @@
       metaDesc.getAttribute('content').replace(/\d+年/, hospitalAge + '\u5E74'));
   }
 
-  // -------- Content: 合并板块文件数据和 localStorage CMS 编辑 --------
-  // window.HM_DATA.content 来自按需加载的板块文件（data-loader.js 动态加载）
-  // localStorage.hm_content 来自后台 CMS 编辑（覆盖板块文件数据）
-  var hmContent = {};
-  if (_hmData.content) {
-    for (var _k in _hmData.content) hmContent[_k] = _hmData.content[_k];
-  }
-  try {
-    var localContent = JSON.parse(localStorage.getItem('hm_content') || '{}');
-    if (localContent && typeof localContent === 'object') {
-      for (var _lk in localContent) hmContent[_lk] = localContent[_lk];
-    }
-  } catch(e) { console.error('[Frontend] 数据读取异常:', e); }
+  // -------- Content: 统一调用 core.js 的全局合并函数 --------
+  var hmContent = window.hmGetContent ? window.hmGetContent() : {};
   console.log('[Frontend] 数据就绪，已加载板块: ' + Object.keys(hmContent).join(', '));
 
   // 打印 staff 数据
@@ -460,10 +449,11 @@
 
   // helper
   function esc(s) {
-    if (!s) return '';
-    var d = document.createElement('div');
-    d.textContent = s;
-    return d.innerHTML;
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   // 通用 profile 卡片 HTML 生成（专家群像/医学人才/榜样人物共用）
