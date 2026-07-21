@@ -25,6 +25,19 @@ var SECTIONS = [
 
 // ====== 初始化全部数据 ======
 function initAllData() {
+  // 清理旧版快照（MAX_VERSIONS 从 10 降为 3，旧快照可能占满 localStorage）
+  try {
+    var rawVer = localStorage.getItem(VERSION_KEY);
+    if (rawVer) {
+      var oldVers = JSON.parse(rawVer);
+      if (Array.isArray(oldVers) && oldVers.length > MAX_VERSIONS) {
+        oldVers = oldVers.slice(0, MAX_VERSIONS);
+        localStorage.setItem(VERSION_KEY, JSON.stringify(oldVers));
+        console.log('[Admin] 已清理旧版快照，保留 ' + oldVers.length + ' 个');
+      }
+    }
+  } catch(e) { try { localStorage.removeItem(VERSION_KEY); } catch(e2) {} }
+
   if (!localStorage.getItem('hm_admin_sections')) {
     var data = {};
     SECTIONS.forEach(function(s) { data[s.id] = { title:s.name, status:'published', updatedAt:new Date().toISOString().split('T')[0], notes:'' }; });
@@ -448,27 +461,52 @@ function saveContent(data, label) {
     var sc = data && data.staff && Array.isArray(data.staff.profiles) ? data.staff.profiles.length : 0;
     console.log('[Admin saveContent] 已保存 hm_content，大小=' + (json.length/1024).toFixed(1) + 'KB，staff.profiles=' + sc + '条');
 
-    // 创建版本快照
+    // 创建版本快照（失败不影响保存结果）
     createVersionSnapshot(data, label || '手动保存');
 
     return true;
   }
-  catch(e) { if (typeof showToast === 'function') showToast('保存失败：存储空间不足，请清理浏览器缓存', 'danger'); console.error('[Admin saveContent] 失败:', e); return false; }
+  catch(e) {
+    // 存储空间不足时，自动清理旧快照后重试一次
+    if (e && (e.name === 'QuotaExceededError' || e.code === 22)) {
+      console.warn('[Admin saveContent] 存储空间不足，清理旧版本快照后重试...');
+      try { localStorage.removeItem(VERSION_KEY); } catch(e2) {}
+      try {
+        localStorage.setItem('hm_content', json);
+        localStorage.setItem('hm_last_edit', Date.now().toString());
+        console.log('[Admin saveContent] 重试成功（已清理旧快照）');
+        return true;
+      } catch(e3) {
+        console.error('[Admin saveContent] 重试仍失败:', e3);
+      }
+    }
+    console.error('[Admin saveContent] 失败:', e);
+    var msg = (e && (e.name === 'QuotaExceededError' || e.code === 22))
+      ? '保存失败：浏览器存储空间已满，请导出数据后清理浏览器缓存'
+      : '保存失败：' + (e.message || '未知错误');
+    if (typeof toastMsg === 'function') toastMsg(msg, 'danger');
+    return false;
+  }
 }
 
 // ====== 版本快照管理 ======
 var VERSION_KEY = 'hm_versions';
-var MAX_VERSIONS = 10;
+var MAX_VERSIONS = 3;
 
 function createVersionSnapshot(data, label) {
   try {
     var versions = getVersionHistory();
+    // 精简快照：剔除 staff.profiles（441KB+ 大数组），仅保留元数据
+    var liteData = JSON.parse(JSON.stringify(data));
+    if (liteData.staff && liteData.staff.profiles) {
+      liteData.staff.profiles = '[已省略 ' + liteData.staff.profiles.length + ' 条职工数据]';
+    }
     var snapshot = {
       id: Date.now(),
       timestamp: Date.now(),
       label: label || '自动保存',
-      data: JSON.parse(JSON.stringify(data)), // 深拷贝
-      size: JSON.stringify(data).length
+      data: liteData,
+      size: JSON.stringify(liteData).length
     };
     versions.unshift(snapshot); // 最新的放前面
 
@@ -478,10 +516,12 @@ function createVersionSnapshot(data, label) {
     }
 
     localStorage.setItem(VERSION_KEY, JSON.stringify(versions));
-    console.log('[Version] 已创建快照: ' + label + '，共 ' + versions.length + ' 个版本');
+    console.log('[Version] 已创建快照: ' + label + '，共 ' + versions.length + ' 个版本，大小=' + (JSON.stringify(versions).length/1024).toFixed(1) + 'KB');
     return true;
   } catch(e) {
     console.error('[Version] 创建快照失败:', e);
+    // 快照失败不影响保存，清除旧快照重试
+    try { localStorage.removeItem(VERSION_KEY); } catch(e2) {}
     return false;
   }
 }
@@ -506,8 +546,13 @@ function restoreVersion(versionId) {
     var currentData = getContent();
     createVersionSnapshot(currentData, '回滚前备份');
 
-    // 执行回滚
-    saveContent(ver.data, '回滚至 ' + formatVersionTime(ver.timestamp));
+    // 执行回滚 — 合并当前 staff 数据（快照中已省略）
+    var rollbackData = ver.data;
+    if (currentData.staff && currentData.staff.profiles && (!rollbackData.staff || !rollbackData.staff.profiles || typeof rollbackData.staff.profiles === 'string')) {
+      if (!rollbackData.staff) rollbackData.staff = {};
+      rollbackData.staff.profiles = currentData.staff.profiles;
+    }
+    saveContent(rollbackData, '回滚至 ' + formatVersionTime(ver.timestamp));
 
     $(document).Toasts('create', { class:'bg-success', title:'回滚成功', body:'已恢复到 ' + formatVersionTime(ver.timestamp) + ' 的版本', autohide:true, delay:4000 });
 
@@ -1494,7 +1539,6 @@ function saveSectionContent(secId) {
         photo: $(this).find('.ld-photo').val()||''
       });
     });
-    content[secId].leaders=savedLeaders;
   }
 
   // Profiles
