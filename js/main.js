@@ -5,6 +5,19 @@
 (function () {
   'use strict';
 
+  // -------- Page Loader (骨架屏) --------
+  var loader = document.createElement('div');
+  loader.className = 'hm-page-loader';
+  loader.innerHTML = '<div class="hm-page-loader-spinner"></div><div class="hm-page-loader-text">正在加载院史馆...</div>';
+  document.body.appendChild(loader);
+  // 超时自动隐藏（防止 dataready 事件丢失导致永久白屏）
+  setTimeout(function () {
+    if (loader.parentNode) {
+      loader.classList.add('fade-out');
+      setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 300);
+    }
+  }, 5000);
+
   // -------- Theme --------
   var THEME_KEY = 'museum-theme';
   var html = document.documentElement;
@@ -34,6 +47,12 @@
   // data-loader.js 根据当前页面动态加载所需板块，完成后派发 hm:dataready
   // core.js (defer) 已提供 settings/announcements/sections/content.index
   document.addEventListener('hm:dataready', function () {
+
+  // 移除加载器
+  if (loader.parentNode) {
+    loader.classList.add('fade-out');
+    setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 300);
+  }
 
   // -------- 数据读取（合并 window.HM_DATA 和 localStorage）--------
   var _hmData = (window.HM_DATA && typeof window.HM_DATA === 'object') ? window.HM_DATA : {};
