@@ -641,6 +641,138 @@
           setTimeout(function () { btn.textContent = origText; }, 1500);
         }
       });
+    },
+
+    // ======================================
+    // 精简版留言墙 — 自动注入到内容页面底部
+    // ======================================
+    initInline: function () {
+      // 只在有翻页导航的内容页面注入，排除留言墙主页面
+      var pageNav = document.querySelector('.page-nav');
+      if (!pageNav) return;
+      if (location.pathname.indexOf('messages.html') !== -1) return;
+
+      // 判断链接路径（pages/ 子目录 vs 根目录）
+      var inPagesDir = location.pathname.indexOf('/pages/') !== -1;
+      var msgLink = inPagesDir ? 'messages.html' : 'pages/messages.html';
+
+      // 构建精简版留言墙
+      var section = document.createElement('section');
+      section.className = 'inline-msg-wall';
+      section.innerHTML =
+        '<div class="inline-msg-inner">' +
+          '<div class="inline-msg-head">' +
+            '<h3 class="inline-msg-title">💬 院史寄语</h3>' +
+            '<p class="inline-msg-sub">留下你的祝福与感悟，共同书写大附院的历史</p>' +
+          '</div>' +
+          '<form class="inline-msg-form" id="inlineMsgForm">' +
+            '<div class="inline-msg-form-row">' +
+              '<input type="text" name="name" placeholder="姓名（选填）" maxlength="20">' +
+              '<input type="text" name="department" placeholder="科室/部门（选填）" maxlength="30">' +
+            '</div>' +
+            '<textarea name="content" placeholder="写下您对医院的祝福、感悟或期待..." maxlength="500" required></textarea>' +
+            '<div class="inline-msg-form-bottom">' +
+              '<span class="inline-msg-tip">💡 留言保存在本地浏览器</span>' +
+              '<button type="submit" class="btn-submit-msg">发布寄语</button>' +
+            '</div>' +
+          '</form>' +
+          '<div class="inline-msg-list" id="inlineMsgList"></div>' +
+          '<a href="' + msgLink + '" class="inline-msg-more">查看全部寄语 →</a>' +
+        '</div>';
+
+      // 插入到 page-nav 之前
+      pageNav.parentNode.insertBefore(section, pageNav);
+
+      // 渲染最近 3 条留言
+      this._renderInline('inlineMsgList');
+
+      // 绑定表单
+      var self = this;
+      var form = document.getElementById('inlineMsgForm');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var nameInput = form.querySelector('input[name="name"]');
+        var deptInput = form.querySelector('input[name="department"]');
+        var contentInput = form.querySelector('textarea[name="content"]');
+        var content = contentInput ? contentInput.value.trim() : '';
+        if (!content) { alert('请输入留言内容'); return; }
+
+        self.saveMessage({
+          name: nameInput ? nameInput.value.trim() : '',
+          department: deptInput ? deptInput.value.trim() : '',
+          content: content
+        });
+
+        if (contentInput) contentInput.value = '';
+        self._renderInline('inlineMsgList');
+
+        var btn = form.querySelector('.btn-submit-msg');
+        if (btn) {
+          var origText = btn.textContent;
+          btn.textContent = '✓ 发布成功';
+          setTimeout(function () { btn.textContent = origText; }, 1500);
+        }
+      });
+    },
+
+    // 渲染精简版留言列表（最近 3 条）
+    _renderInline: function (containerId) {
+      var container = document.getElementById(containerId);
+      if (!container) return;
+
+      var messages = this.getMessages();
+      if (messages.length === 0) {
+        container.innerHTML =
+          '<div class="inline-msg-empty">' +
+          '<span class="inline-msg-empty-icon">💬</span>' +
+          '<span>还没有留言，快来写下第一条寄语吧！</span>' +
+          '</div>';
+        return;
+      }
+
+      var recent = messages.slice(0, 3);
+      var self = this;
+      container.innerHTML = recent.map(function (msg) {
+        var deptHtml = msg.department
+          ? '<span class="message-dept">' + esc(msg.department) + '</span>'
+          : '';
+        return '<div class="message-card inline-msg-card" data-id="' + msg.id + '">' +
+          '<div class="message-card-header">' +
+          '<div class="message-avatar">' + esc(self.getAvatarChar(msg.name)) + '</div>' +
+          '<div class="message-meta">' +
+          '<div class="message-name">' + esc(msg.name) + '</div>' +
+          '<div class="message-date">' + self.formatDate(msg.createdAt) + '</div>' +
+          '</div>' +
+          '</div>' +
+          '<div class="message-content">' + esc(msg.content).replace(/\n/g, '<br>') + '</div>' +
+          deptHtml +
+          '<div class="message-actions">' +
+            '<button class="message-like-btn" data-action="like">' +
+              '<span class="like-icon">♡</span> ' +
+              '<span class="like-count">' + (msg.likes || 0) + '</span>' +
+            '</button>' +
+          '</div>' +
+          '</div>';
+      }).join('');
+
+      // 绑定点赞事件
+      container.querySelectorAll('.message-card').forEach(function (card) {
+        var id = parseInt(card.getAttribute('data-id'));
+        var likeBtn = card.querySelector('[data-action="like"]');
+        if (likeBtn) {
+          likeBtn.addEventListener('click', function () {
+            self.toggleLike(id);
+          });
+        }
+      });
+
+      // 如果超过 3 条，显示总数提示
+      if (messages.length > 3) {
+        var moreEl = document.querySelector('.inline-msg-more');
+        if (moreEl) {
+          moreEl.textContent = '查看全部 ' + messages.length + ' 条寄语 →';
+        }
+      }
     }
   };
 
@@ -1361,6 +1493,7 @@
       Lightbox.bindAllContentImages();
       TimelineModal.init();
       SidebarTOC.init();
+      MessageWall.initInline();
     });
   } else {
     initNavSearch();
@@ -1370,6 +1503,7 @@
     Lightbox.bindAllContentImages();
     TimelineModal.init();
     SidebarTOC.init();
+    MessageWall.initInline();
   }
 
 })();

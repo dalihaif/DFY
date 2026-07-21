@@ -824,6 +824,134 @@
   cursor: pointer;
 }
 
+/* ========== 4-2. 精简版留言墙 Inline Message Wall ========== */
+.inline-msg-wall {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.inline-msg-inner {
+  background: var(--feat-bg-card, rgba(255,255,255,0.03));
+  border: 1px solid var(--feat-border, var(--border));
+  border-radius: 16px;
+  padding: 32px 28px;
+  backdrop-filter: blur(10px);
+}
+
+.inline-msg-head {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.inline-msg-title {
+  font-size: 1.5rem;
+  font-family: 'Noto Serif TC', serif;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.inline-msg-sub {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* 精简版表单 */
+.inline-msg-form {
+  max-width: 600px;
+  margin: 0 auto 28px;
+}
+
+.inline-msg-form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.inline-msg-form input,
+.inline-msg-form textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--feat-border, var(--border));
+  border-radius: 8px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.inline-msg-form input:focus,
+.inline-msg-form textarea:focus {
+  border-color: var(--feat-accent, #c9a962);
+}
+
+.inline-msg-form textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.inline-msg-form-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inline-msg-tip {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* 精简版留言列表 */
+.inline-msg-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.inline-msg-card {
+  margin: 0;
+}
+
+.inline-msg-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+.inline-msg-empty-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* 查看全部链接 */
+.inline-msg-more {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  color: var(--feat-accent, #c9a962);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-top: 1px solid var(--feat-border, var(--border));
+  margin-top: 8px;
+  transition: opacity 0.3s;
+}
+
+.inline-msg-more:hover {
+  opacity: 0.75;
+}
+
 /* ========== 响应式适配 ========== */
 @media (max-width: 768px) {
   .timeline-page-title { font-size: 1.8rem; }
@@ -835,6 +963,10 @@
 
   .message-wall-title { font-size: 1.6rem; }
   .message-form-row { flex-direction: column; gap: 12px; }
+
+  .inline-msg-list { grid-template-columns: 1fr; }
+  .inline-msg-form-row { flex-direction: column; gap: 10px; }
+  .inline-msg-title { font-size: 1.3rem; }
 
   .lightbox-prev { left: 10px; }
   .lightbox-next { right: 10px; }
