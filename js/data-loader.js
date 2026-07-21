@@ -107,7 +107,8 @@
 
   } else {
     // ===== 无需额外数据（首页、留言墙等） =====
-    // core.js 已包含所需数据，立即派发就绪事件
-    fireEvent('hm:dataready');
+    // core.js 已包含所需数据，延迟派发以确保 main.js/features.js 已注册监听器
+    // （defer 脚本按序同步执行，data-loader 在 main.js 之前，同步派发会导致事件丢失）
+    setTimeout(function () { fireEvent('hm:dataready'); }, 0);
   }
 })();
