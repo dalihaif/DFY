@@ -27,7 +27,7 @@
 
   function getSettings() {
     try {
-      return JSON.parse(localStorage.getItem('hm_settings') || '{}');
+      return window.hmGetJSON('hm_settings', 'object', {});
     } catch (e) { return {}; }
   }
 

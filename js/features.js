@@ -406,7 +406,7 @@
     // 获取所有留言
     getMessages: function () {
       try {
-        return JSON.parse(localStorage.getItem(this.STORAGE_KEY) || '[]');
+        return window.hmGetJSON(this.STORAGE_KEY, 'array', []);
       } catch (e) { return []; }
     },
 

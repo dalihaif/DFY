@@ -50,7 +50,7 @@
     if (_hasData(_hmData.settings)) {
       hmSettings = _hmData.settings;
     } else {
-      hmSettings = JSON.parse(localStorage.getItem('hm_settings') || '{}');
+      hmSettings = window.hmGetJSON('hm_settings', 'object', {});
     }
   } catch(e) { console.error('[Frontend] settings 读取异常:', e); }
   var FOUNDED_YEAR = hmSettings.foundedYear || 1991;
@@ -570,7 +570,7 @@
   // 首次访问时自动将 data.js 数据同步到 localStorage
   var hmAnnouncements = [];
   try {
-    var localAnn = JSON.parse(localStorage.getItem('hm_announcements') || 'null');
+    var localAnn = window.hmGetJSON('hm_announcements', 'array', null);
     if (localAnn && Array.isArray(localAnn) && localAnn.length > 0) {
       hmAnnouncements = localAnn;
     } else if (_hasData(_hmData.announcements)) {

@@ -47,6 +47,22 @@ window.hmSanitize = function (html) {
     .replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
 };
 
+// 全局安全读取 localStorage JSON 数据
+// key: localStorage 键名, expectedType: 'array'|'object'|null(不校验), fallback: 失败时的默认值
+window.hmGetJSON = function (key, expectedType, fallback) {
+  try {
+    var raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    var parsed = JSON.parse(raw);
+    if (expectedType === 'array' && !Array.isArray(parsed)) return fallback;
+    if (expectedType === 'object' && (typeof parsed !== 'object' || Array.isArray(parsed) || parsed === null)) return fallback;
+    return parsed;
+  } catch (e) {
+    console.error('[core] localStorage 读取异常:', key, e);
+    return fallback;
+  }
+};
+
 // 动态加载 DOMPurify（异步，不阻塞页面）
 (function () {
   if (window.DOMPurify) return;
