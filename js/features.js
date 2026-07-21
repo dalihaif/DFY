@@ -902,7 +902,7 @@
       eraEl.style.display = person.era ? 'inline-block' : 'none';
 
       if (person.photo) {
-        avatarEl.innerHTML = '<img src="' + person.photo + '" alt="' + person.name + '">';
+        avatarEl.innerHTML = '<img src="' + esc(person.photo) + '" alt="' + esc(person.name) + '">';
       } else {
         avatarEl.textContent = person.name ? person.name.charAt(0) : '?';
       }

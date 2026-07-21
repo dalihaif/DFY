@@ -30,3 +30,29 @@ window.hmEsc = function (str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 };
+
+// 全局净化函数：防止 XSS
+// 优先使用 DOMPurify（动态加载），降级到轻量正则净化
+window.hmSanitize = function (html) {
+  if (typeof html !== 'string') return '';
+  // DOMPurify 已加载则使用
+  if (window.DOMPurify) return window.DOMPurify.sanitize(html, { ALLOWED_TAGS: ['p','br','small','strong','em','b','i','span','div','a','img','ul','ol','li','h3','h4','h5','blockquote','table','tr','td','th','thead','tbody','sub','sup','hr'], ALLOWED_ATTR: ['href','src','alt','title','class','target','style','colspan','rowspan'], ALLOW_DATA_ATTR: false });
+  // 降级：移除 script/事件属性/javascript 协议
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/\son\w+\s*=\s*"[^"]*"/gi, '')
+    .replace(/\son\w+\s*=\s*'[^']*'/gi, '')
+    .replace(/\son\w+\s*=\s*[^\s>]+/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
+};
+
+// 动态加载 DOMPurify（异步，不阻塞页面）
+(function () {
+  if (window.DOMPurify) return;
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js';
+  s.async = true;
+  s.onerror = function () { console.warn('[core] DOMPurify 加载失败，使用降级净化'); };
+  document.head.appendChild(s);
+})();

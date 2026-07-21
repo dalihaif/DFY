@@ -129,8 +129,8 @@
       // 正文
       var textEl = el.querySelector('.content-text');
       if (textEl && blk.text) {
-        // text 字段本身可能包含HTML
-        textEl.innerHTML = blk.text;
+        // text 字段本身可能包含HTML（CMS 富文本），净化后赋值
+        textEl.innerHTML = window.hmSanitize(blk.text);
       }
 
       // 图片槽

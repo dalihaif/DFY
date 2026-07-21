@@ -146,7 +146,7 @@
         // Update content text
         if (contentPairs[i]) {
           var ct = contentPairs[i].querySelector('.content-text');
-          if (ct && b.text) ct.innerHTML = b.text;
+          if (ct && b.text) ct.innerHTML = window.hmSanitize(b.text);
         }
         // Update image slot
         if (imgSlots[i]) {
@@ -155,7 +155,7 @@
           var labelEl = is.querySelector('.img-slot-label');
           var sizeEl = is.querySelector('.img-slot-size');
           if (iconEl && b.imgIcon) iconEl.textContent = b.imgIcon;
-          if (labelEl && b.imgLabel) labelEl.innerHTML = b.imgLabel;
+          if (labelEl && b.imgLabel) labelEl.innerHTML = window.hmSanitize(b.imgLabel);
           if (sizeEl && b.imgSize) sizeEl.textContent = b.imgSize;
           // 若提供了真实图片URL，替换占位div为实际img
           if (b.imgUrl) {
@@ -677,8 +677,8 @@
     // Footer
     if (indexData.footer) {
       var f = indexData.footer;
-      if (f.slogan) { var s = document.querySelector('.footer-slogan'); if (s) s.innerHTML = f.slogan.replace(/\n/g,'<br>'); }
-      if (f.addr) { var a = document.querySelector('.footer-addr'); if (a) a.innerHTML = f.addr; }
+      if (f.slogan) { var s = document.querySelector('.footer-slogan'); if (s) s.innerHTML = window.hmSanitize(f.slogan.replace(/\n/g,'<br>')); }
+      if (f.addr) { var a = document.querySelector('.footer-addr'); if (a) a.innerHTML = window.hmSanitize(f.addr); }
       if (f.phones) {
         var pw = document.querySelector('.footer-phones');
         if (pw) { pw.innerHTML = f.phones.split('|').map(function(p){ return '<span>' + p.trim() + '</span>'; }).join(''); }
@@ -762,7 +762,7 @@
         '<span class="announce-modal-date">' + dateText + '</span>' +
       '</div>' +
       '<h3 class="announce-modal-title">' + titleText + '</h3>' +
-      '<div class="announce-modal-body">' + descText + '</div>' +
+      '<div class="announce-modal-body">' + window.hmSanitize(descText) + '</div>' +
       '<div class="announce-modal-footer"><span>📌</span> 发布部门：' + srcText + '</div>';
 
     overlay.appendChild(box);
