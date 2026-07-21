@@ -32,7 +32,9 @@ const CORE_ASSETS = [
   '/pages/search.html',
   '/pages/messages.html',
   '/assets/images/logo-hospital.webp',
-  '/assets/images/2_20.webp'
+  '/assets/images/2_20.webp',
+  '/assets/images/2_20-1120.webp',
+  '/assets/images/2_20-750.webp'
 ];
 
 // 安装：预缓存核心资源
