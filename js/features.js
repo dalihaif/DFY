@@ -963,7 +963,7 @@
         if (e.target === overlay) PersonModal.close();
       });
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') PersonModal.close();
+        if (e.key === 'Escape' && PersonModal._overlay && PersonModal._overlay.classList.contains('active')) PersonModal.close();
       });
     }
   };

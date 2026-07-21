@@ -81,9 +81,17 @@
   --section-alt: rgba(0,0,0,0.02);
 }
 
-/* -------- global transition on theme switch -------- */
+/* -------- global reset & theme switch transition -------- */
 *, *::before, *::after {
   margin: 0; padding: 0; box-sizing: border-box;
+}
+
+/* 主题切换过渡只应用到关键元素，避免全局性能问题 */
+body, .navbar, .footer, .section-card, .message-card, .gallery-item,
+.announce-card, .page-nav, .data-card, .staff-card, .profile-card,
+.modal-overlay, .lightbox-overlay, .sidebar-toc, .message-form,
+.nav-menu a, .btn-theme, .btn-announce, .btn-official, .btn-tour,
+.honor-era-group, .tl-node, .tl-dot, .ht-node, .inline-msg-inner {
   transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
 }
 

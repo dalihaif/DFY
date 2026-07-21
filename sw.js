@@ -1,6 +1,5 @@
-// 云端院史馆 Service Worker
-const CACHE_VERSION = 'dfy-museum-v6';
-const CACHE_NAME = 'dfy-museum-' + CACHE_VERSION;
+// 云端院史馆 Service Worker v7
+const CACHE_NAME = 'dfy-museum-v7';
 
 // 核心资源 - 安装时预缓存
 const CORE_ASSETS = [
@@ -14,7 +13,21 @@ const CORE_ASSETS = [
   '/js/data-loader.js',
   '/js/main.js',
   '/js/features.js',
+  '/js/page-renderer.js',
   '/js/data-service.js',
+  '/pages/01-history.html',
+  '/pages/02-people.html',
+  '/pages/03-disciplines.html',
+  '/pages/04-campus.html',
+  '/pages/05-education.html',
+  '/pages/06-culture.html',
+  '/pages/07-tech.html',
+  '/pages/08-duty.html',
+  '/pages/09-honors.html',
+  '/pages/10-vision.html',
+  '/pages/11-structure.html',
+  '/pages/12-leadership.html',
+  '/pages/13-staff.html',
   '/pages/timeline.html',
   '/pages/search.html',
   '/pages/messages.html',
