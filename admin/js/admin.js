@@ -2043,7 +2043,10 @@ function renderDataManager() {
   html += '<i class="fab fa-github fa-3x text-success mb-2"></i>';
   html += '<p class="mb-2">推送至 GitHub Pages 后全网访问</p>';
   html += '<div class="bg-dark text-light rounded p-2 text-left" style="font-size:12px;font-family:monospace;">';
-  html += 'git add js/data/<br>git commit -m "update: 更新展馆内容"<br>git push';
+  html += '<span class="text-success">一键发布：</span><br>';
+  html += 'node publish.js "更新说明"<br><br>';
+  html += '<span class="text-muted">或手动三步：</span><br>';
+  html += 'git add js/data/<br>git commit -m "update"<br>git push';
   html += '</div>';
   html += '</div></div></div>';
 
