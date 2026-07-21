@@ -257,7 +257,7 @@ button { font-family: inherit; }
 }
 @media (max-width:960px) {
   .nav-menu { gap:6px; }
-  .nav-menu a { font-size:10.5px; }
+  .nav-menu a { font-size:12px; }
   .btn-announce { display:none; }
   .btn-official { display:none; }
 }

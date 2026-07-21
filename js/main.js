@@ -52,7 +52,7 @@
     } else {
       hmSettings = JSON.parse(localStorage.getItem('hm_settings') || '{}');
     }
-  } catch(e) {}
+  } catch(e) { console.error('[Frontend] settings 读取异常:', e); }
   var FOUNDED_YEAR = hmSettings.foundedYear || 1991;
   var nowYear = new Date().getFullYear();
   var hospitalAge = nowYear - FOUNDED_YEAR;
@@ -78,9 +78,7 @@
   try {
     var _sc = hmContent.staff && Array.isArray(hmContent.staff.profiles) ? hmContent.staff.profiles.length : 0;
     console.log('[Frontend] staff.profiles 数量: ' + _sc);
-  } catch(e) {}
-
-  // Detect current page section
+  } catch(e) { console.error('[Frontend] staff 数据检查异常:', e); }
   function getCurrentSection() {
     var path = window.location.pathname;
     var map = {
@@ -578,11 +576,11 @@
     } else if (_hasData(_hmData.announcements)) {
       // data.js 有数据但 localStorage 为空 → 首次同步
       hmAnnouncements = _hmData.announcements;
-      try { localStorage.setItem('hm_announcements', JSON.stringify(hmAnnouncements)); } catch(e) {}
+      try { localStorage.setItem('hm_announcements', JSON.stringify(hmAnnouncements)); } catch(e) { console.error('[Frontend] announcements 缓存写入异常:', e); }
     } else {
       hmAnnouncements = [];
     }
-  } catch(e) {}
+  } catch(e) { console.error('[Frontend] announcements 读取异常:', e); }
 
   // -------- 公告卡片动态渲染（替换 index.html 静态硬编码）--------
   function renderFrontAnnouncements() {

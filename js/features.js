@@ -1117,6 +1117,9 @@
       if (images.length === 0) return;
 
       images.forEach(function (img) {
+        // 异步解码，避免阻塞主线程
+        if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+
         // 跳过首屏Hero大图（不lazy，保证首屏体验）
         var isHero = img.classList.contains('page-hero-bg') ||
                      img.classList.contains('hero-bg-image') ||
