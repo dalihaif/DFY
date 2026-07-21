@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /split-data.js
+Disallow: /migrate.html
+
+Sitemap: https://dalihaif.github.io/DFY/sitemap.xml
